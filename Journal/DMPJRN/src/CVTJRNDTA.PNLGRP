@@ -1,0 +1,70 @@
+:PNLGRP.
+
+:HELP NAME='CVTJRNDTA/ALL'.
+:IMHELP NAME='CVTJRNDTA/DSPJRNOUTF'.
+:IMHELP NAME='CVTJRNDTA/CVTOUTF'.
+:IMHELP NAME='CVTJRNDTA/OUTOPT'.
+:IMHELP NAME='CVTJRNDTA/JRNFILE'.
+:EHELP.
+
+:HELP NAME='CVTJRNDTA'.
+:P.The Convert Journal Data (CVTJRNDTA) command is used to convert
+data from a DSPJRN output file to a newly created
+file which contains both the audit fields from the journal
+as well as the data fields from original journaled user file.
+:EHELP.
+
+:HELP NAME='CVTJRNDTA/DSPJRNOUTF'.
+DSPJRN Output file (DSPJRNOUTF) - Help
+:XH3.DSPJRN Output file (DSPJRNOUTF)
+:P.Specify the name and library of the output file created using the
+DSPJRN command. This file must exist.
+:P.
+:P.This is a required parameter.
+:EHELP.
+
+:HELP NAME='CVTJRNDTA/CVTOUTF'.
+Converted Output file (CVTOUTF) - Help
+:XH3.Converted Output file (CVTOUTF)
+:P.Specify the name and library of the new file you would like this
+command to create for you.
+:P.
+:P.This is a required parameter.
+:EHELP.
+
+:HELP NAME='CVTJRNDTA/OUTOPT'.
+Replace or add records (OUTOPT) - Help
+:XH3.Replace or add records (OUTOPT)
+:P.Specify whether to add records to an existing output file or
+create a new output file.
+:P.
+:P.The possible values are:
+:PARML.
+:PT.:PK.*NONE:EPK.
+:PD.If the default value of *NONE is specified, then the output file
+must not already exist. If it does, the command will be aborted.
+:PT.:PK.*REPLACE:EPK.
+:PD.If the specified output file already exists, it will be deleted and
+a new one will be created.
+:PT.:PK.*ADD:EPK.
+:PD.Records will be added to the existing file. The record format must
+be correct or unpredictable results may occur. If the file does not
+exist, it will be created.
+:EPARML.
+:EHELP.
+
+:HELP NAME='CVTJRNDTA/JRNFILE'.
+Journaled physical file (JRNFILE) - Help
+:XH3.Journaled physical file (JRNFILE)
+:P.Specify the name and library of the physical file whose journal
+entries were displayed to the output file using the DSPJRN command.
+:P.
+:P.The possible values are:
+:PARML.
+:PT.:PK.*AUTO:EPK.
+:PD.The DSPJRN output file will be read to determine the file name
+and library specified in journal data fields JOOBJ & JOLIB.
+:EPARML.
+:EHELP.
+
+:EPNLGRP.

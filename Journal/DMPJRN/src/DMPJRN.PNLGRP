@@ -1,0 +1,96 @@
+:PNLGRP.
+
+:HELP NAME='DMPJRN/ALL'.
+:IMHELP NAME='DMPJRN/JRN'.
+:IMHELP NAME='DMPJRN/RCVRNG'.
+:IMHELP NAME='DMPJRN/FILE'.
+:IMHELP NAME='DMPJRN/CVTOUTF'.
+:IMHELP NAME='DMPJRN/OUTOPT'.
+:IMHELP NAME='DMPJRN/JRNFILE'.
+:EHELP.
+
+:HELP NAME='DMPJRN'.
+:P.The Dump Journal (DMPJRN) command dumps the specified journal
+entries to a temporary output file using the DSPJRN command
+and then uses the CVTJRNDTA command to convert them to a usable format.
+:EHELP.
+
+:HELP NAME='DMPJRN/JRN'.
+Journal (JRN) - Help
+:XH3.Journal (JRN)
+:P.Specify the journal and library whose entries you would like to work
+with.
+:P.
+:P.This is a required parameter.
+:EHELP.
+
+:HELP NAME='DMPJRN/RCVRNG'.
+Range of journal receivers (RCVRNG) - Help
+:XH3.Range of journal receivers (RCVRNG)
+:P.Specify the starting and ending journal receiver range to dump.
+:P.
+:P.This is a required parameter.
+:EHELP.
+
+:HELP NAME='DMPJRN/FILE'.
+Journaled file (FILE) - Help
+:XH3.Journaled file (FILE)
+:P.Specify the file, library, and member whose journal entries you
+would like to dump.
+:P.
+:P.This is a required parameter.
+:P.
+:P.The possible values are:
+:PARML.
+:PT.:PK.*FIRST:EPK.
+:PD.Dump journal entries for the first member in the specified file.
+:PT.:PK.*ALL:EPK.
+:PD.Dump journal entries for all members in the specified file.
+:EPARML.
+:EHELP.
+
+:HELP NAME='DMPJRN/CVTOUTF'.
+Converted Output file (CVTOUTF) - Help
+:XH3.Converted Output file (CVTOUTF)
+:P.Specify the name and library of the new file you would like this
+command to create for you.
+:P.
+:P.This is a required parameter.
+:EHELP.
+
+:HELP NAME='DMPJRN/OUTOPT'.
+Replace or add records (OUTOPT) - Help
+:XH3.Replace or add records (OUTOPT)
+:P.Specify whether to add records to an existing output file or
+create a new output file.
+:P.
+:P.The possible values are:
+:PARML.
+:PT.:PK.*NONE:EPK.
+:PD.If *NONE is specified, then the output file
+must not already exist. If it does, the command will be aborted.
+:PT.:PK.*REPLACE:EPK.
+:PD.If the specified output file already exists, it will be deleted and
+a new one will be created.
+:PT.:PK.*ADD:EPK.
+:PD.Records will be added to the existing file. The record format must
+be correct or unpredictable results may occur. If the file does not
+exist, it will be created.
+:EPARML.
+:EHELP.
+
+:HELP NAME='DMPJRN/JRNFILE'.
+Journaled physical file (JRNFILE) - Help
+:XH3.Journaled physical file (JRNFILE)
+:P.Specify the name and library of the physical file whose journal
+entries were displayed to the output file using the DSPJRN command.
+:P.
+:P.The possible values are:
+:PARML.
+:PT.:PK.*AUTO:EPK.
+:PD.The DSPJRN output file will be read to determine the file name
+and library specified in journal data fields JOOBJ & JOLIB.
+:EPARML.
+:EHELP.
+
+:EPNLGRP.
