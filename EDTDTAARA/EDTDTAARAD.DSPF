@@ -1,7 +1,7 @@
       *===============================================================
       * To compile:
       *
-      *      CRTDSPF    FILE(XXX/EDT101DS) SRCFILE(XXX/QDDSSRC)
+      *      CRTDSPF    FILE(XXX/EDTDTAARAD) SRCFILE(XXX/QDDSSRC)
       *
       *===============================================================
      A                                      DSPSIZ(24 80 *DS3)
