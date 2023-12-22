@@ -1,7 +1,7 @@
 /*==================================================================*/
 /* To compile:                                                      */
 /*                                                                  */
-/*           CRTCMD     CMD(XXXLIB/EDTDTAARA) PGM(XXXLIB/EDT101RG)  */
+/*           CRTCMD     CMD(XXXLIB/EDTDTAARA) PGM(XXXLIB/EDTDTAARAR)*/
 /*                                                                  */
 /*==================================================================*/
 
