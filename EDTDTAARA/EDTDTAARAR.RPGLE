@@ -1,7 +1,7 @@
       *===============================================================
       * To compile:
       *
-      *     CRTBNDRPG PGM(XXXLIB/EDT101RG) SRCMBR(EDT101RG)
+      *     CRTBNDRPG PGM(XXXLIB/EDTDTAARAR) SRCMBR(EDTDTAARAR)
       *
       *===============================================================
      H DftActGrp(*no)
