@@ -3,7 +3,7 @@
 ## Exit Program
 <ul>
   <li>Socket Exit Points
-      </li>
+      https://github.com/vengoal/AS400Tools/blob/main/ExitPgm/Socket/README.md</li>
 </ul>
 
 ## Journal
