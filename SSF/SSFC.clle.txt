@@ -1,0 +1,104 @@
+pgm  (&inFile &inJob &inSplfNbr &inSlt)
+
+   dclprcopt   dftactgrp(*no) actgrp(*new)
+
+   dcl  &inFile         *char      10
+   dcl  &inJob          *char      26
+   dcl  &inSplfNbr      *char       5
+   dcl  &inSlt          *char    1024
+
+   dcl  &JobName        *char      10
+   dcl  &JobUser        *char      10
+   dcl  &JobNumber      *char       6
+
+   dcl  &ListSize       *uint       2
+   dcl  &Lx             *uint       4
+   dcl  &Ox             *uint       4
+   dcl  &Quote          *char       1    value('''')
+   dcl  &ValueLen       *uint       4
+
+   dcl  &TempLib        *char      10    value(QTEMP)
+   dcl  &SplfData       *char      10    value(SPLFDATA)
+   dcl  &FileToShow     *char      10    value(FILETOSHOW)
+
+   dcl  &Offset         *uint       4
+   dcl  &Element        *char      59
+   dcl     &AndOr       *char       4   stg(*defined) defvar(&Element  3)
+   dcl     &Not         *char       4   stg(*defined) defvar(&Element  7)
+   dcl     &OpenParen   *char       1   stg(*defined) defvar(&Element 11)
+   dcl     &Position    *int        4   stg(*defined) defvar(&Element 12)
+   dcl     &Test        *char       3   stg(*defined) defvar(&Element 16)
+   dcl     &Value       *char      40   stg(*defined) defvar(&Element 19)
+   dcl     &CloseParen  *char       1   stg(*defined) defvar(&Element 59)
+
+   dcl  &QrySlt         *char    1024
+
+   dcl  &Abending       *lgl
+
+   monmsg   cpf0000    exec(goto Abend)
+
+   /* Resolve the job ID. */
+
+   if (%sst(&inJob 1 1) *eq '*') do
+      RtvJobA   job(&JobName) user(&JobUser) nbr(&JobNumber)
+   enddo
+   else do
+      chgvar  &JobName    %sst(&inJob  1 10)
+      chgvar  &JobUser    %sst(&inJob 11 10)
+      chgvar  &JobNumber  %sst(&inJob 21  6)
+   enddo
+
+   /* Copy the spooled file to a physical file */
+
+   clrpfm &Templib/&SplfData
+   monmsg cpf3142 exec(do)
+      crtpf &Templib/&SplfData rcdlen(132)
+   enddo
+
+   CpySplF  file(&inFile) ToFile(&Templib/&SplfData) +
+              job(&JobNumber/&JobUser/&JobName) +
+              SplNbr(&inSplfNbr) ctlchar(*none)
+
+   /* Build the query select expression */
+
+   chgvar  &ListSize    %bin(&inSlt 1 2)
+
+   dofor &Lx from(1) to(&ListSize)
+      chgvar  &Ox       (&Lx * 2 + 1)
+      chgvar  &Offset   (%bin(&inSlt &Ox 2) + 1)
+      chgvar  &Element   %sst(&inSlt &Offset 59)
+      chgvar  &ValueLen (%checkr(' ' &Value))
+
+      if (&Position *ne 0) do
+         ChgVar &QrySlt +
+             ( &QrySlt *bcat +
+                   &AndOr *bcat &Not *bcat &OpenParen *cat +
+                  '%SST(' *cat &SplfData *bcat +
+                   %char(&Position) *bcat %char(&ValueLen) *tcat ')' *bcat +
+                   &Test *bcat +
+                   &Quote *cat %trimr(&Value) *cat &Quote *cat +
+                   &CloseParen)
+      enddo
+
+   enddo
+
+   if (&QrySlt *ne ' ') do
+      OpnQryF   file((&TempLib/&SplfData)) QrySlt(&QrySlt) OpnID(&SplfData)
+      CpyFrmQryF  FromOpnID(&SplfData) ToFile(&TempLib/&FileToShow) +
+                     MbrOpt(*REPLACE) CrtFile(*YES)
+      dsppfm &tempLib/&FileToShow
+   enddo
+   else do
+      dsppfm &tempLib/&SplfData
+   enddo
+
+   return
+
+Abend:
+   if (&Abending) then(return)
+
+   chgvar  &Abending   '1'
+   SndPgmMsg  MsgID(CPF9897) MsgF(QCPFMSG) +
+              MsgDta('SSF ended abnormally. See the job log.') +
+              MsgType(*ESCAPE)
+endpgm

@@ -1,0 +1,21 @@
+             CMD        PROMPT('Display spooled file selected')
+             PARM       KWD(FILE) TYPE(*NAME) LEN(10) MIN(1) +
+                          EXPR(*YES) PROMPT('File')
+      PARM   KWD(JOB) TYPE(JOB) DFT(*) SNGVAL((*)) +
+                PROMPT('Job name')
+
+JOB:  QUAL   TYPE(*NAME) LEN(10) MIN(1)
+      QUAL   TYPE(*NAME) LEN(10) MIN(1) PROMPT('User')
+      QUAL   TYPE(*CHAR) LEN(6) RANGE(000000 999999) +
+                MIN(1) FULL(*YES) PROMPT('Number')
+
+      PARM  SPLNBR TYPE(*CHAR) LEN(6) DFT(*LAST) PROMPT('Spooled file number')
+
+      PARM  SELECT TYPE(SELECTION) MAX(3) PROMPT('Selection criteria')
+
+ SELECTION:  ELEM       TYPE(*INT4) RSTD(*NO) EXPR(*YES) +
+                          PROMPT('Position')
+             ELEM       TYPE(*CHAR) LEN(3) RSTD(*YES) DFT(*EQ) +
+                          VALUES(*EQ *NE *GT *GE *LT *LE *NG *NL +
+                          *CT) PROMPT('Operator')
+      elem   TYPE(*CHAR) LEN(12) EXPR(*YES) PROMPT('Search value')

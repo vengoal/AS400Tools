@@ -1,0 +1,70 @@
+pgm  (&inFile &inJob &inSplfNbr &inSlt)
+
+   dclprcopt   dftactgrp(*no) actgrp(*new)
+
+   dcl  &inFile         *char      10
+   dcl  &inJob          *char      26
+   dcl  &inSplfNbr      *char       5
+   dcl  &inSlt          *char     256
+
+   dcl  &JobName        *char      10
+   dcl  &JobUser        *char      10
+   dcl  &JobNumber      *char       6
+
+   dcl  &ListSize       *uint       2
+   dcl  &Lx             *uint       4
+   dcl  &Ox             *uint       4
+
+   dcl  &TempLib        *char      10    value(QTEMP)
+
+   dcl  &FileToShow     *char      10    value(SSF1)
+   dcl  &FileToCopy     *char      10    value(SSF2)
+   dcl  &TempRename     *char      10
+
+   dcl  &Offset         *uint       4
+   dcl  &Element        *char      21
+   dcl     &Position    *int        4   stg(*defined) defvar(&Element  3)
+   dcl     &Operation   *char       3   stg(*defined) defvar(&Element  7)
+   dcl     &Value       *char      12   stg(*defined) defvar(&Element 10)
+
+   /* Resolve the job ID. */
+   if (%sst(&inJob 1 1) *eq '*') do
+      RtvJobA   job(&JobName) user(&JobUser) nbr(&JobNumber)
+   enddo
+   else do
+      chgvar  &JobName    %sst(&inJob  1 10)
+      chgvar  &JobUser    %sst(&inJob 11 10)
+      chgvar  &JobNumber  %sst(&inJob 21  6)
+   enddo
+
+   clrpfm &Templib/&FileToShow
+   monmsg cpf3142 exec(do)
+      crtpf &Templib/&FileToShow rcdlen(132)
+   enddo
+
+   CpySplF  file(&inFile) ToFile(&Templib/&FileToShow) +
+              job(&JobNumber/&JobUser/&JobName) +
+              SplNbr(&inSplfNbr) ctlchar(*none)
+
+   chgvar  &ListSize    %bin(&inSlt 1 2)
+
+   dofor &Lx from(1) to(&ListSize)
+      chgvar  &Ox       (&Lx * 2 + 1)
+      chgvar  &Offset   (%bin(&inSlt &Ox 2) + 1)
+      chgvar  &Element   %sst(&inSlt &Offset 21)
+
+      chgvar  &TempRename  &FileToCopy
+      chgvar  &FileToCopy  &FileToShow
+      chgvar  &FileToShow  &TempRename
+
+      CpyF  FromFile(&TempLib/&FileToCopy) +
+              ToFile(&TempLib/&FileToShow) +
+              MbrOpt(*REPLACE) CrtFile(*YES) +
+             IncChar(*RCD &Position &Operation &Value)
+   enddo
+
+   dsppfm &tempLib/&FileToShow
+
+   return
+
+endpgm

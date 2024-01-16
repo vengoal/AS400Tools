@@ -1,0 +1,30 @@
+  CMD        PROMPT('Search Spoole File')
+  PARM       KWD(FILE) TYPE(*NAME) LEN(10) MIN(1) +
+                          EXPR(*YES) PROMPT(FILE)
+  PARM   KWD(JOB) TYPE(JOB) DFT(*) SNGVAL((*)) +
+                PROMPT('Job name')
+
+JOB:  QUAL   TYPE(*NAME) LEN(10) MIN(1)
+      QUAL   TYPE(*NAME) LEN(10) MIN(1) PROMPT('User')
+      QUAL   TYPE(*CHAR) LEN(6) RANGE(000000 999999) +
+                MIN(1) FULL(*YES) PROMPT('Number')
+
+  PARM  SPLNBR TYPE(*CHAR) LEN(6) DFT(*LAST) PROMPT('Spooled file number')
+
+  PARM  SELECT TYPE(SELECTION) MAX(12) PROMPT('Selection criteria')
+
+ SELECTION: +
+   elem TYPE(*CHAR) LEN(4) RSTD(*YES) VALUES(' ' *AND *OR) EXPR(*YES) +
+                          PROMPT('And/Or')
+   elem TYPE(*CHAR) LEN(4) RSTD(*YES) VALUES(' ' *NOT) EXPR(*YES) +
+                          PROMPT('Not')
+   elem TYPE(*CHAR) LEN(1) RSTD(*YES) VALUES(' ' '(') EXPR(*YES) +
+                          PROMPT('Open parenthesis')
+   elem TYPE(*INT4) RSTD(*NO) EXPR(*YES) PROMPT('Position')
+   elem TYPE(*CHAR) LEN(3) RSTD(*YES) DFT(*EQ) +
+                          VALUES(*EQ *NE *GT *GE *LT *LE *NG *NL +
+                          *CT) PROMPT('Test')
+   elem TYPE(*CHAR) LEN(40) EXPR(*YES) PROMPT('Search value')
+   elem TYPE(*CHAR) LEN(1) RSTD(*YES) VALUES(' ' ')') EXPR(*YES) +
+                          PROMPT('Close parenthesis')
+
