@@ -14,10 +14,15 @@
     <li>http://www.lisug.org/presentations/Journaling%20Forensics%20101.pdf</li>
     <li>https://www.gomitec.com/XW210B-1.html</li>
   </ul>
-  <li>EDTDTAARA - Edit Data Area
   <li>EXPJRNE -- Export Journal Entries V5.5</li>
   <ul>
     <li>https://www.mcpressonline.com/programming/rpg/journal-entries-exposed-joesd-made-readable</li>
     <li>http://www.tools400.de/English/Freeware/Utilities/utilities.html</li>
   </ul>
+</ul>
+
+## Command
+<ul>
+  <li>EDTDTAARA - Edit Data Area</li>
+  <li>SSF - Search Spooled File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
 </ul>
