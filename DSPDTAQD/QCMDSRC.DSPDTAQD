@@ -1,5 +1,0 @@
-             CMD        PROMPT('Display Data Queue Information')
-             PARM       KWD(DATAQ) TYPE(QUAL1) MIN(1) +
-                          PROMPT('Data Queue' 1)
- QUAL1:      QUAL       TYPE(*NAME) LEN(10) MIN(1)
-             QUAL       TYPE(*NAME) LEN(10) MIN(1) PROMPT('Library')
