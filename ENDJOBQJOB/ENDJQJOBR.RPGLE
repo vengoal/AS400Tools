@@ -460,7 +460,7 @@
         //  Dsply EntDatYMD;
             If ( EntDatYMD < LastEndYMD );
               Cmd_Str   = 'ENDJOB JOB(' +
-                                      %Char(OLJB0200.JobNbr) + '/' +
+                                      %Char(OLJB0200.JobNbrC) + '/' +
                                       %trim(OLJB0200.UsrPrf) + '/' +
                                       %trim(OLJB0200.JobNam) +
                                     ') OPTION(*IMMED)';
