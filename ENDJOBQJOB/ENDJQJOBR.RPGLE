@@ -99,6 +99,7 @@
      D  JobNam                       10a   Overlay( JobId:  1 )
      D  UsrPrf                       10a   Overlay( JobId: 11 )
      D  JobNbr                        6s 0 Overlay( JobId: 21 )
+     D  JobNbrC                       6    Overlay( JobId: 21 )
      D  JobIdInt                     16a
      D  Status                       10a
      D  JobTyp                        1a
@@ -458,17 +459,17 @@
             EntDatYMD  = %date(%subst(KeyDta.JobEntDat:2:6) : *YMD0);
         //  Dsply EntDatYMD;
             If ( EntDatYMD < LastEndYMD );
-              EndJobCmd = 'ENDJOB JOB(' +
+              Cmd_Str   = 'ENDJOB JOB(' +
                                       %Char(OLJB0200.JobNbr) + '/' +
                                       %trim(OLJB0200.UsrPrf) + '/' +
                                       %trim(OLJB0200.JobNam) +
                                     ') OPTION(*IMMED)';
+              EndJobCmd = Cmd_Str;
               Select;
               When PxAction = '*PREVIEW';
                 DSPLY EndJobCmd;
 
               When PxAction = '*END';
-                cmd_str = EndJobCmd;
                 QCMDEXC( cmd_str : cmd_len);
               EndSl;
             EndIf;
