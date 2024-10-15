@@ -23,7 +23,10 @@
 
 ## Command
 <ul>
+  <li>Job log</li>
+  <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
+  </ul>
   <li>DSPDTAQD   - Display Data Queue Description</li>
   <li>EDTDTAARA  - Edit Data Area</li>
   <li>ENDJOBQJOB - End Jobq Job</li>
