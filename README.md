@@ -35,4 +35,10 @@
   <li>EDTDTAARA  - Edit Data Area</li>
   <li>ENDJOBQJOB - End Jobq Job</li>
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
+  <li>User space</li>
+   <ul>
+    <li>CRTUSRSPC - Create User Space</li>
+    <li>CHGUSRSPC - Change User Space</li>
+    <li>RTVUSRSPC - Retrieve User Space</li>
+  </ul>
 </ul>
