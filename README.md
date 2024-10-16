@@ -23,13 +23,16 @@
 
 ## Command
 <ul>
+  <li>Data queue</li>
+  <ul>
+    <li>DSPDTAQD   - Display Data Queue Description</li>
+    <li>SNDDTAQE   - Send Data Queue Entry</li>
+  </ul>
   <li>Job log</li>
   <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
   </ul>
-  <li>DSPDTAQD   - Display Data Queue Description</li>
   <li>EDTDTAARA  - Edit Data Area</li>
   <li>ENDJOBQJOB - End Jobq Job</li>
-  <li>SNDDTAQE   - Send Data Queue Entry</li>
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
 </ul>
