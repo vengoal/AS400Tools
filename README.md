@@ -36,6 +36,11 @@
   </ul>
   <li>EDTDTAARA  - Edit Data Area</li>
   <li>ENDJOBQJOB - End Jobq Job</li>
+   <li>Message</li>
+   <ul>
+    <li>MOVDIAGMSG - Move Diagnostic Message</li>
+    <li>RSNESCMSG - Resend Escape Message</li>
+  </ul>
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
   <li>User space</li>
    <ul>
