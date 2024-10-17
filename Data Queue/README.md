@@ -9,3 +9,6 @@ Data Queue Tools
   <li>RTVDTAQD - Retrieve Data Queue Description</li>
   <li>SNDDTAQE - Send Data Queue Entry</li>
 </ul>
+
+<a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/obj2.html" target="_blank">Data Queue APIs</a>
+
