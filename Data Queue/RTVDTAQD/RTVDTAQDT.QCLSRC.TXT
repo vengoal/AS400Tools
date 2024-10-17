@@ -1,0 +1,60 @@
+PGM
+
+   DCL  &RTNLIB    *CHAR 10
+   DCL  &TYPE      *CHAR  4
+   DCL  &MAXLEN    *DEC  (5 0)
+   DCL  &FORCE     *CHAR  4
+   DCL  &SEQ       *CHAR  6
+   DCL  &KEYLEN    *DEC   (5 0)
+   DCL  &SNDRID    *CHAR  4
+   DCL  &MAXNBRENTS *CHAR  9
+   DCL  &MAXNBRENT *DEC  (9 0)
+   DCL  &INLNBRENT *DEC  (9 0)
+   DCL  &AUTORCL   *CHAR  4
+   DCL  &TEXT      *CHAR 50
+   DCL  &NBROFALC  *DEC   (9 0)
+   DCL  &NBROFENT  *DEC   (9 0)
+   DCL  &ENFRCLOCK *CHAR  4
+   DCL  &RMTDTAQ   *CHAR 10
+   DCL  &RMTDTAQL  *CHAR 10
+   DCL  &RMTLOCNAME *CHAR 8
+   DCL  &DEV        *CHAR 10
+   DCL  &LCLLOCNAME *CHAR 8
+   DCL  &MODE       *CHAR 8
+   DCL  &RMTNETID   *CHAR 8
+   DCL  &RMTDBNAME  *CHAR 18
+   DCL  &LASTRCLTIM *CHAR 20
+
+
+             RTVDTAQD   DTAQ(QTEMP/RCVDQ) RTNLIB(&RTNLIB) +
+                          TYPE(&TYPE) MAXLEN(&MAXLEN) FORCE(&FORCE) +
+                          SEQ(&SEQ) KEYLEN(&KEYLEN) +
+                          SENDERID(&SNDRID) MAXENTSPC(&MAXNBRENTS) +
+                          MAXNBRENT(&MAXNBRENT) +
+                          INLNBRENT(&INLNBRENT) AUTORCL(&AUTORCL) +
+                          TEXT(&TEXT) NBROFALC(&NBROFALC) +
+                          NBROFENT(&NBROFENT) ENFRCLOCK(&ENFRCLOCK) +
+                          LASTRCLTIM(&LASTRCLTIM)
+DMPCLPGM
+             CRTDTAQ    DTAQ(QTEMP/DDMDTAQ) TYPE(*DDM) +
+                          RMTDTAQ(QGPL/DTAQ1) RMTLOCNAME(*RDB) +
+                          RDB(DDSC515) TEXT('DDMDTAQ to DDSC515')
+             MONMSG CPF0000
+
+             RTVDTAQD   DTAQ(QTEMP/DDMDTAQ) RTNLIB(&RTNLIB) +
+                          TYPE(&TYPE) MAXLEN(&MAXLEN) FORCE(&FORCE) +
+                          SEQ(&SEQ) KEYLEN(&KEYLEN) +
+                          SENDERID(&SNDRID) MAXENTSPC(&MAXNBRENTS) +
+                          MAXNBRENT(&MAXNBRENT) +
+                          INLNBRENT(&INLNBRENT) AUTORCL(&AUTORCL) +
+                          TEXT(&TEXT) NBROFALC(&NBROFALC) +
+                          NBROFENT(&NBROFENT) ENFRCLOCK(&ENFRCLOCK) +
+                          LASTRCLTIM(&LASTRCLTIM) RMTDTAQ(&RMTDTAQ) +
+                          RMTDTAQL(&RMTDTAQL) +
+                          RMTLOCNAME(&RMTLOCNAME) DEV(&DEV) +
+                          LCLLOCNAME(&LCLLOCNAME) MODE(&MODE) +
+                          RMTNETID(&RMTNETID) RMTDBNAME(&RMTDBNAME)
+
+
+DMPCLPGM
+ENDPGM

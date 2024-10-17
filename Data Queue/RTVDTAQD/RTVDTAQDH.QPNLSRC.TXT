@@ -1,0 +1,275 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( RTVDTAQDH )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+:HELP NAME='RTVDTAQD'.Retrieve Data Queue Desc - Help
+:P.
+The Retrieve Data Queue Desc (RTVDTAQD) command returns information
+about specified data queue description.
+:P.
+The data queue description retrieved with API QMHQRDQD format RDQD0100
+and RDQD0200.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/DTAQ'.Data queue(DTAQ) - Help
+:XH3.Data queue(DTAQ)
+:P.
+Specifies which data queue whose description should be returned.
+:EHELP.
+:HELP NAME='RTVDTAQD/RTNLIB'.CL var for RTNLIB       (10) (RTNLIB) - Help
+:XH3.CL var for RTNLIB       (10) (RTNLIB)
+:P.
+Specifies a 10-character variable used to return the name of the library
+that contains the object.
+:P.
+In CL programs, this should be a 10-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/TYPE'.CL var for TYPE          (4) (TYPE) - Help
+:XH3.CL var for TYPE          (4) (TYPE)
+:P.
+Specifies the name of a variable used to retrieve the data queue type.
+:P.
+In CL programs, this should be a 4-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*STD':DD.Local data queue.
+:DT.'*DDM':DD.Remote data queue.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/MAXLEN'.CL var for MAXLEN    (5 0) (MAXLEN) - Help
+:XH3.CL var for MAXLEN      (5 0) (MAXLEN)
+:P.
+Specifies the name of a variable used to retrieve the maximum entry length.
+:P.
+In CL programs, this should be a 5-position decimal variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/FORCE'.CL var for FORCE         (4) (FORCE) - Help
+:XH3.CL var for FORCE         (4) (FORCE)
+:P.
+Specifies the name of a variable used to retrieve whether force to auxiliary
+storage or not.
+:P.
+In CL programs, this should be a 4-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*YES':DD.Send and receive operations are immediately forced to storage.
+:DT.'*NO' :DD.Send and receive operations are not immediately forced to storage.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/SEQ'     .CL var for SEQ           (6) (SEQ) - Help
+:XH3.CL var for SEQ           (6) (SEQ)
+:P.
+Specifies the name of a variable used to retrieve the sequence in which
+entries are received from data queue.
+:P.
+In CL programs, this should be a 6-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*FIFO':DD.
+:DT.'*LIFO':DD.
+:DT.'*KEYED':DD.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/KEYLEN'.CL var for KEYLEN    (5 0) (KEYLEN) - Help
+:XH3.CL var for KEYLEN      (5 0) (KEYLEN)
+:P.
+Specifies the name of a variable used to retrieve the number of
+characters in the key.
+:P.
+In CL programs, this should be a 5-position decimal variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/SENDERID'.CL var for SENDERID      (4) (SENDERID) - Help
+:XH3.CL var for SENDERID      (4) (SENDERID)
+:P.
+Specifies the name of a variable used to retrieve whether include sender ID
+or not.
+:P.
+In CL programs, this should be a 4-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*YES':DD.
+:DT.'*NO' :DD.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/MAXENTSPC'.CL var for MAXENTSPC     (9) (MAXENTSPC)- Help
+:XH3.CL var for MAXENTSPC     (9) (MAXENTSPC)
+:P.
+Specifies the name of a variable used to retrieve the maximum number of
+entries specified in CRTDTAQ SIZE parameter.
+:P.
+In CL programs, this should be a 9-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*MAX16MB':DD.
+:DT.'*MAX2GB':DD.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/MAXNBRENT'.CL var for MAXNBRENT   (9 0) (MAXNBRENT)- Help
+:XH3.CL var for MAXNBRENT   (9 0) (MAXNBRENT)
+:P.
+Specifies the name of a variable used to retrieve the maximum number of
+entries specified in CRTDTAQ SIZE parameter.
+:P.
+In CL programs, this should be a 9-position decimal variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/INLNBRENT'.CL var for INLNBRENT   (9 0) (INLNBRENT)- Help
+:XH3.CL var for INLNBRENT   (9 0) (INLNBRENT)
+:P.
+Specifies the name of a variable used to retrieve the initial number of
+entries specified in CRTDTAQ SIZE parameter.
+:P.
+In CL programs, this should be a 9-position decimal variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/AUTORCL'.CL var for AUTORCL       (4) (AUTORCL) - Help
+:XH3.CL var for AUTORCL       (4) (AUTORCL)
+:P.
+Specifies the name of a variable used to retrieve whether automatic reclaim
+or not.
+:P.
+In CL programs, this should be a 4-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*YES':DD.
+:DT.'*NO' :DD.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/TEXT'.CL var for TEXT         (50) (TEXT) - Help
+:XH3.CL var for TEXT         (50) (TEXT)
+:P.
+Specifies the name of a variable used to retrieve the data queue
+text description.
+:P.
+In CL programs, this should be a 50-character variable.
+:EHELP.
+:HELP NAME='RTVDTAQD/NBROFALC'.CL var for NBROFALC    (9 0) (NBROFALC) - Help
+:XH3.CL var for NBROFALC    (9 0) (NBROFALC)
+:P.
+Specifies the name of a variable used to retrieve the number of entries
+currently allocated.
+:P.
+In CL programs, this should be a 9-position decimal variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/NBROFENT'.CL var for NBROFENT    (9 0) (NBROFENT) - Help
+:XH3.CL var for NBROFENT    (9 0) (NBROFENT)
+:P.
+Specifies the name of a variable used to retrieve the number of entries
+currently in the data queue.
+:P.
+In CL programs, this should be a 9-position decimal variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/ENFRCLOCK'.CL var for ENFRCLOCK     (4) (ENFRCLOCK) - Help
+:XH3.CL var for ENFRCLOCK     (4) (ENFRCLOCK)
+:P.
+An optional return  variable that will contain a *YES or *NO for whether
+an IBM supported data queue will enforce a lock. This value cannot be
+specified on CRTDTAQ.
+:P.
+In CL programs, this should be a 4-character variable.
+:P.
+Possible return values:
+:DL.
+:DT.'*YES':DD.
+:DT.'*NO' :DD.
+:EDL.
+:EHELP.
+:HELP NAME='RTVDTAQD/LASTRCLTIM'.CL var for LASTRCLTIM   (20) (LASTRCLTIM) - Help
+:XH3.CL var for LASTRCLTIM   (20) (LASTRCLTIM)
+:P.
+An optional return  variable that will contain last reclaim date and
+time with format YYYYMMDDHHmmSSsss.
+:P.
+In CL programs, this should be a 20-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/RMTDTAQ'.CL var for RMTDTAQ      (10) (RMTDTAQ) - Help
+:XH3.CL var for RMTDTAQ      (10) (RMTDTAQ)
+:P.
+An optional return variable that will contain. For TYPE(*STD) data queue,
+this field will be blank.
+:P.
+In CL programs, this should be a 10-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/RMTDTAQL'.CL var for RMTDTAQL     (10) (RMTDTAQL) - Help
+:XH3.CL var for RMTDTAQL     (10) (RMTDTAQL)
+:P.
+An optional return variable that will contain the name of the remote data
+queue library. For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 10-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/RMTLOCNAME'.CL var for RMTLOCNAME    (8) (RMTLOCNAME) - Help
+:XH3.CL var for RMTLOCNAME    (8) (RMTLOCNAME)
+:P.
+An optional return variable that will contain the name of the remote location
+name. For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 8-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/DEV'.CL var for DEV           (8) (DEV) - Help
+:XH3.CL var for DEV           (8) (DEV)
+:P.
+An optional return variable that will contain the name of the APPC device
+name. For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 8-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/LCLLOCNAME'.CL var for LCLLOCNAME    (8) (LCLLOCNAME) - Help
+:XH3.CL var for LCLLOCNAME    (8) (LCLLOCNAME)
+:P.
+An optional return variable that will contain the name of the local location
+name. For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 8-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/MODE'.CL var for MODE          (8) (MODE) - Help
+:XH3.CL var for MODE          (8) (MODE)
+:P.
+An optional return variable that will contain the mode.
+For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 8-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/RMTNETID'.CL var for RMTNETID      (8) (RMTNETID) - Help
+:XH3.CL var for RMTNETID      (8) (RMTNETID)
+:P.
+An optional return variable that will contain remote network identifier.
+For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 8-character variable.
+:P.
+:EHELP.
+:HELP NAME='RTVDTAQD/RMTDBNAME'.CL var for RMTDBNAME    (18) (RMTDBNAME) - Help
+:XH3.CL var for RMTDBNAME    (18) (RMTDBNAME)
+:P.
+An optional return variable that will contain remote database name.
+For TYPE(*STD) data queue, this field will be blank.
+:P.
+In CL programs, this should be a 18-character variable.
+:P.
+:EHELP.
+:EPNLGRP.

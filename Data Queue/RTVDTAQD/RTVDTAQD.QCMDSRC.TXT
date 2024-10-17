@@ -1,0 +1,219 @@
+/*  ===============================================================  */
+/*  = Command....... RTVDTAQD                                     =  */
+/*  = CPP........... RTVDTAQD CLP                                 =  */
+/*  =                                                             =  */
+/*  = Description...                                              =  */
+/*  =  Retrieve data queue description command retrieves the      =  */
+/*  =  attributes of a data queue (not the entries)               =  */
+/*  =  the API QMHQRDQD is used.                                  =  */
+/*  =                                                             =  */
+/*  = CrtCmd      Cmd( RtvDtaqD  )                                =  */
+/*  =             Pgm( RtvDtaqD   )                               =  */
+/*  =             SrcFile( YourSourceFile )                       =  */
+/*  =             Allow ( *Ipgm *Bpgm )                           =  */
+/*  =             HlpPnlGrp( RTVDTAQDH )                          =  */
+/*  =             HlpId( *CMD )                                   =  */
+/*  ===============================================================  */
+/*  = Date  : 2013/09/11                                          =  */
+/*  = Author: Vengoal Chang                                       =  */
+/*  ===============================================================  */
+/*  = Date modify: 2013/09/16 add parameter LASTRCLTIM            =  */
+/*  ===============================================================  */
+
+             Cmd        Prompt( 'Rtv Data Queue Description' )
+
+             Parm       Kwd( Dtaq )                                 +
+                        Type( Qual1 )                               +
+                        Min( 1 )                                    +
+                        Prompt('Data queue' )
+
+             Parm       Kwd( RtnLib )                               +
+                        Type( *Char )                               +
+                        Len( 10 )                                   +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for RTNLIB       (10) .' )
+
+/*  ===============================================================  */
+/*  = Type  - Type of data queue                                  =  */
+/*  =         *STD, *DDM                                          =  */
+/*  ===============================================================  */
+             Parm       Kwd( Type )                                 +
+                        Type( *Char )                               +
+                        Len( 4 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for TYPE          (4) .' )
+
+/*  ===============================================================  */
+/*  = MaxLen- Maximum entry length                                =  */
+/*  ===============================================================  */
+             Parm       Kwd( MaxLen )                               +
+                        Type( *Dec )                                +
+                        Len( 5 0 )                                  +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for MAXLEN      (5 0) .' )
+
+/*  ===============================================================  */
+/*  = Force - Force to auxiliary storage                          =  */
+/*  =         *YES, *NO                                           =  */
+/*  ===============================================================  */
+             Parm       Kwd( Force )                                +
+                        Type( *Char )                               +
+                        Len( 4 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for FORCE         (4) .' )
+
+/*  ===============================================================  */
+/*  = Seq - *FIFO, *LIFO, *KEYED                                  =  */
+/*  ===============================================================  */
+             Parm       Kwd( Seq )                                  +
+                        Type( *Char )                               +
+                        Len( 6 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for SEQ           (6) .' )
+/*  ===============================================================  */
+/*  = KeyLen- Key length                                          =  */
+/*  ===============================================================  */
+             Parm       Kwd( KeyLen )                               +
+                        Type( *Dec )                                +
+                        Len( 5 0 )                                  +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for KEYLEN      (5 0) .' )
+/*  ===============================================================  */
+/*  = SenderId - Include sender ID                                =  */
+/*  =            *YES, *NO                                        =  */
+/*  ===============================================================  */
+             Parm       Kwd( SenderId )                             +
+                        Type( *Char )                               +
+                        Len( 4 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for SENDERID      (4) .' )
+/*  ===============================================================  */
+/*  = MaxEntSpc- Maximum number of entries specified              =  */
+/*  =            *MAX16MB, *MAX2GB                                =  */
+/*  ===============================================================  */
+             Parm       Kwd( MaxEntSpc )                            +
+                        Type( *Char )                               +
+                        Len( 9 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for MAXENTSPC     (9) .' )
+/*  ===============================================================  */
+/*  = MaxNbrEnt- Maximum number of entries alloweded              =  */
+/*  ===============================================================  */
+             Parm       Kwd( MaxNbrEnt )                            +
+                        Type( *Dec )                                +
+                        Len( 9 0 )                                  +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for MAXNBRENT   (9 0) .' )
+/*  ===============================================================  */
+/*  = InlNbrEnt- Initial number of entries                        =  */
+/*  ===============================================================  */
+             Parm       Kwd( InlNbrEnt )                            +
+                        Type( *Dec )                                +
+                        Len( 9 0 )                                  +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for INLNBRENT   (9 0) .' )
+/*  ===============================================================  */
+/*  = AutoRcl  - Automatic Reclaim                                =  */
+/*  =            *YES, *NO                                        =  */
+/*  ===============================================================  */
+             Parm       Kwd( AutoRcl )                              +
+                        Type( *Char )                               +
+                        Len( 4 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for AUTORCL       (4) .' )
+
+             Parm       Kwd( Text )                                 +
+                        Type( *Char )                               +
+                        Len( 50 )                                   +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for TEXT         (50) .' )
+/*  ===============================================================  */
+/*  = NbrOfAlc - Number of entries currently allocated            =  */
+/*  ===============================================================  */
+             Parm       Kwd( NbrOfAlc )                             +
+                        Type( *Dec )                                +
+                        Len( 9 0 )                                  +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for NBROFALC    (9 0) .' )
+/*  ===============================================================  */
+/*  = NbrOfMsg - Number of entries currently                      =  */
+/*  ===============================================================  */
+             Parm       Kwd( NbrOfEnt )                             +
+                        Type( *Dec )                                +
+                        Len( 9 0 )                                  +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for NBROFENT    (9 0) .' )
+/*  ===============================================================  */
+/*  = EnFrcLock- Enforce lock                                     =  */
+/*  =            *YES, *NO                                        =  */
+/*  ===============================================================  */
+             Parm       Kwd( EnFrcLock )                            +
+                        Type( *Char )                               +
+                        Len( 4 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for ENFRCLOCK     (4) .' )
+
+/*  ===============================================================  */
+/*  = LastRclTim - Last reclaim date and time                     =  */
+/*  ===============================================================  */
+             Parm       Kwd( LastRclTim )                           +
+                        Type( *Char )                               +
+                        Len( 20 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for LASTRCLTIM   (20) .' )
+
+             Parm       Kwd( RmtDtaq )                              +
+                        Type( *Char )                               +
+                        Len( 10 )                                   +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for RMTDTAQ      (10) .' )
+
+             Parm       Kwd( RmtDtaqL )                             +
+                        Type( *Char )                               +
+                        Len( 10 )                                   +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for RMTDTAQL     (10) .' )
+
+             Parm       Kwd( RmtLocName )                           +
+                        Type( *Char )                               +
+                        Len( 8 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for RMTLOCNAME    (8) .' )
+
+             Parm       Kwd( Dev )                                  +
+                        Type( *Char )                               +
+                        Len( 10 )                                   +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for DEV          (10) .' )
+
+             Parm       Kwd( LclLocName )                           +
+                        Type( *Char )                               +
+                        Len( 8 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for LCLLOCNAME    (8) .' )
+
+             Parm       Kwd( Mode )                                 +
+                        Type( *Char )                               +
+                        Len( 8 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for MODE          (8) .' )
+
+             Parm       Kwd( RmtNetId )                             +
+                        Type( *Char )                               +
+                        Len( 8 )                                    +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for RMTNETID      (8) .' )
+
+             Parm       Kwd( RmtDbName )                            +
+                        Type( *Char )                               +
+                        Len( 18 )                                   +
+                        Rtnval( *Yes )                              +
+                        Prompt( 'CL var for RMTDBNAME    (18) .' )
+
+ Qual1:      Qual       Type( *Name )                               +
+                        Expr( *Yes )
+             Qual       Type( *Name )                               +
+                        Dft( *Libl )                                +
+                        Spcval(( *Libl ) ( *CurLib ))               +
+                        Expr( *Yes )                                +
+                        Prompt( 'Library' )
