@@ -30,8 +30,9 @@
   <li>CLRDTAQ  - Clear Data Queue</li>
   <li>RCVDTAQE - Receive Data Queue Entry</li>
   <li>RTNDTAQD - Return Data Queue Description CLP</li>
+  <li>RTVDTAQD - Retrieve Data Queue Description</li>
   <li>SNDDTAQE - Send Data Queue Entry</li>
-  </ul>
+</ul>
   <li>Job log</li>
   <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
