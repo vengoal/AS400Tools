@@ -4,7 +4,7 @@
 /*  = Description... Edit user space contents                     =  */
 /*  =                                                             =  */
 /*  = CrtCmd      Cmd( EdtUsrSpc )                                =  */
-/*  =             Pgm( EdtUsrSpc  )                               =  */
+/*  =             Pgm( DspUsrSpc  )                               =  */
 /*  =             SrcFile( YourSourceFile )                       =  */
 /*  ===============================================================  */
 /*  = Date  : 2024/10/21                                          =  */
