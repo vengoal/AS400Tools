@@ -1,12 +1,13 @@
 /*-------------------------------------------------------------------*/
 /*                                                                   */
 /*  Program . . : DSPUSRSPC                                          */
-/*  Description : Display User Space Contents                        */
+/*  Description : Display or Edit User Space Contents                */
 /*  Author  . . : Vengoal Chang                                      */
 /*  Published . : AS400ePapar                                        */
 /*  Date  . . . : October  21, 2024                                  */
 /*                                                                   */
 /*  Program function:  DSPUSRSPC  command processing program         */
+/*                     EDTUSRSPC  command processing program         */
 /*                                                                   */
 /*  Compile options:                                                 */
 /*    CrtClPgm   Pgm( DSPUSRSPC )                                    */
@@ -14,9 +15,10 @@
 /*               SrcMbr( *PGM )                                      */
 /*                                                                   */
 /*-------------------------------------------------------------------*/
-Pgm  ( &QualUsrSpc )
+Pgm  ( &QualUsrSpc  &Action )
 
              Dcl        &QualUsrSpc       *Char       20
+             Dcl        &Action           *Char        4
 
              Dcl        &UsrSpc     Type(*CHAR) Stg(*DEFINED) +
                           Len(10) DefVar( &QualUsrSpc  1 )
@@ -34,7 +36,10 @@ Pgm  ( &QualUsrSpc )
                       ( '/QSYS.LIB/' *Cat                     +
                         &UsrSpcLib   *Tcat  '.LIB/'  *CAT         +
                         &UsrSpc      *Tcat  '.USRSPC' )
+             If       ( &Action *EQ '*DSP' ) +
              DspF       Stmf( &Path )
+             Else                            +
+             EdtF       Stmf( &Path )
 
 
              Return

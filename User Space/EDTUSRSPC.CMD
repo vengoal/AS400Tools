@@ -1,16 +1,16 @@
 /*  ===============================================================  */
-/*  = Command....... DspUsrSpc                                    =  */
-/*  = CPP........... DspUsrSpc CLP                                =  */
-/*  = Description... Display user space contents                  =  */
+/*  = Command....... EdtUsrSpc                                    =  */
+/*  = CPP........... EdtUsrSpc CLP                                =  */
+/*  = Description... Edit user space contents                     =  */
 /*  =                                                             =  */
-/*  = CrtCmd      Cmd( DspUsrSpc )                                =  */
-/*  =             Pgm( DspUsrSpc  )                               =  */
+/*  = CrtCmd      Cmd( EdtUsrSpc )                                =  */
+/*  =             Pgm( EdtUsrSpc  )                               =  */
 /*  =             SrcFile( YourSourceFile )                       =  */
 /*  ===============================================================  */
 /*  = Date  : 2024/10/21                                          =  */
 /*  = Author: Vengoal Chang                                       =  */
 /*  ===============================================================  */
-             Cmd        Prompt('Display User Space')
+             Cmd        Prompt('Edit User Space')
 
              Parm       Kwd(USRSPC)                                 +
                         Type(QUAL1)                                 +
@@ -20,7 +20,7 @@
              Parm       Kwd(ACTION)                                 +
                         Type(*CHAR)                                 +
                         Len( 4 )                                    +
-                        Constant( *DSP )                            +
+                        Constant( *EDT )                            +
 
  QUAL1:      Qual       Type(*NAME)                                 +
                         Expr(*YES)
