@@ -49,6 +49,7 @@
    <ul>
     <li>CRTUSRSPC - Create User Space</li>
     <li>CHGUSRSPC - Change User Space</li>
+     <li>DSPUSRSPC - Display User Space</li>
     <li>RTVUSRSPC - Retrieve User Space</li>
   </ul>
 </ul>
