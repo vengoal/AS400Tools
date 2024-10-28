@@ -1,4 +1,4 @@
-RCVJLMSG -- Receive Job Log Message
+<h2>RCVJLMSG -- Receive Job Log Message</h2>
 
 <pre>
  * =========================================================
