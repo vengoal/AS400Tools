@@ -2,7 +2,7 @@ Scan Message File (SCNMSGF) allows you to search any message file for a message 
 
 SCNMSGF is free and does not require registration. Just another free tool happily provided by BVS/Tools.com!
 
-Detail information : https://www.bvstools.com/e-rpg/softdesc?software=SCNMSGF
+Detail information : https://www.bvstools.com/e-rpg/softdesc?software=SCNMSGF <br />
 Download from : https://bitbucket.org/bvstools/scnmsgf/src/master/
 
 <pre>
