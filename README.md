@@ -36,6 +36,7 @@
   <li>Job log</li>
   <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
+  <li>RCVJLMSG   - Receive Joblog Message by job and from job log direction (Top or Bottom)</li>
   </ul>
   <li>EDTDTAARA  - Edit Data Area</li>
   <li>ENDJOBQJOB - End Jobq Job</li>
