@@ -1,0 +1,26 @@
+ENDALLJOB -- End All Job with Job name
+<pre>
+                         END ALL JOBS *IMMED (ENDALLJOB)                       
+                                                                               
+ Type choices, press Enter.                                                    
+                                                                               
+ JOB NAME . . . . . . . . . . . .                 Name                         
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                         Bottom
+ F3=Exit   F4=Prompt   F5=Refresh   F12=Cancel   F13=How to use this display   
+ F24=More keys                                                                 
+</pre>
