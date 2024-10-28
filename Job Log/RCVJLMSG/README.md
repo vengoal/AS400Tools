@@ -26,10 +26,10 @@ d  oReturn                      10
 * =========================================================
 </pre>     
 
-<h1>Usage</h1>
+<h3>Usage</h3>
 <ul>
-<li>1. CRTRPGMOD  MODULE(lib/RCVJLMSG) SRCFILE(lib/QRPGLESRC)</li>
-<li>2. CRTRPGMOD  MODULE(lib/RCVJLMSGT) SRCFILE(XXX/QRPGLESRC)</li>
-<li>3. CRTPGM     PGM(XXX/RCVJLMSGT) MODULE(RCVJLMSGT RCVJLMSG) ACTGRP(*NEW)</li>
-<li>4. TEST program : CALL RCVJLMSGT ('*' 'F') or CALL RCVJLMSGT ('*' 'B')</li>  
+<li>CRTRPGMOD  MODULE(lib/RCVJLMSG) SRCFILE(lib/QRPGLESRC)</li>
+<li>CRTRPGMOD  MODULE(lib/RCVJLMSGT) SRCFILE(lib/QRPGLESRC)</li>
+<li>CRTPGM     PGM(XXX/RCVJLMSGT) MODULE(RCVJLMSGT RCVJLMSG) ACTGRP(*NEW)</li>
+<li>TEST program : CALL RCVJLMSGT ('*' 'F') or CALL RCVJLMSGT ('*' 'B'),<br /> browse output QSYSPRT spooled file</li>  
 </ul>
