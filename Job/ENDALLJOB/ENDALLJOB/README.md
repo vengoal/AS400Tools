@@ -1,4 +1,6 @@
 ENDALLJOB -- End All Jobs with Job name
+             Kill multiple same job name jobs
+
 <pre>
                          END ALL JOBS *IMMED (ENDALLJOB)                       
                                                                                
