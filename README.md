@@ -42,7 +42,10 @@
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
   <li>RCVJLMSG   - Receive Joblog Message by job and from job log direction (Top or Bottom)</li>
   </ul>
-  <li>ENDJOBQJOB - End Jobq Job</li>
+  <li>Job log</li>
+  <ul>
+   <li>ENDJOBQJOB - End Jobq Job</li>
+  </ul>
    <li>Message</li>
    <ul>
     <li>MOVDIAGMSG - Move Diagnostic Message</li>
