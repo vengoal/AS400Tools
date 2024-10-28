@@ -45,6 +45,10 @@
     <li>MOVDIAGMSG - Move Diagnostic Message</li>
     <li>RSNESCMSG - Resend Escape Message</li>
   </ul>
+  <li>Message File</li>
+  <ul>
+    <li>SCNMSGF - Scan Message File</li>
+  </ul>
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
   <li>Software Product License</li>
    <ul>
