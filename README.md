@@ -23,6 +23,10 @@
 
 ## Command
 <ul>
+  <li>Data area</li>
+  <ul>
+     <li>EDTDTAARA  - Edit Data Area</li>
+  </ul>
   <li>Data queue</li>
   <ul>
   <li>DSPDTAQE - Display Data Queue Entries <a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX167" target="_blank">CBX167</a></li>
@@ -38,7 +42,6 @@
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
   <li>RCVJLMSG   - Receive Joblog Message by job and from job log direction (Top or Bottom)</li>
   </ul>
-  <li>EDTDTAARA  - Edit Data Area</li>
   <li>ENDJOBQJOB - End Jobq Job</li>
    <li>Message</li>
    <ul>
