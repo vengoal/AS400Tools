@@ -1,5 +1,6 @@
 RCVJLMSG -- Receive Job Log Message
 
+<pre>
  * =========================================================
  * Prototype for RcvJLMsg (Receive Job Log Message)         
  * =========================================================
@@ -23,4 +24,4 @@ d  oReturn                      10
 *      'F' = read forward from top of job log              
 *      'B' = read backward from bottom of job log          
 * =========================================================
-     
+</pre>     
