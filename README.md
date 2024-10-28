@@ -42,7 +42,7 @@
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
   <li>RCVJLMSG   - Receive Joblog Message by job and from job log direction (Top or Bottom)</li>
   </ul>
-  <li>Job log</li>
+  <li>Job queue</li>
   <ul>
    <li>ENDJOBQJOB - End Jobq Job</li>
   </ul>
