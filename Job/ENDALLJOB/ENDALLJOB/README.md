@@ -1,4 +1,4 @@
-ENDALLJOB -- End All Job with Job name
+ENDALLJOB -- End All Jobs with Job name
 <pre>
                          END ALL JOBS *IMMED (ENDALLJOB)                       
                                                                                
