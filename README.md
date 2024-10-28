@@ -36,7 +36,11 @@
   <li>RTNDTAQD - Return Data Queue Description CLP</li>
   <li>RTVDTAQD - Retrieve Data Queue Description</li>
   <li>SNDDTAQE - Send Data Queue Entry</li>
-</ul>
+  </ul>
+  <li>Job</li>
+  <ul>
+  <li>ENDALLJOB - End All Jobs with job name</li>
+  </ul>
   <li>Job log</li>
   <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
