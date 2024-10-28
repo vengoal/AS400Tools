@@ -1,5 +1,5 @@
 ENDALLJOB -- End All Jobs with Job name<br />
-             Kill multiple same job name jobs
+             Kill multiple same job name jobs with Command ENDJOB 
 
 <pre>
                          END ALL JOBS *IMMED (ENDALLJOB)                       
