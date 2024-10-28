@@ -1,0 +1,14 @@
+/*=============================================================*/
+/* To Compile:                                                 */
+/*   CRTCMD CMD(XXX/SCNMSGF) PGM(XXX/MSGF001CL) +              */
+/*      SRCFILE(XXX/QCMDSRC)                                   */
+/*                                                             */
+/*=============================================================*/
+SCNMSGF:     CMD        PROMPT('Scan Message File')
+             PARM       KWD(FILE) TYPE(NAME1) MIN(1) PROMPT('Message +
+                          File')
+NAME1:       QUAL       TYPE(*NAME) LEN(10)
+             QUAL       TYPE(*CHAR) LEN(10) DFT(*LIBL) SPCVAL((' ' +
+                          *LIBL)) CHOICE('Name, *LIBL') +
+                          PROMPT('Library')
+

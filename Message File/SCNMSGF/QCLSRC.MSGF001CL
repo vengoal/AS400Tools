@@ -1,0 +1,25 @@
+/*=============================================================*/
+/* To Compile:                                                 */
+/*   CRTCLPGM PGM(XXX/MSGF001CL) SRCFILE(XXX/QCLSRC)           */
+/*                                                             */
+/*=============================================================*/
+             PGM        PARM(&NAME1)
+             DCL        VAR(&NAME1) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&MSGF)  TYPE(*CHAR) LEN(10)
+             DCL        VAR(&LIB)   TYPE(*CHAR) LEN(10)
+
+             CHGVAR     VAR(&MSGF) VALUE(%SUBSTRING(&NAME1 1 10))
+             CHGVAR     VAR(&LIB) VALUE(%SUBSTRING(&NAME1 11 10))
+
+             CHKOBJ     OBJ(&LIB/&MSGF) OBJTYPE(*MSGF)
+
+             MONMSG     MSGID(CPF9801 CPF9810) EXEC(DO)
+             SNDPGMMSG  MSG('Message File ' *CAT &MSGF *TCAT ' in +
+                          library ' *CAT &LIB *TCAT ' not found.')
+             GOTO       CMDLBL(END)
+             ENDDO
+
+             CALL       PGM(MSGF001RG) PARM(&MSGF &LIB)
+
+END:
+             ENDPGM
