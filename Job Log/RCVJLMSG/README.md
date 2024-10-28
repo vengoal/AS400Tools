@@ -25,3 +25,10 @@ d  oReturn                      10
 *      'B' = read backward from bottom of job log          
 * =========================================================
 </pre>     
+
+<ul>Usage
+<li>1. CRTRPGMOD  MODULE(lib/RCVJLMSG) SRCFILE(lib/QRPGLESRC)</li>
+<li>2. CRTRPGMOD  MODULE(lib/RCVJLMSGT) SRCFILE(XXX/QRPGLESRC)</li>
+<li>3. CRTPGM     PGM(XXX/RCVJLMSGT) MODULE(RCVJLMSGT RCVJLMSG) ACTGRP(*NEW)</li>
+<li>4. TEST program : CALL RCVJLMSGT ('*' 'F') or CALL RCVJLMSGT ('*' 'B')</li>  
+</ul>
