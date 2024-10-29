@@ -10,5 +10,7 @@ Data Queue Tools
   <li>SNDDTAQE - Send Data Queue Entry</li>
 </ul>
 
-<a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/obj2.html" target="_blank">Data Queue APIs</a>
-
+<ul>
+<li><a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/obj2.html" target="_blank">Data Queue APIs</a></li>
+<li>Using Data Queues in Modern Applications.ppt - Carsten Flensburg</li>
+</ul>
