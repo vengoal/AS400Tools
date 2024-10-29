@@ -1,4 +1,4 @@
-ENDJOBQJOB - End Job Queue Job
+ENDJOBQJOB - End Job Queue Jobs
 <pre>
                          END Job Queue Jobs (ENDJOBQJOB)                        
                                                                                 
