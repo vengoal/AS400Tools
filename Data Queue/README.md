@@ -11,6 +11,12 @@ Data Queue Tools
 </ul>
 
 <ul>
-<li><a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/obj2.html" target="_blank">Data Queue APIs</a></li>
+<li><a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/obj2.html" target="_blank">Data Queue APIs</a></li><br />
 <li>Using Data Queues in Modern Applications.ppt - Carsten Flensburg</li>
+  <ul>
+  <li>165 - Data queue command: DSPDTAQD, SNDDTAQE, CLRDTAQ</li>
+  <li>167 - DSPDTAQE Display Data Queue Entries</li>
+  <li>168 - WRKDTAQ2 Work with Data Queues</li>
+  <li>169 - Data Queue Sample Application</li>
+  </ul>
 </ul>
