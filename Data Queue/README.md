@@ -14,9 +14,9 @@ Data Queue Tools
 <li><a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/obj2.html" target="_blank">Data Queue APIs</a></li><br />
 <li>Using Data Queues in Modern Applications.ppt - Carsten Flensburg</li>
   <ul>
-  <li>165 - Data queue command: DSPDTAQD, SNDDTAQE, CLRDTAQ</li>
-  <li>167 - DSPDTAQE Display Data Queue Entries</li>
-  <li>168 - WRKDTAQ2 Work with Data Queues</li>
-  <li>169 - Data Queue Sample Application</li>
+  <li><a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX165">165</a> - Data queue command: DSPDTAQD, SNDDTAQE, CLRDTAQ</li>
+  <li><a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX167">167</a> - DSPDTAQE Display Data Queue Entries</li>
+  <li><a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX168">168</a> - WRKDTAQ2 Work with Data Queues</li>
+  <li><a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX169">169</a> - Data Queue Sample Application</li>
   </ul>
 </ul>
