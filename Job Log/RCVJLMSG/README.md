@@ -1,6 +1,7 @@
 <h2>RCVJLMSG -- Receive Job Log Message procedure</h2>
 <p>
-Procedure RCVJLMSG orginal from Vadim Rozen. Reference <a href = "https://www.mcpressonline.com/programming/apis/api-power-without-api-complexity" >API Power Without API Complexity!</a> by Ted Holt.
+Procedure RCVJLMSG orginal from Vadim Rozen. <br />
+Reference <a href = "https://www.mcpressonline.com/programming/apis/api-power-without-api-complexity" >API Power Without API Complexity!</a> by Ted Holt.
 </p>
 
 <pre>
