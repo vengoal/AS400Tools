@@ -1,4 +1,7 @@
 <h2>RCVJLMSG -- Receive Job Log Message</h2>
+<p>
+Procedure RCVJLMSG based on <a href = "https://www.mcpressonline.com/programming/apis/api-power-without-api-complexity" >API Power Without API Complexity!</a> by Ted Holt.
+</p>
 
 <pre>
  * =========================================================
