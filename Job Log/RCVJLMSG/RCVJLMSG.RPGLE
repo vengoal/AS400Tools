@@ -1,7 +1,8 @@
       *===============================================================
       * Module ID     -   RCVJLMSG
       * Module Name   -   Receive Job Log Messages
-      * Programmer    -   Vengoal Chang
+      * Programmer    -   Vadim Rozen
+      * Updated       -   Vengoal Chang
       *===============================================================
       * This program receives messages from a job log.
       *===============================================================
