@@ -1,4 +1,5 @@
 <h4>RTVJOBQA uses the API QSPRJOBQ to access jobq information.</h4>
+
 <pre>
                     Retrieve Job Queue Attributes (RTVJOBQA)                   
                                                                                
