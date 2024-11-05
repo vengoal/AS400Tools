@@ -1,4 +1,5 @@
-ENDALLJOB -- End All Jobs with Job name<br />
+<h3>ENDALLJOB -- End All Jobs with Job name</h3>
+<br />
 Kill multiple same job name jobs with Command ENDJOB DUPJOBOPT(*MSG) to get duplicate job message CPF1332,<br />
 and process CPF0906 to end every duplicate job.<br /><br />
 CPF1332 - End of duplicate job names.<br />
