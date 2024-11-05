@@ -70,7 +70,7 @@
                         Type( *Dec  )                                +
                         Len( 9 0 )                                   +
                         RtnVal( *YES )                               +
-                        Prompt( 'Maxium active jobs       (9 0)' )
+                        Prompt( 'Maximum active jobs      (9 0)' )
 
              Parm       Kwd( CURACT )                                +
                         Type( *Dec  )                                +
