@@ -15,7 +15,7 @@
  Subsystem name            (10)                   Character value              
  Subsystem library         (10)                   Character value              
  SBSD jobq entry seq nbr  (9 0)                   Number                       
- Maxium active jobs       (9 0)                   Number                       
+ Maximum active jobs      (9 0)                   Number                       
  Current active jobs      (9 0)                   Number                       
  Text description          (50)                   Character value              
                                                                                
