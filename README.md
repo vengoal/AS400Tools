@@ -49,6 +49,7 @@
   <li>Job queue</li>
   <ul>
    <li>ENDJOBQJOB - End Jobq Job</li>
+   <li>RTVJOBQA   - Retrieve Job Queue Attributes</li>
   </ul>
    <li>Message</li>
    <ul>
