@@ -50,6 +50,7 @@
   <ul>
    <li>ENDJOBQJOB - End Jobq Job</li>
    <li>RTVJOBQA   - Retrieve Job Queue Attributes</li>
+   <li>RTVJOBQSTS - Retrieve Job Queue Status</li>
   </ul>
    <li>Message</li>
    <ul>
