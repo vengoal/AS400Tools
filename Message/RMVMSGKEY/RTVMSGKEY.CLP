@@ -1,3 +1,19 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : RTVMSGKEY                                          */
+/*  Description : Retrieve message key                               */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : November  8, 2024                                  */
+/*                                                                   */
+/*  Program function:  RTVMSGKEY  command processing program         */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtClPgm   Pgm( RTVMSGKEY )                                    */
+/*               SrcFile( QCLSRC )                                   */
+/*               SrcMbr( *PGM )                                      */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
      Pgm      ( &MsgKey )
 
 /*-- Parameters:  ---------------------------------------------------*/

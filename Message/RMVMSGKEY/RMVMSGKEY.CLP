@@ -1,3 +1,19 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : RMVMSGKEY                                          */
+/*  Description : Remove message by message key                      */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : November  8, 2024                                  */
+/*                                                                   */
+/*  Program function:  RMVMSGKEY  command processing program         */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtClPgm   Pgm( RMVMSGKEY )                                    */
+/*               SrcFile( QCLSRC )                                   */
+/*               SrcMbr( *PGM )                                      */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
      Pgm      ( &LowKey )
 
 /*-- Parameters:  ---------------------------------------------------*/
