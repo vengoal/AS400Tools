@@ -11,6 +11,7 @@ PGM
   DCL &MSGKY *CHAR 4
   DCL &SENDER *CHAR 12
   DCL &ATTR *CHAR 13
+  DCL &ERR  *CHAR 13
 
   CALL QUSCRTUS PARM(&SPACE +
           'USF400     ' X'00000400' ' ' '*CHANGE   ' &DESC)
@@ -21,7 +22,7 @@ PGM
    CHGVAR  %BIN(&ATTR 9 4) 1     /* data len */
    CHGVAR  %SST(&ATTR 13 1) '1'  /* yes */
    CHGVAR  %BIN(&ERR  1 4) 0     /* bytes provided */
-   CALL QUSCUSAT PARM(&BUFFER &SPACE &ATTR X'00000000')
+   CALL QUSCUSAT PARM(&BUFFER &SPACE &ATTR &ERR)
 
   /*  LIST THE 10 MOST RECENT MESSAGES IN THE JOB LOG            */
 
