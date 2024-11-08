@@ -17,7 +17,7 @@
 .............
 .............
 
-  Error:              
+Error:              
      MovDiagMsg       
      Monmsg    CPF0000
      RsnEscMsg        
