@@ -66,7 +66,7 @@
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
   <li>Save Restore</li>
   <ul>    
-      <li>WRKSAVFOBJ - The Work with Save File Objects (WRKSAVFOBJ) Utility</li>
+      <li>WRKSAVFOBJ - <a href="https://www.mcpressonline.com/it-infrastructure/it-infrastructure-other/the-work-with-save-file-objects-wrksavfobj-utility">The Work with Save File Objects (WRKSAVFOBJ) Utility</a></li>
   </ul>
       <li>Software Product License</li>
    <ul>
