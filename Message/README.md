@@ -10,7 +10,7 @@
 <h3>MOVDIAGMSG, RSNESCMSG Usage:</h3>
 <ul>
 <code>
-Pgm
+     Pgm
   
 /*-- Global error monitoring:  --------------------------------------*/
      MonMsg     CPF0000      *N        GoTo Error                       
@@ -24,6 +24,6 @@ Pgm
     RsnEscMsg                                                                    
     Monmsg    CPF0000                                                            
                                                                                  
-Endpgm                                                                           
+    Endpgm
 </code>
 </ul>
