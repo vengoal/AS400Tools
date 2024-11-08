@@ -7,7 +7,8 @@
 </ul>
 
 <h3>Usage:</h3>
-<ul><pre>
+<ul>
+<pre>
      Pgm
   
 /*-- Global error monitoring:  --------------------------------------*/
