@@ -8,7 +8,6 @@
 </ul>
 
 <h3>MOVDIAGMSG, RSNESCMSG Usage:</h3>
-<ul>
 <code>
      Pgm
   
@@ -26,4 +25,3 @@
                                                                                  
     Endpgm
 </code>
-</ul>
