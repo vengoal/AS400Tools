@@ -12,7 +12,7 @@
      Pgm
   
 /*-- Global error monitoring:  --------------------------------------*/
-     MonMsg     CPF0000      *N        GoTo Error                      
+     MonMsg     CPF0000      *N        GoTo Error                       
 
 .............
 .............
