@@ -73,6 +73,10 @@
    <ul>
      <li>CHKLICEXPD - Check License Expiration Date ( QLZARTVK API )</li>
    </ul>
+  <li>Spooled File</li>
+      <ul>
+        <li>WRKLPR - WRKLPR - The Work with LPR Utility</li>
+      </ul>
   <li>User space</li>
    <ul>
     <li>CRTUSRSPC - Create User Space</li>
