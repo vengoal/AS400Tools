@@ -12,3 +12,13 @@
   <li>CRTCMD CMD(RTVMSGKEY) PGM(RTVMSGKEY) SRCFILE(lib/QCMDSRC) SRCMBR(RTVMSGKEY)</li>
   <li>CRTCMD CMD(RMVMSGKEY) PGM(RMVMSGKEY) SRCFILE(lib/QCMDSRC) SRCMBR(RMVMSGKEY)</li>
 </ul>
+<ul><pre>
+ DCL         &MSGKEY *CHAR LEN(4)
+             .
+            RTVMSGKEY   MSGKEY(&MSGKEY)
+                        /*                                          */
+                        /* Commands that produce messages           */
+                        /*                                          */
+            RMVMSGKEY   MSGKEY(&MSGKEY)
+</pre>
+</ul>
