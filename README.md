@@ -45,6 +45,7 @@
   <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
   <li>RCVJLMSG   - Receive Joblog Message by job and from job log direction (Top or Bottom)</li>
+  <li>RMVJLMSG   - Remove Job Log Messages (Utility Cleans Up Unwanted Job Log Messages by Rory Hewitt)</li>
   </ul>
   <li>Job queue</li>
   <ul>
