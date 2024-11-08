@@ -56,7 +56,7 @@
    <ul>
     <li>MOVDIAGMSG - Move Diagnostic Message</li>
     <li>RSNESCMSG - Resend Escape Message</li>
-    <li>STRCLRDR  - Start CL Reader</li>
+    <li>STRCLRDR  - Start CL Reader <a href="https://archive.midrange.com/midrange-l/200209/msg01318.html"> from midrange.com  MIDRANGE-L </li>
   </ul>
   <li>Message File</li>
   <ul>
