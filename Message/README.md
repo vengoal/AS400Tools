@@ -9,7 +9,7 @@
 <h3>MOVDIAGMSG, RSNESCMSG Usage:</h3>
 <ul>
 <pre>
-     Pgm
+Pgm
   
 /*-- Global error monitoring:  --------------------------------------*/
      MonMsg     CPF0000      *N        GoTo Error                       
