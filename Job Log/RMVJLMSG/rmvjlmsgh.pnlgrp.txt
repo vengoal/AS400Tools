@@ -1,0 +1,178 @@
+.*T: Remove Job Log Messages
+.*O: CRTPNLGRP CHRID(*CHRIDCTL)
+.*   This panel group source member contains help text for the
+.*   RMVJLMSG command.
+.*---------------------------------------------------------------------
+
+:PNLGRP.
+
+.*---------------------------------------------------------------------
+.*‚Remove Job Log Messages (RMVJLMSG)
+.*---------------------------------------------------------------------
+
+:HELP NAME='RMVJLMSG'.Remove Job Log Messages
+:P.
+The Remove Job Log Messages (RMVJLMSG) command allows the user to
+remove specified messages from the job log. Messages to be removed
+can be specified using a number of criteria:
+:P.
+:UL COMPACT.
+:LI.The name of the program which sent the message
+:LI.The name of the program which received the message
+:LI.The message identifier of the message
+:LI.The type of message
+:EUL.
+:P.
+At least one of the criteria must be specified with a value other
+than the default value of *ANY.
+:P.
+The user can specify how many of the specified criteria must be met for
+a message to be considered for deletion.
+
+:EHELP.
+
+.*---------------------------------------------------------------------
+.*‚Sending program (SENDPGM)
+.*---------------------------------------------------------------------
+
+:HELP NAME='RMVJLMSG/SENDPGM'.Sending program (SENDPGM) - Help
+:XH3.Sending program (SENDPGM)
+:P.
+Specify the name of the program which sent the message(s) to be
+removed from the job log.
+
+:PARML.
+:PT.:PK def.*ANY:EPK.
+:PD.Messages sent by any program will be considered for removal.
+:PT.:PK.program-name:EPK.
+:PD.Specify the full name of the program which sent the message(s).
+:PT.:PK.generic*-program-name:EPK.
+:PD.Specify a generic name for the program(s) which sent the
+message(s).
+:EPARML.
+
+:EHELP.
+
+.*---------------------------------------------------------------------
+.*‚Receiving program (RCVPGM)
+.*---------------------------------------------------------------------
+
+:HELP NAME='RMVJLMSG/RCVPGM'.Receiving program (RCVPGM) - Help
+:XH3.Receiving program (RCVPGM)
+:P.
+Specify the name of the program which received the message(s) to be
+removed from the job log.
+
+:PARML.
+:PT.:PK def.*ANY:EPK.
+:PD.Messages received by any program will be considered for removal.
+:PT.:PK.program-name:EPK.
+:PD.Specify the full name of the program which received the message(s).
+:PT.:PK.generic*-program-name:EPK.
+:PD.Specify a generic name for the program(s) which received the
+message(s).
+:EPARML.
+
+:EHELP.
+
+.*---------------------------------------------------------------------
+.*‚Message identifier (MSGID)
+.*---------------------------------------------------------------------
+
+:HELP NAME='RMVJLMSG/MSGID'.Message identifier (MSGID) - Help
+:XH3.Message identifier (MSGID)
+:P.
+Specify the message identifier(s) for the message(s) that should be
+removed from the job log.
+:P.
+You can enter multiple values for this parameter.
+:P.
+:PARML.
+:PT.:PK def.*ANY:EPK.
+:PD.Any messages will be considered for removal, except those with
+no message identifier.
+:PT.:PK.*NONE:EPK.
+:PD.Only messages with no message identifier (immediate messages,
+request messages etc.) will be considered for removal.
+:EPARML.
+:P.
+A maximum of ten of the following values can be specified.
+:P.
+:PARML.
+:PT.:PK.message-identifier:EPK.
+:PD.Specify the message identifier of the message(s) which should be
+removed from the job log.
+:EPARML.
+
+:EHELP.
+
+.*---------------------------------------------------------------------
+.*‚Message type (MSGTYPE)
+.*---------------------------------------------------------------------
+
+:HELP NAME='RMVJLMSG/MSGTYPE'.Message type (MSGTYPE) - Help
+:XH3.Message type (MSGTYPE)
+:P.
+Specify the message type of the message(s) that should be
+removed from the job log.
+:P.
+You can enter multiple values for this parameter.
+:P.
+:PARML.
+:PT.:PK def.*ANY:EPK.
+:PD.Messages of any type will be considered for removal.
+:EPARML.
+:P.
+A maximum of eight of the following values can be specified.
+:P.
+:PARML.
+:PT.:PK.*INFO:EPK.
+:PD.Informational messages will be considered for removal from the
+job log.
+:PT.:PK.*INQ:EPK.
+:PD.Inquiry messages will be considered for removal from the
+job log.
+:PT.:PK.*RQS:EPK.
+:PD.Request messages will be considered for removal from the
+job log.
+:PT.:PK.*COMP:EPK.
+:PD.Completion messages will be considered for removal from the
+job log.
+:PT.:PK.*DIAG:EPK.
+:PD.Diagnostic messages will be considered for removal from the
+job log.
+:PT.:PK.*NOTIFY:EPK.
+:PD.Notification messages will be considered for removal from the
+job log.
+:PT.:PK.*ESCAPE:EPK.
+:PD.Escape messages will be considered for removal from the
+job log.
+:PT.:PK.*REPLY:EPK.
+:PD.Reply messages will be considered for removal from the
+job log.
+:EPARML.
+
+:EHELP.
+
+.*---------------------------------------------------------------------
+.*‚Number of true criteria (NBRTRUE)
+.*---------------------------------------------------------------------
+
+:HELP NAME='RMVJLMSG/NBRTRUE'.Number of true criteria (NBRTRUE) - Help
+:XH3.Number of true criteria (NBRTRUE)
+:P.
+Specify the number of criteria (specified in the SENDPGM, RCVPGM, MSGID
+and MSGTYPE parameters) that must be true for a message to be removed.
+
+:PARML.
+:PT.:PK def.*ALL:EPK.
+:PD.Only messages which match :HP2.all:EHP2. of the specified criteria
+will be removed from the job log.
+:PT.:PK.*ANY:EPK.
+:PD.Messages which match :HP2.any:EHP2. of the specified criteria
+will be removed from the job log.
+:EPARML.
+
+:EHELP.
+
+:EPNLGRP.

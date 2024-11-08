@@ -1,0 +1,37 @@
+             CMD        PROMPT('Remove Job Log Messages')
+
+/*T: Remove Job Log Messages                                         */
+/*O: PGM(RMVJLMSR) HLPPNLGRP(RMVJLMSGH) HLPID(*CMD)                  */
+
+ SENDPGM:    PARM       KWD(SENDPGM) TYPE(*GENERIC) LEN(10) +
+                          DFT(*ANY) SPCVAL((*ANY)) PROMPT('Sending +
+                          program')
+
+ RCVPGM:     PARM       KWD(RCVPGM) TYPE(*GENERIC) LEN(10) DFT(*ANY) +
+                          SPCVAL((*ANY)) PROMPT('Receiving program')
+
+ MSGID:      PARM       KWD(MSGID) TYPE(*CHAR) LEN(7) DFT(*ANY) +
+                          SNGVAL((*ANY) (*NONE)) MAX(10) +
+                          PROMPT('Message identifier')
+
+ MSGTYPE:    PARM       KWD(MSGTYPE) TYPE(*CHAR) LEN(7) RSTD(*YES) +
+                          DFT(*ANY) SPCVAL((*INFO) (*INQ) (*RQS) +
+                          (*COMP) (*DIAG) (*NOTIFY) (*ESCAPE) +
+                          (*REPLY)) SNGVAL((*ANY)) MAX(8) +
+                          PROMPT('Message type')
+
+ NBRTRUE:    PARM       KWD(NBRTRUE) TYPE(*CHAR) LEN(4) RSTD(*YES) +
+                          DFT(*ALL) VALUES(*ALL *ANY) +
+                          PROMPT('Number of true criteria')
+
+/*‚DEP1: Don't allow all parameters to be *ANY€*/
+
+ DEP1:       DEP        CTL(*ALWAYS) PARM((&SENDPGM *NE *ANY) +
+                          (&RCVPGM *NE *ANY) (&MSGID *NE *ANY) +
+                          (&MSGTYPE *NE *ANY)) NBRTRUE(*GE 1)
+
+/*‚DEP2: Don't allow MSGID(*NONE) with MSGTYPE(*ANY)€*/
+
+ DEP2:       DEP        CTL(&MSGID *EQ *NONE) PARM((&MSGTYPE *NE +
+                          *ANY)) NBRTRUE(*EQ 1)
+
