@@ -9,7 +9,7 @@ CMD PROMPT('Work with Save File Objects')
 
 PARM KWD(SAVF) TYPE(QUAL) MIN(1) PROMPT('Save file') 
 
-PARM KWD(OBJ) TYPE(*GENERIC) DFT(*ALL) + 
+PARM KWD(OBJ) TYPE(*GENERIC) DFT(*ALL)          + 
        SPCVAL((*ALL)) PROMPT('Object') 
 
 PARM KWD(OBJTYP)                                + 
