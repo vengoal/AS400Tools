@@ -7,8 +7,7 @@
 </ul>
 
 <h3>Usage:</h3>
-<ul>
-<pre>
+<ul><pre>
      Pgm
   
 /*-- Global error monitoring:  --------------------------------------*/
@@ -17,12 +16,12 @@
 .............
 .............
 
-Error:              
-     MovDiagMsg       
-     Monmsg    CPF0000
-     RsnEscMsg        
-     Monmsg    CPF0000
-                      
-     Endpgm               
+ Error:                                                                          
+    MovDiagMsg                                                                   
+    Monmsg    CPF0000                                                            
+    RsnEscMsg                                                                    
+    Monmsg    CPF0000                                                            
+                                                                                 
+Endpgm                                                                           
 </pre>
 </ul>
