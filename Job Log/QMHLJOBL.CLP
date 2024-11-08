@@ -10,10 +10,18 @@ PGM
   DCL &MSGID *CHAR 7
   DCL &MSGKY *CHAR 4
   DCL &SENDER *CHAR 12
+  DCL &ATTR *CHAR 13
 
   CALL QUSCRTUS PARM(&SPACE +
           'USF400     ' X'00000400' ' ' '*CHANGE   ' &DESC)
     MONMSG CPF9870 EXEC(RCVMSG MSGTYPE(*LAST))
+
+   CHGVAR  %BIN(&ATTR 1 4) 1     /* number of attributes */
+   CHGVAR  %BIN(&ATTR 5 4) 3     /* 3=auto extend */
+   CHGVAR  %BIN(&ATTR 9 4) 1     /* data len */
+   CHGVAR  %SST(&ATTR 13 1) '1'  /* yes */
+   CHGVAR  %BIN(&ERR  1 4) 0     /* bytes provided */
+   CALL QUSCUSAT PARM(&BUFFER &SPACE &ATTR X'00000000')
 
   /*  LIST THE 10 MOST RECENT MESSAGES IN THE JOB LOG            */
 
