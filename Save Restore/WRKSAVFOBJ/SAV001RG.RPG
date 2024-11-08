@@ -1,0 +1,196 @@
+      *===============================================================
+      * To compile:
+      *
+      *      CRTRPGPGM  PGM(XXX/SAV001RG) SRCFILE(XXX/QRPGSRC)
+      *
+      *===============================================================
+      *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7
+     IGENDS       DS
+     I                                    B 125 1280OFFLST
+     I                                    B 133 1360NUMLST
+     I                                    B 137 1400SIZENT
+     ILIBINF      DS                             72
+     I                                        1  10 SAVLIB
+     I                                       11  20 SAVCMD
+     I                                       11  16 SAVCM6
+     IOBJINF      DS                            204
+     I                                        1  10 OBJNAM
+     I                                       21  30 OBJTYP
+     I                                       31  40 OBJATR
+     I                                      155 194 OBJTXT
+     ILIBBUF      DS
+     I                                        1  10 SFN
+     I                                       11  20 SFL
+     I                                       21  30 CMD
+     I                                       31  40 OFL
+     I                                       41  50 LIB
+     I                                       51  60 TFL
+     IOBJBUF      DS
+     I                                    B   1   20OPT
+     I                                        3  12 OBJ
+     I                                       13  19 TYP
+     I                                       20  29 ATR
+     I                                       30  69 TXT
+     I           IDS
+     I I            'SAV001US  QTEMP     '    1  20 USRSPC
+     I I            'SAV001PG  *LIBL     '   21  40 PNLGRP
+     I                                    B  41  440STRPOS
+     I                                    B  45  480STRLEN
+     I                                    B  49  520LENSPC
+     I                                    B  53  560STKCNT
+     I                                    B  57  600APPSCP
+     I                                    B  61  640EXTPRM
+     I                                    B  65  680ERRCOD
+     I                                    B  69  720FKEY
+     I                                    B  73  760VARLEN
+      *===============================================================
+     C           *ENTRY    PLIST
+     C                     PARM           SAVF   20
+     C                     PARM           OBJFLT 10
+     C                     PARM           TYPFLT 10
+     C                     PARM           ERRDTA 10
+      *
+      * Load user space with library level information
+     C                     MOVEL'SAVF0100'FMTNAM  8
+     C                     EXSR LODSPC
+      *
+      * Get library level information from user space
+     C                     CALL 'QUSRTVUS'
+     C                     PARM           USRSPC
+     C                     PARM           STRPOS
+     C                     PARM           STRLEN
+     C                     PARM           LIBINF
+      *
+      * Perform error checking selection
+     C                     SELEC
+      *
+      * If no data issue message
+     C           SAVLIB    WHEQ *BLANKS
+     C                     MOVEL'*EMPTY'  ERRDTA
+      *
+      * If unsupported save command issue message
+     C           SAVCM6    WHNE 'SAVLIB'
+     C           SAVCM6    ANDNE'SAVOBJ'
+     C           SAVCM6    ANDNE'SAVCHG'
+     C                     MOVELSAVCMD    ERRDTA
+      *
+      * Otherwise process data
+     C                     OTHER
+     C                     EXSR PROCES
+     C                     ENDSL
+      *
+     C                     MOVE *ON       *INLR
+      *===============================================================
+     C           LODSPC    BEGSR
+      *
+      * Call the list save file API
+     C                     CALL 'QSRLSAVF'
+     C                     PARM           USRSPC
+     C                     PARM           FMTNAM
+     C                     PARM           SAVF
+     C                     PARM           OBJFLT
+     C                     PARM           TYPFLT
+     C                     PARM *BLANKS   CNTHND 36
+     C                     PARM 0         ERRCOD
+      *
+      * Retrieve the generic header
+      *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7
+      *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7
+     C                     Z-ADD1         STRPOS
+     C                     Z-ADD140       STRLEN
+      *
+     C                     CALL 'QUSRTVUS'
+     C                     PARM           USRSPC
+     C                     PARM           STRPOS
+     C                     PARM           STRLEN
+     C                     PARM           GENDS
+      *
+      * Calculate starting position and length
+     C           OFFLST    ADD  1         STRPOS
+     C                     Z-ADDSIZENT    STRLEN
+      *
+     C                     ENDSR
+      *===============================================================
+     C           PROCES    BEGSR
+      *
+      * Open display application
+     C                     CALL 'QUIOPNDA'
+     C                     PARM           HANDLE  8
+     C                     PARM           PNLGRP
+     C                     PARM -1        APPSCP
+     C                     PARM           EXTPRM
+     C                     PARM 'N'       FULHLP  1
+     C                     PARM 0         ERRCOD
+      *
+      * Put the library level information on the screen
+     C                     MOVELSAVF      SFN
+     C                     MOVE SAVF      SFL
+     C                     MOVELSAVCMD    CMD
+     C                     MOVELOBJFLT    OFL
+     C                     MOVELSAVLIB    LIB
+     C                     MOVELTYPFLT    TFL
+      *
+     C                     CALL 'QUIPUTV'
+     C                     PARM           HANDLE
+     C                     PARM           LIBBUF
+     C                     PARM 60        VARLEN
+     C                     PARM 'HEADER'  RCDNAM 10
+     C                     PARM 0         ERRCOD
+      *
+      * Load user space with object level information
+     C                     MOVEL'SAVF0200'FMTNAM
+     C                     EXSR LODSPC
+     C                     MOVEL'FRST'    OPTION  4
+      *
+      * Get object level information from user space
+     C                     DO   NUMLST
+     C                     CALL 'QUSRTVUS'
+     C                     PARM           USRSPC
+     C                     PARM           STRPOS
+     C                     PARM           STRLEN
+     C                     PARM           OBJINF
+      *
+      * Exclude library objects from list
+     C           OBJTYP    IFNE '*LIB'
+     C                     Z-ADD0         OPT
+     C                     MOVELOBJNAM    OBJ
+     C                     MOVELOBJTYP    TYP
+     C                     MOVELOBJATR    ATR
+     C                     MOVELOBJTXT    TXT
+      *
+      * Add a list entry to the screen
+     C                     CALL 'QUIADDLE'
+     C                     PARM           HANDLE
+     C                     PARM           OBJBUF
+     C                     PARM 69        VARLEN
+     C                     PARM 'DETAIL'  RCDNAM 10
+     C                     PARM 'DETLST'  LSTNAM 10
+     C                     PARM           OPTION
+     C                     PARM           LEHNDL  4
+     C                     PARM 0         ERRCOD
+      *
+     C                     MOVEL'NEXT'    OPTION
+     C                     ENDIF
+      *
+      * Calculate position of next entry
+     C                     ADD  SIZENT    STRPOS
+     C                     ENDDO
+      *
+      * Display the panel
+     C                     CALL 'QUIDSPP'
+     C                     PARM           HANDLE
+     C                     PARM           FKEY
+     C                     PARM 'SAV001PG'PNLNAM 10
+     C                     PARM 'N'       REDSPO  1
+     C                     PARM 0         ERRCOD
+      *
+      * Close the application
+     C                     CALL 'QUICLOA'
+     C                     PARM           HANDLE  8
+     C                     PARM 'M'       CLSOPT  1
+     C                     PARM 0         ERRCOD
+      *
+     C                     ENDSR
+      *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7
+     
+     
