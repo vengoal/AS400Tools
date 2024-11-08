@@ -5,3 +5,24 @@
   <li><a href="https://www.mcpressonline.com/programming/apis/the-api-corner-removing-error-messages-from-the-job-log">The API Corner: Removing Error Messages from the Job Log</a></li>
   <li><a href="https://www.mcpressonline.com/programming/apis/simons-solutions-prepared-to-be-surprised-by-qcmd">STRCLRDR -- Simon's Solutions: Prepared to Be Surprised by QCMD?</li>
 </ul>
+
+<h3>Usage:</h3>
+<ul>
+<pre>
+     Pgm
+  
+/*-- Global error monitoring:  --------------------------------------*/
+     MonMsg     CPF0000      *N        GoTo Error                      
+
+.............
+.............
+
+  Error:              
+     MovDiagMsg       
+     Monmsg    CPF0000
+     RsnEscMsg        
+     Monmsg    CPF0000
+                      
+     Endpgm               
+</pre>
+</ul>
