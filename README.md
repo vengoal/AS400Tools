@@ -56,6 +56,7 @@
    <ul>
     <li>MOVDIAGMSG - Move Diagnostic Message</li>
     <li>RSNESCMSG - Resend Escape Message</li>
+    <li>STRCLRDR  - Start CL Reader</li>
   </ul>
   <li>Message File</li>
   <ul>
