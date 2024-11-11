@@ -81,6 +81,7 @@
    <ul>
     <li>CRTUSRSPC - Create User Space</li>
     <li>CHGUSRSPC - Change User Space</li>
+    <li>CHGUSRSPCA - Change User Space Attributes</li>
     <li>EDTUSRSPC - Edit User Space</li>
     <li>DSPUSRSPC - Display User Space</li>
     <li>RTVUSRSPC - Retrieve User Space</li>
