@@ -25,16 +25,20 @@ Pgm  ( &QualUsrSpc  &Action )
              Dcl        &UsrSpcLib  Type(*CHAR) Stg(*DEFINED) +
                           Len(10) DefVar( &QualUsrSpc 11 )
              Dcl        &Path             *Char       64
+             Dcl        &RtnLib           *Char       10
 
 /* Global MONMSG...                                                          */
              MonMsg     MsgID(CPF0000 CPF9999) Exec( Goto Error )
 
              ChkObj     Obj( &UsrSpcLib/&UsrSpc )             +
                          ObjType( *USRSPC )
+             RtvObjd    Obj( &UsrSpcLib/&UsrSpc )             +
+                         ObjType( *USRSPC )                   +
+                         RtnLib( &RtnLib )
 
              ChgVar     &Path                                 +
                       ( '/QSYS.LIB/' *Cat                     +
-                        &UsrSpcLib   *Tcat  '.LIB/'  *CAT         +
+                        &RtnLib      *Tcat  '.LIB/'  *CAT         +
                         &UsrSpc      *Tcat  '.USRSPC' )
              If       ( &Action *EQ '*DSP' ) +
              DspF       Stmf( &Path )
