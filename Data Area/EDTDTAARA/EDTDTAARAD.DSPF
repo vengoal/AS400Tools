@@ -1,0 +1,36 @@
+      *===============================================================
+      * To compile:
+      *
+      *      CRTDSPF    FILE(XXX/EDT101DS) SRCFILE(XXX/QDDSSRC)
+      *
+      *===============================================================
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CF03
+     A                                      CF12
+     A          R SFLRCD                    SFL
+     A            DATA          50A  B  9 13CHECK(LC)
+     A            OUTPOS         4A  O  9  6DSPATR(HI)
+     A          R SFLCTL                    SFLCTL(SFLRCD)
+     A                                      SFLSIZ(0024)
+     A                                      SFLPAG(0012)
+     A                                      OVERLAY
+     A  21                                  SFLDSP
+     A                                      SFLDSPCTL
+     A                                  1 29'Edit data area information'
+     A                                  3  2'Data area name . . . . . . . .:'
+     A            INDTAAREA     10A  O  3 34
+     A            INLIB         10A  O  4 35
+     A                                  8 13'....5...10...15...20...25...30...3-
+     A                                      5...40...45...50'
+     A                                      DSPATR(HI)
+     A                                  7 14'Value'
+     A                                  8  4'Offset'
+     A                                  3 48'Type:'
+     A                                  4 48'Length:'
+     A            OUTTYP        10A  O  3 56
+     A            OUTLEN         4S 0O  4 56
+     A                                  4  3'Library . . . . . . . . . . .:'
+     A            OUTDEC         2Y 0O  4 61EDTCDE(Z)
+     A          R FORMAT1
+     A                                 23  4'F3=Exit'   COLOR(BLU)
+     A                                 23 18'F12=Previous'  COLOR(BLU)
