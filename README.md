@@ -26,6 +26,7 @@
   <li>Data area</li>
   <ul>
      <li>EDTDTAARA  - Edit Data Area</li>
+     <li>RTVDTAARAD  - Retrieve Data Area Description</li>
   </ul>
   <li>Data queue</li>
   <ul>
