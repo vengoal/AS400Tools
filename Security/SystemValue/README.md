@@ -1,0 +1,5 @@
+<h4>QPWDVLDPGM</h4>
+<ul>
+<li>QPWDVLDPGM -> PWDVALID.CLP</li>
+<li>QPWDVLDPGM -> *REGFAC -> ADDEXITPGM QIBM_QSY_VLD_PASSWRD format VLDP0100 -> PWDEXITPGM1 - Password validation exit</li>
+</ul>
