@@ -16,7 +16,7 @@ https://www.ibm.com/docs/en/ssw_ibm_i_75/pdf/sc415302.pdf<br />
 </ul>
 </ul>
 
-<h3>Password Related System Values</h3>
+<h3>Password Related System Values -- <a href="https://www.ibm.com/docs/en/i/7.5?topic=values-system-that-apply-passwords">link</a></h3>
 <table class="MsoNormalTable" border="0" cellspacing="0" cellpadding="0" width="523" style="width:5.45in;border-collapse:collapse;mso-yfti-tbllook:1184;mso-padding-alt:
  0in 0in 0in 0in"></p>
 <tr style="mso-yfti-irow:0">
@@ -44,7 +44,34 @@ https://www.ibm.com/docs/en/ssw_ibm_i_75/pdf/sc415302.pdf<br />
 <p></span></p>
 </td>
 </tr>
-<tr style="mso-yfti-irow:1;height:37.25pt">
+
+ <tr style="mso-yfti-irow:1;height:37.25pt">
+<td width="124" nowrap valign="top" style="width:92.7pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:"Times New Roman";mso-fareast-font-family:
+  "Times New Roman"'>QPWDCHGBLK</p>
+<p></span></p>
+</td>
+<td width="172" valign="top" style="width:128.75pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:"Times New Roman";mso-fareast-font-family:
+  "Times New Roman"'>Block password change</p>
+<p></span></p>
+</td>
+<td width="228" valign="top" style="width:170.95pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:"Times New Roman";mso-fareast-font-family:
+  "Times New Roman"'>Specifies the time period during which a password is blocked from being changed after the prior successful password change operation.</p>
+<p></span></p>
+</td>
+</tr>
+
+ <tr style="mso-yfti-irow:1;height:37.25pt">
 <td width="124" nowrap valign="top" style="width:92.7pt;border:solid windowtext 1.0pt;
   border-top:none;padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
 <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
@@ -69,6 +96,33 @@ https://www.ibm.com/docs/en/ssw_ibm_i_75/pdf/sc415302.pdf<br />
 <p></span></p>
 </td>
 </tr>
+
+ <tr style="mso-yfti-irow:1;height:37.25pt">
+<td width="124" nowrap valign="top" style="width:92.7pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:"Times New Roman";mso-fareast-font-family:
+  "Times New Roman"'>QPWDEXPWRN</p>
+<p></span></p>
+</td>
+<td width="172" valign="top" style="width:128.75pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:"Times New Roman";mso-fareast-font-family:
+  "Times New Roman"'>Password Expiration Warning</p>
+<p></span></p>
+</td>
+<td width="228" valign="top" style="width:170.95pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:37.25pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:"Times New Roman";mso-fareast-font-family:
+  "Times New Roman"'>Specifies number of days before a password expiration to begin displaying the password expiration warning messages when a user signs on.</p>
+<p></span></p>
+</td>
+</tr>
+
 <tr style="mso-yfti-irow:2">
 <td width="124" nowrap valign="top" style="width:92.7pt;border:solid windowtext 1.0pt;
   border-top:none;padding:0in 5.4pt 0in 5.4pt"></p>
@@ -302,6 +356,30 @@ https://www.ibm.com/docs/en/ssw_ibm_i_75/pdf/sc415302.pdf<br />
 <p></span></p>
 </td>
 </tr>
+
+<tr style="mso-yfti-irow:11;mso-yfti-lastrow:yes;page-break-inside:avoid">
+<td width="124" valign="top" style="width:92.7pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:Arial;mso-fareast-font-family:"Times New Roman"'>QPWDRULES</p>
+<p></span></p>
+</td>
+<td width="172" valign="top" style="width:128.75pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:Arial;mso-fareast-font-family:"Times New Roman"'>Password Rules</p>
+<p></span></p>
+</td>
+<td width="228" valign="top" style="width:170.95pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt"></p>
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style='font-family:Arial;mso-fareast-font-family:"Times New Roman"'> Specifies the rules used to check whether a password is formed correctly. You can specify more than one value for the QPWDRULES system value, unless you specify *PWDSYSVAL.</p>
+<p></span></p>
+</td>
+</tr>
+
 <tr style="mso-yfti-irow:11;mso-yfti-lastrow:yes;page-break-inside:avoid">
 <td width="124" valign="top" style="width:92.7pt;border:solid windowtext 1.0pt;
   border-top:none;mso-border-top-alt:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt"></p>
