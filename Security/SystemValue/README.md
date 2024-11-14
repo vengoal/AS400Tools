@@ -13,6 +13,7 @@ https://www.ibm.com/docs/en/ssw_ibm_i_75/pdf/sc415302.pdf<br />
 <ul>
 <li>QPWDVLDPGM -> PWDVALID.CLP</li>
 </ul>
+ <li><a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX707">Password Change Blocking for V5R4 and Earlier - CBX707</a></li>
 </ul>
 </ul>
 
