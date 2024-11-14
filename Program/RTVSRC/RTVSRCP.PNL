@@ -1,0 +1,676 @@
+.*********************************************************************
+.* PANEL        RtvSrcP                                             Ä*
+.* ~~~~~                                                            Ä*
+.* FUNCTION     Retrieve ILE Source Code.                           Ä*
+.* ~~~~~~~~                                                         Ä*
+.* APPLICATION  Retrieve ILE Source Code.                           Ä*
+.* ~~~~~~~~~~~                                                      Ä*
+.* SPECIAL ATTR *None                                               Ä*
+.* ~~~~~~~~~~~~                                                     Ä*
+.* AUTHOR       Chris Stead                        DATE : 31/1/97   Ä*
+.* ~~~~~~                                          ~~~~             Ä*
+.* COPYRIGHT (c) 1997 Chris Stead, All rights reserved.              *    *
+.*********************************************************************
+:PNLGRP DFTMSGF=RTVSRC.
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Variable classes
+.* ~~~~~~~~~~~~~~~~
+:CLASS    NAME=cOption            BASETYPE='ACTION'.
+:ECLASS.
+
+:CLASS    NAME=cObject            BASETYPE='OBJNAME 10'.
+:ECLASS.
+
+:CLASS    NAME=cChar10            BASETYPE='CHAR 10'.
+:ECLASS.
+
+:CLASS    NAME=cChar8             BASETYPE='CHAR 8'.
+:ECLASS.
+
+:CLASS    NAME=cViewNum           BASETYPE='BIN 15'.
+:ECLASS.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Dialog variables
+.* ~~~~~~~~~~~~~~~~
+.* Object details.
+:VAR      NAME=vObject       CLASS=cObject.
+:VAR      NAME=vObjLib       CLASS=cObject.
+:VAR      NAME=vObjType      CLASS=cChar10.
+
+.* Module details.
+:VAR      NAME=vOption       CLASS=cOption.
+:VAR      NAME=vModule       CLASS=cObject.
+:VAR      NAME=vModLib       CLASS=cObject.
+:VAR      NAME=vModSrcFil    CLASS=cObject.
+:VAR      NAME=vModSrcLib    CLASS=cObject.
+:VAR      NAME=vModSrcMbr    CLASS=cObject.
+:VAR      NAME=vModAttr      CLASS=cChar10.
+:VAR      NAME=vModCrtDte    CLASS=cChar8.
+:VAR      NAME=vModCrtTim    CLASS=cChar8.
+
+.* Current view number.
+:VAR      NAME=vCurrView     CLASS=cViewNum.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Variable records
+.* ~~~~~~~~~~~~~~~~
+.* Object details
+:VARRCD   NAME=vrObjDtls
+          VARS='vObject vObjLib vObjType'.
+
+.* Module details
+:VARRCD   NAME=vrModDtls
+          VARS='vModule    vModLib  vModSrcFil vModSrcLib'
+          VARS='vModSrcMbr vModAttr vModCrtDte vModCrtTim'.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Lists
+.* ~~~~~
+.* Module List.
+:LISTDEF  NAME=lModList
+          VARS='vOption    vModule  vModLib    vModSrcFil vModSrcLib'
+          VARS='vModSrcMbr vModAttr vModCrtDte vModCrtTim'
+          MSGID=RTV0001.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Conditions
+.* ~~~~~~~~~~
+.* Current view conditioning.
+:COND     NAME=cnCurView1
+          EXPR='vCurrView=0'.
+:COND     NAME=cnCurView2
+          EXPR='vCurrView=1'.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Truth Tables
+.* ~~~~~~~~~~~~
+.* Define cnCurView1 and cnCurView2 as mutually exclusive conditions.
+:TT       NAME=ttCurView
+          CONDS='cnCurView1 cnCurView2'.
+:TTROW    VALUES='   1        0   '.
+:TTROW    VALUES='   0        1   '.
+:ETT.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Function Keys
+.* ~~~~~~~~~~~~~
+:KEYL     NAME=fFuncKeys
+          HELP=hFuncKeys.
+
+:KEYI     KEY=F1
+          HELP=hF1
+          ACTION=HELP.
+
+:KEYI     KEY=F3
+          HELP=hF3
+          ACTION='EXIT SET'
+          VARUPD=NO.
+F3=Exit
+
+:KEYI     KEY=F4
+          HELP=hF4
+          ACTION=PROMPT
+          PRIORITY=20.
+F4=Prompt
+
+:KEYI     KEY=F9
+          HELP=hF9
+          ACTION=RETRIEVE
+          PRIORITY=20.
+F9=Retrieve
+
+:KEYI     KEY=F11
+          HELP='hF11/1'
+          ACTION=CHGVIEW
+          PRIORITY=25
+          COND=cnCurView1.
+F11=Display creation details
+
+:KEYI     KEY=F11
+          HELP='hF11/2'
+          ACTION=CHGVIEW
+          PRIORITY=25
+          COND=cnCurView2.
+F11=Display source details
+
+:KEYI     KEY=F12
+          HELP=hF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          PRIORITY=30.
+F12=Cancel
+
+:KEYI     KEY=F24
+          HELP=hF24
+          ACTION=MOREKEYS.
+F24=More keys
+
+:KEYI     KEY=ENTER
+          HELP=hEnter
+          ACTION=ENTER.
+
+:KEYI     KEY=HELP
+          HELP=hHelp
+          ACTION=HELP.
+
+:KEYI     KEY=PAGEDOWN
+          HELP=hPageDown
+          ACTION=PAGEDOWN.
+
+:KEYI     KEY=PAGEUP
+          HELP=hPageUp
+          ACTION=PAGEUP.
+
+:KEYI     KEY=PRINT
+          HELP=hPrint
+          ACTION=PRINT.
+
+:EKEYL.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Panels
+.* ~~~~~~
+:PANEL    NAME=pMain
+          HELP=hMain
+          KEYL=fFuncKeys
+          TT=ttCurView
+          TOPSEP=SPACE.
+Retrieve ILE Source Code
+
+.* Area for object name, library and type.
+:DATA     DEPTH=3
+          LAYOUT=2
+          BOTSEP=SPACE
+          BODYSEP=INDENT
+          COMPACT.
+
+:DATACOL  WIDTH=20.
+:DATACOL  WIDTH='*'.
+
+:DATAGRP  GRPSEP=NONE
+          COMPACT.
+
+:DATAGRP  GRPSEP=QINDENT
+          COMPACT.
+
+:DATAI    VAR=vObject
+          HELP=hObject
+          USAGE=OUT.
+Object
+
+:DATAI    VAR=vObjLib
+          HELP=hObjLib
+          USAGE=OUT.
+Library
+:EDATAGRP.
+
+:DATAGRP  GRPSEP=QINDENT
+          COMPACT.
+
+:DATAI    VAR=vObjType
+          HELP=hObjType
+          USAGE=OUT.
+Type
+
+:EDATAGRP.
+:EDATAGRP.
+:EDATA.
+
+.* Modules list.
+:LIST     DEPTH='*'
+          LISTDEF=lModList
+          ACTOR=UIM
+          MAXHEAD=4
+          VIEW=vCurrView
+          SCROLL=YES
+          BOTSEP=SPACE.
+:TOPINST.Type options, press Enter.
+
+.* List options
+:LISTACT  OPTION=1
+          HELP=hNone
+          ENTER='CMD RTVSRC '
+          ENTER='?*OBJECT(&vObjLib./&vObject.) ?*MODULE(&vModule.) '
+          ENTER='?*OBJTYPE(&vObjType.) '
+          ENTER='??SRCFILE(&vModSrcLib/&vModSrcFil) '
+          ENTER='??SRCMBR(&vModSrcMbr.)'
+          PROMPT='CMD RTVSRC '
+          PROMPT='?*OBJECT(&vObjLib./&vObject.) ?*MODULE(&vModule.) '
+          PROMPT='?*OBJTYPE(&vObjType.) '
+          PROMPT='??SRCFILE(&vModSrcLib/&vModSrcFil) '
+          PROMPT='??SRCMBR(&vModSrcMbr.)'.
+1=Retrieve Source
+
+.* List columns
+:LISTCOL  VAR=vOption
+          USAGE=INOUT
+          HELP=hOption
+          MAXWIDTH=6.
+Opt
+
+:LISTCOL  VAR=vModule
+          USAGE=OUT
+          HELP=hModule
+          MAXWIDTH=10.
+Module
+
+:LISTCOL  VAR=vModLib
+          USAGE=OUT
+          HELP=hModLib
+          MAXWIDTH=10.
+Library
+
+:LISTCOL  VAR=vModSrcFil
+          USAGE=OUT
+          HELP=hModSrcFil
+          MAXWIDTH=10.
+Source File
+
+:LISTCOL  VAR=vModSrcLib
+          USAGE=OUT
+          HELP=hModSrcLib
+          MAXWIDTH=10.
+Source Library
+
+:LISTCOL  VAR=vModSrcMbr
+          USAGE=OUT
+          HELP=hModSrcMbr
+          MAXWIDTH=10.
+Source Member
+
+:LISTCOL  VAR=vModAttr
+          USAGE=OUT
+          HELP=hModAttr
+          MAXWIDTH=9.
+Attribute
+
+:LISTCOL  VAR=vModCrtDte
+          USAGE=OUT
+          HELP=hModCrtDte
+          MAXWIDTH=8.
+Creation Date
+
+:LISTCOL  VAR=vModCrtTim
+          USAGE=OUT
+          HELP=hModCrtDte
+          MAXWIDTH=8.
+Creation Time
+
+.* Views
+:LISTVIEW COLS='vOption vModule vModLib vModSrcFil'
+          COLS='vModSrcLib vModSrcMbr vModAttr'.
+:LISTVIEW COLS='vOption vModule vModCrtDte vModCrtTim' layout=2.
+
+:ELIST.
+
+.* Command line
+:CMDLINE  SIZE=SHORT.
+Type command, press Enter.
+
+:EPANEL.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+.* Help text
+.* ~~~~~~~~~
+
+:HELP NAME=hNone.
+:EHELP.
+.*--------------------------------------------------------------------
+.* Command help
+.*--------------------------------------------------------------------
+:HELP name=RTVSRC.Retrieve ILE Source Code - Help
+:P.
+The retreive ILE Source Code (RTVSRC) command allows retrieval of
+of the original source code used to create modules bound into ILE
+programs and service programs.
+:P.
+:HP2.Restriction::EHP2.The original source code can only be retrieved
+from modules which contain a Debug Listing View. To view a list of
+modules from which source code can be retrived specify a value of
+*SELECT on the MODULE parameter.
+:EHELP.
+
+:HELP NAME='RTVSRC/OBJECT'.Object - Help
+:XH3.Object (OBJECT)
+:P.
+Specifies the qualified name of the object from which source code is
+to be retrieved.
+:P.
+This is a required parameter.
+:PARML.
+:PT.:PV.object-name:EPV.
+:PD.Specify the name of the object to retrieve source code from.
+:EPARML.
+:PARML.
+:P.The object name can be qualified by one of the following
+library values:
+:EPARML.
+:PARML.
+:PARML.
+:PT.:PK def.*LIBL:EPK.
+:PD.
+This is the default value. All libraries in the jobs library list are
+searched until the first instance of the object is found.
+:PT.:PK.*CURLIB:EPK.
+:PD.
+The current library for the job is searched. If no library is specified
+as the current library then QGPL is searched instead.
+:EPARML.
+:PARML.
+:PT.:PV.library-name:EPV.
+:PD.Specify the name of the library to be searched.
+:EPARML.
+:EPARML.
+:EHELP.
+
+:HELP NAME='RTVSRC/OBJTYPE'.Object Type - Help
+:XH3.Object (OBJTYPE)
+:P.
+Specifies the type of object to search for.
+:P.
+:PARML.
+:PT.:PK def.*ANY:EPK.
+:PD.
+This is the default value. Objects of type *PGM will be searched for.
+If no object of type *PGM can be found then objects of type *SRVPGM
+will be searched for.
+:PT.:PK.*PGM:EPK.
+:PD.
+Program objects will be searched for.
+:PT.:PK.*SRVPGM:EPK.
+:PD.
+Service program objects will be searched for.
+:EPARML.
+:EHELP.
+
+:HELP NAME='RTVSRC/MODULE'.Module - Help
+:XH3.Module (MODULE)
+:P.
+The name of the module whose source is to be retrieved.
+:P.
+:PARML.
+:PT.:PK def.*SELECT:EPK.
+:PD.
+This is the default value. A list of a modules from which source code
+can be retrieved is displayed.
+:PARML.
+:PT.:PV.module-name:EPV.
+:PD.Specify the name of the module to retrieve source code from.
+:EPARML.
+:EPARML.
+:EHELP.
+
+:HELP name='RTVSRC/SRCFILE'.Source File (SRCFILE) - Help
+:XH3.Source File (SRCFILE)
+:P.
+Specifies the qualified source physical file name of the file that
+retrieved source code will be placed in.
+:P.
+:PARML.
+:PT.:PK def.QRPGLESRC:EPK.
+:PD.
+This is the default value. Retrieved source code will be placed in the
+file QRPGLESRC.
+:PARML.
+:PT.:PV.source-file-name:EPV.
+:PD.Specify the name of the source file that retrieved source code will
+be placed in.
+:EPARML.
+:EPARML.
+:PARML.
+:P.The source file name can be qualified by one of the following
+library values:
+:EPARML.
+:PARML.
+:PARML.
+:PT.:PK def.*LIBL:EPK.
+:PD.
+This is the default library value. The system searches the library
+list to find the library where the source file is located.
+:PT.:PK.*CURLIB:EPK.
+:PD.
+The source file is searched for in the current library for the job. If
+no library is specified as the current library for the job then the
+library QGPL is used.
+:EPARML.
+:PARML.
+:PT.:PV.library-name:EPV.
+:PD.Specify the name of the library that contains the source file.
+:EPARML.
+:EPARML.
+:EHELP.
+
+:HELP name='RTVSRC/SRCMBR'.Source Member (SRCMBR) - Help
+:XH3.Source Member (SRCMBR)
+:P.
+Specifies the name of the member that retrieved source code will be
+placed in.
+:P.
+The possible values are:
+:PARML.
+:PT.:PK def.*MODULE:EPK.
+:PD.
+This is the default source member value. The module name supplied in
+the MODULE parameter is used as the source member name.
+:PT.:PV.source-member:EPV.
+:PD.
+Specify the name of the source member that retrieved source code will
+be placed in.
+:EPARML.
+:EHELP.
+.*--------------------------------------------------------------------
+.* Panel help
+.*--------------------------------------------------------------------
+:HELP NAME=hMain.Retrieve ILE Source Code
+:P.
+This screen displays all modules in an ILE program or service program
+from which the original source code can be retrieved, and allows the
+retrieval of this source code.
+:EHELP.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+:HELP NAME=hObject.Object - Help
+:XH3.Object
+:P.
+The name of the object whose modules are being shown.
+:P.
+:HP2.Note::EHP2.Only those modules from which source can be retrieved
+are displayed.
+:EHELP.
+
+:HELP NAME=hObjLib.Object Library - Help
+:XH3.Object Library
+:P.
+The library that contains the object which modules are being displayed.
+:EHELP.
+
+:HELP NAME=hObjType.Object Type - Help
+:XH3.Object Type
+:P.
+Specifies the type of object whose modules are being displayed.
+:P.
+The possible values are:
+:PARML.
+:PT.:PK.*PGM:EPK.
+:PD.
+The object is a program.
+:PT.:PK.*SRVPGM:EPK.
+:PD.
+The object is a service program.
+:EPARML.
+:EHELP.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+:HELP NAME=hOption.Option - Help
+:XH3.Opt
+:P.
+Type the number of the option you require and press the Enter key.
+:P.
+The possible values are:
+:PARML.
+:PT.:PV.1=Retrieve Source:EPV.
+:PD.
+Retrieves source for the module selected.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hModule.Module - Help
+:XH3.Module
+:P.
+The name of the module whose information is being shown.
+:EHELP.
+
+:HELP NAME=hModLib.Module Library - Help
+:XH3.Module Library
+:P.
+The name of the library that the module was in when the module was
+bound into this object.
+:EHELP.
+
+:HELP NAME=hModSrcFil.Module Source File - Help
+:XH3.Module Source File
+:P.
+The source file that contained the source member that was used to
+create this module.
+:EHELP.
+
+:HELP NAME=hModSrcLib.Module Source File Library - Help
+:XH3.Module Source File Library
+:P.
+The library that contained the source file that was used to create
+this module.
+:EHELP.
+
+:HELP NAME=hModSrcMbr.Module Source Member - Help
+:XH3.Module Source Member
+:P.
+The source file member from which this module was created.
+:EHELP.
+
+:HELP NAME=hModAttr.Module Attribute - Help
+:XH3.Module Attribute
+:P.
+The programming language in which the module is written.
+:EHELP.
+
+:HELP NAME=hModCrtDte.Module Creation Date - Help
+:XH3.Module Creation Date
+:P.
+The date that the module was created.
+:EHELP.
+
+:HELP NAME=hModCrtTme.Module Creation Time - Help
+:XH3.Module Creation Time
+:P.
+The time that the module was created.
+:EHELP.
+
+.* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+:HELP NAME=hFuncKeys.Function Keys - Help
+:XH3.Function keys
+:EHELP.
+
+:HELP NAME=hF1.
+:PARML.
+:PT.F1=Help
+:PD.Provides additional information about using the display or a
+specific field on the display.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hF3.
+:PARML.
+:PT.F3=Exit
+:PD.Ends the current task and returns you to the display from which the
+task was started.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hF4.
+:PARML.
+:PT.F4=Prompt.
+:PD.Provides assistance in entering or selecting a command.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hF9.
+:PARML.
+:PT.F9=Retrieve.
+:PD.Shows the last command you entered on the command line, along with
+any parameters you included.  By pressing this key once, you will
+receive the last command you ran.  By pressing this key twice, you
+will receive the next to last command that you ran, and so on.
+:EPARML.
+:EHELP.
+
+:HELP NAME='hF11/1'.
+:PARML.
+:PT.F11=Display creation details
+:PD.Display multiple columns of modules names and module creation
+dates.
+:EPARML.
+:EHELP.
+
+:HELP NAME='hF11/2'.
+:PARML.
+:PT.F11=Display source details
+:PD.Display a single column of module names and module source details.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hF12.
+:PARML.
+:PT.F12=Cancel
+:PD.Returns to the previous display or menu.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hF24.
+:PARML.
+:PT.F24=More keys
+:PD.Shows additional function keys.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hEnter.
+:PARML.
+:PT.Enter
+:PD.Submits information on the display for processing.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hHelp.
+:PARML.
+:PT.Help
+:PD.Provides additional information about using the display or a
+specific field on the display.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hPrint.
+:PARML.
+:PT.Print
+:PD.Prints information currently shown on the display.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hPageDown.
+:PARML.
+:PT.Page Down (Roll Up)
+:PD.Moves forward to show additional information for this display.
+Page Down (Roll Up) shows the next group of items until you
+reach the end of the information.
+:EPARML.
+:EHELP.
+
+:HELP NAME=hPageUp.
+:PARML.
+:PT.Page Up (Roll Down)
+:PD.Moves backwards to show additional information for this display.
+Page Up (Roll Down) shows the previous group of items until you
+reach the beginning of the information.
+:EPARML.
+:EHELP.
+
+:EPNLGRP.
