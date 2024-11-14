@@ -6,6 +6,8 @@ https://www.ibm.com/docs/en/ssw_ibm_i_75/pdf/sc415302.pdf<br />
 <li><a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/xsyvlphr.html">Validate Password Exit Program</a></li>
 <ul>
 <li>QPWDVLDPGM -> *REGFAC -> ADDEXITPGM QIBM_QSY_VLD_PASSWRD format VLDP0100 -> PWDEXITPGM1 - Password validation exit</li>
+<li>CHGSYSVAL SYSVAL(QPWDVLDPGM) VALUE(*REGFAC)</li>
+<li>ADDEXITPGM QIBM_QSY_VLD_PASSWRD FORMAT(VLDP0100) PGM(QGPL/PWDEXITPGM1)</li>
 </ul>
 <li><a href="https://www.ibm.com/docs/en/i/7.3?topic=qpwdvldpgm-using-password-approval-program">Using a password approval program</a></li>
 <ul>
