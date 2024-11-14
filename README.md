@@ -42,7 +42,7 @@
   <ul>
   <li>ENDALLJOB - End All Jobs with job name</li>
   </ul>
-   <li>JobD</li>
+   <li>JobD - Job Job Description</li>
   <ul>
   <li>RTVJOBD - Retrieve Job Description</li>
   </ul>
@@ -68,6 +68,10 @@
   <li>Message File</li>
   <ul>
     <li>SCNMSGF - Scan Message File</li>
+  </ul>
+  <li>Program or Service Program</li>
+  <ul>
+    <li>RTVSRC - Retrieve ILE Source Code by Chris Stead</li>
   </ul>
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
   <li>Save Restore</li>
