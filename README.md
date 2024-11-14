@@ -42,6 +42,10 @@
   <ul>
   <li>ENDALLJOB - End All Jobs with job name</li>
   </ul>
+   <li>JobD</li>
+  <ul>
+  <li>RTVJOBD - Retrieve Job Description</li>
+  </ul>
   <li>Job log</li>
   <ul>
   <li>CHKJLMSGID - Check Joblog which contain MSGID to get MSGDTA</li>
