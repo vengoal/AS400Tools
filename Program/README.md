@@ -7,5 +7,6 @@
   CRTBNDCL PGM(MYLIB/CLLE_PGM) SRCFILE(MYLIB/MYSRC) ALWRTVSRC(*YES)<br />
   CRTCLMOD MODULE(MYLIB/CLLE_MOD) SRCFILE(MYLIB/MYSRC) ALWRTVSRC(*YES)
   <li><a href="https://www.rpgpgm.com/2016/09/quickly-retrieving-source-for-program.html">Quickly retrieving the source for a program</a></li>
+  <li><a href="https://www.ibm.com/support/pages/how-find-location-source-program-compiled">How to Find the Location of the Source a Program is Compiled From</a></li>
 </ul>
 
