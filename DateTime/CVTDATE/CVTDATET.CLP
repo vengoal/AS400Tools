@@ -1,7 +1,3 @@
-/*  CL Date Math demo.         Scott Klement, April 29, 2004  +
-                                                              +
-    To compile this, type:                                    +
-       CRTBNDCL PGM(DATEDEMO) SRCFILE(xxx/xxx) DFTACTGRP(*NO) */
 PGM
 
     DCL VAR(&LILIAN) TYPE(*CHAR) LEN(4)
