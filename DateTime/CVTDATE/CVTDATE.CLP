@@ -19,7 +19,7 @@
 /*                                                                   */
 /*                                                                   */
 /*  Compile options:                                                 */
-/*    CrtClPgm   Pgm( CVTDATE )                                      */
+/*    CrtBndCL   Pgm( CVTDATE )                                      */
 /*               SrcFile( QCLSRC )                                   */
 /*               SrcMbr( *PGM )                                      */
 /*                                                                   */
