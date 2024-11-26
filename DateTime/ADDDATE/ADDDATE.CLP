@@ -20,7 +20,7 @@
 /*                                                                   */
 /*                                                                   */
 /*  Compile options:                                                 */
-/*    CrtClPgm   Pgm( AddDate )                                      */
+/*    CrtBndCL   Pgm( AddDate )                                      */
 /*               SrcFile( QCLSRC )                                   */
 /*               SrcMbr( *PGM )                                      */
 /*                                                                   */
