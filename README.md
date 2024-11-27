@@ -55,6 +55,7 @@
   <li>Job queue</li>
   <ul>
    <li>ENDJOBQJOB - End Jobq Job</li>
+   <li>MOVJOBQ    - Move Jobq job to another Jobq</li>
    <li>RTVJOBQA   - Retrieve Job Queue Attributes</li>
    <li>RTVJOBQSTS - Retrieve Job Queue Status</li>
   </ul>
