@@ -39,6 +39,9 @@
     CrtPF      File( QTEMP/QWCCRTEC ) 
            RcdLen( 132 )          
            IgcDta( *YES )         </li>
+    <li>CRTBNDCL PGM(xxx/RTVIPLTIM) SRCFILE(xxx/QCLSRC) SRCMBR(RTVIPLTIM)</li>
+    <li>CRTCMD CMD(xxx/RTVIPLTIM) SRCFILE(xxx/QCMDSRC) SRCMBR(RTVIPLTIM) ALLOW(*BPGM *IPGM)</li>
+    <li>Create TEST program <br />CRTCLPGM PGM(RTVIPLTIMT) SRCFILE(xxx/QCLSRC) SRCMBR(RTVIPLTIMT)</li>
   </ul>
   <li>Program QWCCRTEC: Prints Report on Time Spent in IPL Phases/Steps<br />https://www.ibm.com/support/pages/program-qwccrtec-prints-report-time-spent-ipl-phasessteps</li>
   <li>Find the last IBM i System IPL date<br />https://www.nicklitten.com/find-last-ipl-date/</li>
