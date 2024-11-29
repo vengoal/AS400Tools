@@ -38,6 +38,10 @@
   <li>RTVDTAQD - Retrieve Data Queue Description</li>
   <li>SNDDTAQE - Send Data Queue Entry</li>
   </ul>
+  <li>IPL ( Initial Program Load )</li>
+  <ul>
+    <li>RTVIPLTIM - Retrieve IPL Date and Time</li>
+  </ul>
   <li>Job</li>
   <ul>
   <li>ENDALLJOB - End All Jobs with job name</li>
@@ -95,9 +99,5 @@
     <li>DSPUSRSPC - Display User Space</li>
     <li>EDTUSRSPC - Edit User Space</li>
     <li>RTVUSRSPC - Retrieve User Space</li>
-  </ul>
-  <li>Work management</li>
-  <ul>
-    <li>RTVIPLTIM - Retrieve IPL Date and Time</li>
   </ul>
 </ul>
