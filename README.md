@@ -96,4 +96,8 @@
     <li>EDTUSRSPC - Edit User Space</li>
     <li>RTVUSRSPC - Retrieve User Space</li>
   </ul>
+  <li>Work management</li>
+  <ul>
+    <li>RTVIPLTIM - Retrieve IPL Date and Time</li>
+  </ul>
 </ul>
