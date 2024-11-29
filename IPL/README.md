@@ -21,4 +21,6 @@
   </pre>
   </li>
   <li>ILE CEE Date and Time APIs<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/ile4a1TOC.htm</li>
+  <li>Find the last IBM i System IPL date<br />https://www.nicklitten.com/find-last-ipl-date/</li>
+  <li>TAATOOL - RTVIPLTIM<br />https://taatool.com/document/L_rtvipltim.html</li>
 </ul>
