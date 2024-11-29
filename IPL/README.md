@@ -36,6 +36,7 @@
   </li>
   <li>Program QWCCRTEC: Prints Report on Time Spent in IPL Phases/Steps<br />https://www.ibm.com/support/pages/program-qwccrtec-prints-report-time-spent-ipl-phasessteps</li>
   <li>Find the last IBM i System IPL date<br />https://www.nicklitten.com/find-last-ipl-date/</li>
-  <li>ILE CEE Date and Time APIs<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/ile4a1TOC.htm</li> 
+  <li>ILE CEE Date and Time APIs<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/ile4a1TOC.htm</li>
+  <li>The CL Corner: More on ILE CEE Time APIs<br />https://www.mcpressonline.com/programming-other/cl/the-cl-corner-more-on-ile-cee-time-apis</li>
   <li>TAATOOL - RTVIPLTIM<br />https://taatool.com/document/L_rtvipltim.html</li>
 </ul>
