@@ -17,6 +17,20 @@
  Time of power down ended . . . .                 Character value             
  Number of seconds for PWRDWN . .                 Number                      
                                                                               
+  
+  Test Sample output:
+   Variable               Type        Length         Value                     
+                                                    *...+....1....+....2....+
+ &ENDIPLDAT               *CHAR            8       '11/24/24'                
+ &ENDIPLTIM               *CHAR            8       '05:08:06'                
+ &ENDPWRDWND              *CHAR            8       '11/24/24'                
+ &ENDPWRDWNT              *CHAR            8       '02:03:21'                
+ &IPLSEC                  *DEC           5 0        266                      
+ &PWRDWNSEC               *DEC           5 0        200                      
+ &STRIPLDAT               *CHAR            8       '11/24/24'                
+ &STRIPLTIM               *CHAR            8       '05:03:40'                
+ &STRPWRDWND              *CHAR            8       '11/24/24'                
+ &STRPWRDWNT              *CHAR            8       '02:00:01'                
   </code>
   </pre>
   </li>
