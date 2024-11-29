@@ -6,16 +6,18 @@
                                                                               
  Type choices, press Enter.                                                   
                                                                               
- Date of IPL started  . . . . . .                 Character value             
- Time of IPL started  . . . . . .                 Character value             
- Date of IPL ended  . . . . . . .                 Character value             
- Time of IPL ended  . . . . . . .                 Character value             
- Number of seconds for IPL  . . .                 Number                      
- Date of power down started . . .                 Character value             
- Time of power down started . . .                 Character value             
- Date of power down ended . . . .                 Character value             
- Time of power down ended . . . .                 Character value             
- Number of seconds for PWRDWN . .                 Number                      
+ CL var for STRIPLDAT    ( 8) . .                 Character value             
+ CL var for STRIPLTIM    ( 8) . .                 Character value             
+ CL var for ENDIPLDAT    ( 8) . .                 Character value             
+ CL var for ENDIPLTIM    ( 8) . .                 Character value             
+ CL var for IPLSEC      (5 0) . .                 Number                      
+ CL var for STRPWRDWND   ( 8) . .                 Character value             
+ CL var for STRPWRDWNT   ( 8) . .                 Character value             
+ CL var for ENDPWRDWND   ( 8) . .                 Character value             
+ CL var for ENDPWRDWNT   ( 8) . .                 Character value             
+ CL var for PWRDWNSEC   (5 0) . .                 Number                      
+                                                                              
+                                                                              
                                                                               
   
   Test Sample output:
