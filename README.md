@@ -23,6 +23,11 @@
 
 ## Command
 <ul>
+  <li>DateTime</li>
+  <ul>
+     <li>ADDDATE  - Add or Sub date</li>
+     <li>CVTDATE  - Convert date to other format</li>
+  </ul>
   <li>Data area</li>
   <ul>
      <li>EDTDTAARA  - Edit Data Area</li>
