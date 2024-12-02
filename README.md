@@ -23,12 +23,7 @@
 
 ## Command
 <ul>
-  <li>DateTime</li>
-  <ul>
-     <li>ADDDATE  - Add or Sub date</li>
-     <li>CVTDATE  - Convert date to other format</li>
-  </ul>
-  <li>Data area</li>
+ <li>Data area</li>
   <ul>
      <li>EDTDTAARA  - Edit Data Area</li>
      <li>RTVDTAARAD  - Retrieve Data Area Description</li>
@@ -42,6 +37,11 @@
   <li>RTNDTAQD - Return Data Queue Description CLP</li>
   <li>RTVDTAQD - Retrieve Data Queue Description</li>
   <li>SNDDTAQE - Send Data Queue Entry</li>
+  </ul>
+  <li>DateTime</li>
+  <ul>
+     <li>ADDDATE  - Add or Sub date</li>
+     <li>CVTDATE  - Convert date to other format</li>
   </ul>
   <li>IPL ( Initial Program Load )</li>
   <ul>
