@@ -70,7 +70,9 @@
   </ul>
    <li>Message</li>
    <ul>
+    <li>EDITC - Edit Code for number edited in CL</li>
     <li>MOVDIAGMSG - Move Diagnostic Message</li>
+    <li>MOVPGMMSG - Move Program Message</li>
     <li>RMVMSGKEY RTVMSGKEY - Two commands clear joblog message between message key</li>
     <li>RSNESCMSG - Resend Escape Message</li>
     <li>STRCLRDR  - Start CL Reader <a href="https://archive.midrange.com/midrange-l/200209/msg01318.html"> from midrange.com  MIDRANGE-L </li>
