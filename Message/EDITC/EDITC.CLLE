@@ -12,7 +12,7 @@
 /*  Programmer's notes:                                              */
 /*                                                                   */
 /*  Compile options:                                                 */
-/*    CrtClPgm   Pgm( EDITC  )                                       */
+/*    CrtBndPgm  Pgm( EDITC  )                                       */
 /*               SrcFile( QCLSRC )                                   */
 /*               SrcMbr( *PGM )                                      */
 /*                                                                   */
