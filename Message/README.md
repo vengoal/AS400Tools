@@ -25,3 +25,15 @@
                                                                                  
     Endpgm
 </pre>
+
+<h3>MOVPGMMSG, RSNESCMSG Usage:</h3>
+CL Error-Handling With APIs<br />
+https://www.itjungle.com/2012/05/02/fhg050212-story01/
+<code>
+MONMSG CPF0000 EXEC(GOTO ABEND)
+. . . more code . . .
+   RETURN
+ABEND:
+   MOVPGMMSG  MSGTYPE(*DIAG)
+   RSNESCMSG
+</code>
