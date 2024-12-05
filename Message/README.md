@@ -10,6 +10,7 @@
 <h3>EDITC</h3>
 <ul>
   <li>Editing Numbers in CL <br />https://www.itjungle.com/2005/08/10/fhg081005-story02/</li>
+  <li>The API Corner: Dynamically Editing a Numeric Value<br />https://www.mcpressonline.com/programming/apis/the-api-corner-dynamically-editing-a-numeric-value</li>
   <li>QECCVTEC<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/QECCVTEC.htm</li>
   <li>QECEDT<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/QECEDT.htm</li>
 </ul>
