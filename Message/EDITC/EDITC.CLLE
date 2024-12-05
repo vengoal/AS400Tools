@@ -1,0 +1,157 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : EDITC                                              */
+/*  Description : Edit number with edit code in CL                   */
+/*  Author  . . : Vengoa Chang                                       */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : December  2, 2024                                  */
+/*                                                                   */
+/*  Program function:                                                */
+/*                                                                   */
+/*                                                                   */
+/*  Programmer's notes:                                              */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtClPgm   Pgm( EDITC  )                                       */
+/*               SrcFile( QCLSRC )                                   */
+/*               SrcMbr( *PGM )                                      */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
+     Pgm      ( &NbrIn                                               +
+                &Digits                                              +
+                &Decimal                                             +
+                &EditCode                                            +
+                &RtnNbrEdt                                           +
+              )
+
+/*-- Global variables:  ---------------------------------------------*/
+     Dcl        &NbrIn            *Dec   ( 15 5 )
+     Dcl        &Digits           *Int
+     Dcl        &DgtC             *Char    Stg( *Defined )           +
+                                           Len( 1 )                  +
+                                           DefVar( &Digits 4 )
+     Dcl        &Decimal          *Int
+     Dcl        &DecC             *Char    Stg( *Defined )           +
+                                           Len( 1 )                  +
+                                           DefVar( &Decimal 4 )
+     Dcl        &EditCode         *Char     1
+     Dcl        &RtnNbrEdt        *Char    50
+
+/*-- Convert Edit Code (QECCVTEC) API Parm: -------------------------*/
+     Dcl        &EdtMsk           *Char  256
+     Dcl        &LenEdtMsk        *Int
+     Dcl        &LenEdtVal        *Int
+     Dcl        &ZeroSupr         *Char    1  ' '
+     Dcl        &EditCode         *Char    1  '1'
+     Dcl        &FillChr          *Char    1  ' '
+     Dcl        &Precision        *Int
+     Dcl        &DecPos           *Int
+
+     Dcl        &ErrCode          *Char  116
+     Dcl        &Provide          *Int     Stg( *Defined )           +
+                                           DefVar( &ErrCode 1 )
+     Dcl        &Avail            *Int     Stg( *Defined )           +
+                                           DefVar( &ErrCode 5 )
+
+/*-- Edit (QECEDT) API Parm:  ---------------------------------------*/
+     Dcl        &NbrEdited        *Char  256
+
+/* Set Attributes Data structure: -----------------------------------*/
+     Dcl        &ZonedOut         *Char    7
+     Dcl        &PackedInp        *Char    7
+
+     Dcl        &AtrDS            *Char    7
+     Dcl        &Atr_Type         *Char    Stg( *Defined )           +
+                                           Len( 1 )                  +
+                                           DefVar( &AtrDS 1 )
+     Dcl        &Atr_Dec          *Char    Stg( *Defined )           +
+                                           Len( 1 )                  +
+                                           DefVar( &AtrDS 2 )
+     Dcl        &Atr_Dgts         *Char    Stg( *Defined )           +
+                                           Len( 1 )                  +
+                                           DefVar( &AtrDS 3 )
+     Dcl        &Rsvd             *Int     Stg( *Defined )           +
+                                           DefVar( &AtrDS 4 )
+
+     Dcl        &Nbr              *Char   31
+     Dcl        &TmpBytes         *Char    4
+     Dcl        &Integer          *Int     Stg( *Defined )           +
+                                           DefVar( &TmpBytes 1 )
+
+/*-- Global error monitoring:  --------------------------------------*/
+     MonMsg     CPF0000     *N       GoTo Error
+
+/*-- Mainline -------------------------------------------------------*/
+     Chgvar     &Provide     116
+     Chgvar     &Avail       0
+
+     Chgvar     &Precision   &Digits
+     Chgvar     &DecPos      &Decimal
+
+     Call       QECCVTEC   ( &EdtMsk                                 +
+                             &LenEdtMsk                              +
+                             &LenEdtVal                              +
+                             &ZeroSupr                               +
+                             &EditCode                               +
+                             &FillChr                                +
+                             &Precision                              +
+                             &DecPos                                 +
+                             &ErrCode                                +
+                           )
+
+/*-- ZonedOut -------------------------------------------------------*/
+     Chgvar     &Atr_Type    X'02'
+     Chgvar     &Atr_Dec     &DecC
+     Chgvar     &Atr_Dgts    &DgtC
+     Chgvar     &Rsvd        0
+     Chgvar     &ZonedOut    &AtrDS
+
+/*-- PackedInp ------------------------------------------------------*/
+     Chgvar     &Atr_Type    X'03'
+     Chgvar     &Integer     5
+     Chgvar     &Atr_Dec     %SST( &TmpBytes 4 1 )
+     Chgvar     &Integer     15
+     Chgvar     &Atr_Dgts    %SST( &TmpBytes 4 1 )
+     Chgvar     &Rsvd        0
+     Chgvar     &PackedInp   &AtrDS
+
+     CallPrc     '_LBCPYNV' ( &Nbr                                   +
+                              &ZonedOut                              +
+                              &NbrIn                                 +
+                              &PackedInp                             +
+                            )
+
+     Chgvar     &Avail       0
+     Call       QECEDT     ( &NbrEdited                              +
+                             &LenEdtVal                              +
+                             &Nbr                                    +
+                             *ZONED                                  +
+                             &Precision                              +
+                             &EdtMsk                                 +
+                             &LenEdtMsk                              +
+                             &FillChr                                +
+                             &ErrCode                                +
+                           )
+
+     Chgvar     &RtnNbrEdt   %SST( &NbrEdited 1 &LenEdtVal)
+
+ Return:
+     Return
+
+/*-- Error processor ------------------------------------------------*/
+ Error:
+     Call      QMHMOVPM    ( '    '                             +
+                             '*DIAG'                            +
+                             x'00000001'                        +
+                             '*PGMBDY   '                       +
+                             x'00000001'                        +
+                             x'0000000800000000'                +
+                           )
+
+     Call      QMHRSNEM    ( '    '                             +
+                             x'0000000800000000'                +
+                           )
+
+
+ EndPgm:
+     EndPgm
