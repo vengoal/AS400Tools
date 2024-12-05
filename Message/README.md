@@ -7,6 +7,13 @@
   <li><a href="https://archive.midrange.com/midrange-l/201408/msg00065.html">Attempting to remove message CPI2201 from joblog</a></li>
 </ul>
 
+<h3>EDITC</h3>
+<ul>
+  <li>Editing Numbers in CL <br />https://www.itjungle.com/2005/08/10/fhg081005-story02/</li>
+  <li>QECCVTEC<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/QECCVTEC.htm</li>
+  <li>QECEDT<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/QECEDT.htm</li>
+</ul>
+
 <h3>MOVDIAGMSG, RSNESCMSG Usage:</h3>
 <pre>
      Pgm
