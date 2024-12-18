@@ -46,3 +46,19 @@ ABEND:
    MOVPGMMSG  MSGTYPE(*DIAG)
    RSNESCMSG
 </code>
+
+<h3>SNDSCPMSG</h3>
+<code>
+                         Send Scope Message (SNDSCPMSG)                         
+                                                                                
+ Type choices, press Enter.                                                     
+                                                                                
+ Type . . . . . . . . . . . . . .                 *EXT, *PGM, *CSE              
+ Exit program . . . . . . . . . .                 Name                          
+   Library  . . . . . . . . . . .     *CURLIB     Name, *CURLIB                 
+ Exit data  . . . . . . . . . . .                 Character value               
+                                                                                
+                                                                                
+
+</code>
+</code>
