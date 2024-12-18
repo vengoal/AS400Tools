@@ -5,6 +5,7 @@
   <li><a href="https://www.mcpressonline.com/programming/apis/the-api-corner-removing-error-messages-from-the-job-log">The API Corner: Removing Error Messages from the Job Log</a></li>
   <li><a href="https://www.mcpressonline.com/programming/apis/simons-solutions-prepared-to-be-surprised-by-qcmd">STRCLRDR -- Simon's Solutions: Prepared to Be Surprised by QCMD?</li>
   <li><a href="https://archive.midrange.com/midrange-l/201408/msg00065.html">Attempting to remove message CPI2201 from joblog</a></li>
+  <li><a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/QMHSNDSM.html">Send Scope Message (QMHSNDSM)</a> Sends a scope message that allows a user to specify a program to run when your program or job is completed.</li>
 </ul>
 
 <h3>EDITC</h3>
