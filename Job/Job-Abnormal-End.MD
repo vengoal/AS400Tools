@@ -1,6 +1,6 @@
 <h3>Handling Job Abnormal End</h3>
 <ul>
-<li>Using the <a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/QMHSNDSM.html">QMHSNDSM</a> API, you can identify a program to call when the job or call stack entry ends.<br />Use SNDSCPMSG set job exit program</li>
+<li>Using the <a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/QMHSNDSM.html">QMHSNDSM</a> API, you can identify a program to call when the job or call stack entry ends.<br />Use <a href="https://github.com/vengoal/AS400Tools/blob/main/Message/SNDSCPMSG.CMD">SNDSCPMSG</a> set job exit program</li>
 <li>Practical RPG: Handling Abnormal Termination in Servers<br />https://www.mcpressonline.com/programming/rpg/practical-rpg-handling-abnormal-termination-in-servers</li>
 <code>
      h dftactgrp(*no) actgrp(*new) option(*srcstmt:*nodebugio)
