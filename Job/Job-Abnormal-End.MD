@@ -69,6 +69,7 @@
 </code>
 </li>
 </ul>
+<li>Simon's Solutions: Monitor for End Job Operations, Part I<br />https://www.mcpressonline.com/programming/rpg/simons-solutions-monitor-for-end-job-operations-part-i</li>
 <li>Simon's Solutions: Monitor for End Job Operations, Part II<br />https://www.mcpressonline.com/programming/rpg/simons-solutions-monitor-for-end-job-operations-part-ii</li>
 <ul>
 <li>EOJ11.RPGLE<code>
