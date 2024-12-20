@@ -2,6 +2,8 @@
 <ul>
 <li>Using the <a href="https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/QMHSNDSM.html">QMHSNDSM</a> API, you can identify a program to call when the job or call stack entry ends.<br />Use <a href="https://github.com/vengoal/AS400Tools/blob/main/Message/SNDSCPMSG.CMD">SNDSCPMSG</a> set job exit program</li>
 <li>Practical RPG: Handling Abnormal Termination in Servers<br />CEERTX is the ILE RPG version of the concept and allows you to identify a procedure to be called if your call stack entry is terminated.<br />https://www.mcpressonline.com/programming/rpg/practical-rpg-handling-abnormal-termination-in-servers</li>
+<ul>
+<li>sample 1:
 <code>
      h dftactgrp(*no) actgrp(*new) option(*srcstmt:*nodebugio)
  
@@ -66,4 +68,5 @@
      p                 e
 </code>
 </li>
+</ul>
 </ul>
