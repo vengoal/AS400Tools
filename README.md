@@ -51,6 +51,7 @@
   <ul>
   <li>ENDALLJOB - End All Jobs with job name</li>
   <li>RTVEXITKEY - Retrieve Exit(F3 or F12) Key</li>
+  <li>RTVJOBMSGW - Retrieve Job MSGW information</li>
   </ul>
    <li>JobD - Job Job Description</li>
   <ul>
