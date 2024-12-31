@@ -1,5 +1,5 @@
 <h4>Watch for Event</h4>
-
+https://vengoal.blogspot.com/p/ibm-i-exit-point-and-exit-program.html
 <ul>
 <li>STRWCH - Watch Exit Programs Explained with CL Example<br />https://www.ibm.com/support/pages/strwch-watch-exit-programs-explained-cl-example</li>
 <li>watch program error source member list<code>
