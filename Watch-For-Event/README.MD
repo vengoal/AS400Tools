@@ -19,7 +19,8 @@ Create message queue<br /><code>
 CRTMSGQ MSGQ(QGPL/JOBDUMP) MSGQFULL(*WRAP)
 Call WCHPGMERR
 </code>
-to start watch program for program error event.
+to start watch program for program error event.>br />
+all error message sent to msgq QGPL/JOBDUMP and reply program error message with 'D'。
 </li>
 <li>Watch message queue QSYSMSG<br />https://www.ibm.com/docs/en/i/7.5?topic=messages-qsysmsg-message-queue</li>
 </ul>
