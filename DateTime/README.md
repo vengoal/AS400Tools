@@ -15,4 +15,10 @@
     <li>CVTDATE.CMD   - CVTDATE command</li>
     <li>CVTDATET.CLP  - CVTDATE test program</li>
   </ul>
+   <li>CVTDTS - Convert System DTS to YYMD Date</li>
+  <ul>
+    <li>CVTDTS.CLP  - CVTDTS Command Processing Prpgram</li>
+    <li>CVTDTS.CMD   - CVTDTS command</li>
+    <li>CVTDTST.CLP  - CVTDTS test program</li>
+  </ul>
 </ul>
