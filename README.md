@@ -109,4 +109,9 @@
     <li>EDTUSRSPC - Edit User Space</li>
     <li>RTVUSRSPC - Retrieve User Space</li>
   </ul>
+  <li>Watch-For-Event</li>
+      <ul>
+        <li>Watch program error</li>
+        <li>Watch message queue QSYS/QSYSMSG</li>
+      </ul>
 </ul>
