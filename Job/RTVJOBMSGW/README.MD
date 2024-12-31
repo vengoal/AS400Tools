@@ -1,4 +1,9 @@
 <h4>RTVJOBMSGW - Retrieve Job msg waiting information</h4>
+<ul>
+<li>CRTCLPGM  PGM(lib/RTVJOBMSGW) SrcFile(lib/QCLSRC) SrcMbr(RTVJOBMSGW)</li>
+<li>CRTCMD CMD(lib/RTVJOBMSGW) SrcFile(QCMDSRC) SrcMbr(RTVJOBMSGW) ALLOW(*BPGM *IPGM)</li>
+<li>CRTCLPGM PGM(lib/RTVJOBMSGT) SrcFile(lib/QCLSRC) SrcMbr(RTVJOBMSGT) Text('TEST Job RTVJOBMSGW command')</li>
+<li>
 <code>
                    Retrieve Job MSGW Information (RTVJOBMSGW)                   
                                                                                 
@@ -47,6 +52,6 @@
                                                                          Bottom 
  F3=Exit   F4=Prompt   F5=Refresh   F12=Cancel   F13=How to use this display    
  F24=More keys                                                                  
-</code>
+</code></li>
 <ul>
 </ul>
