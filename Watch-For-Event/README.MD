@@ -15,8 +15,8 @@ Opt  Member      Type        Text
      WCHRPG11XX  CLP         Watch RPG   Pgm Error message RPG11* - RPG19*     
 </code>
 Compile above member to QGPL，
-Create message queue 
+Create message queue<br /><code> 
 CRTMSGQ MSGQ(QGPL/JOBDUMP) MSGQFULL(*WRAP)
-Call WCHPGMERR to Start Watch Program.
+Call WCHPGMERR </code>to Start Watch Program.
 </li>
 </ul>
