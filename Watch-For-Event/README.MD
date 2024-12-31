@@ -21,4 +21,5 @@ Call WCHPGMERR
 </code>
 to start watch program for program error event.
 </li>
+<li>Watch message queue QSYSMSG<br />https://www.ibm.com/docs/en/i/7.5?topic=messages-qsysmsg-message-queue</li>
 </ul>
