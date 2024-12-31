@@ -1,5 +1,6 @@
 <h4>RTVJOBMSGW - Retrieve Job msg waiting information</h4>
 <ul>
+<li>Retrieve Job Information (QUSRJOBI) API format JOBI0200<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/qusrjobi.htm</li>
 <li>CRTCLPGM  PGM(lib/RTVJOBMSGW) SrcFile(lib/QCLSRC) SrcMbr(RTVJOBMSGW)</li>
 <li>CRTCMD CMD(lib/RTVJOBMSGW) SrcFile(QCMDSRC) SrcMbr(RTVJOBMSGW) ALLOW(*BPGM *IPGM)</li>
 <li>CRTCLPGM PGM(lib/RTVJOBMSGT) SrcFile(lib/QCLSRC) SrcMbr(RTVJOBMSGT) Text('TEST Job RTVJOBMSGW command')</li>
