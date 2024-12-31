@@ -17,6 +17,7 @@
   </ul>
    <li>CVTDTS - Convert System DTS to YYMD Date</li>
   <ul>
+    <li>Convert Date and Time Format (QWCCVTDT) API<br />https://www.ibm.com/docs/en/ssw_ibm_i_75/apis/qwccvtdt.htm</li>
     <li>CVTDTS.CLP  - CVTDTS Command Processing Prpgram</li>
     <li>CVTDTS.CMD   - CVTDTS command</li>
     <li>CVTDTST.CLP  - CVTDTS test program</li>
