@@ -17,7 +17,8 @@ Opt  Member      Type        Text
 Compile above member to QGPL，<br />
 Create message queue<br /><code>
 CRTMSGQ MSGQ(QGPL/JOBDUMP) MSGQFULL(*WRAP)
-Call WCHPGMERR</code>
+Call WCHPGMERR
+</code>
 to Start Watch Program.
 </li>
 </ul>
