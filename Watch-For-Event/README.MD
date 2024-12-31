@@ -2,7 +2,7 @@
 
 <ul>
 <li>STRWCH - Watch Exit Programs Explained with CL Example<br />https://www.ibm.com/support/pages/strwch-watch-exit-programs-explained-cl-example</li>
-<li>MBRLIST<code>
+<li>watch program error source member list<code>
 Opt  Member      Type        Text                                              
      WCHCPA070X  CLP         Watch CLP and CLLE Pgm Error message CPA070*      
      WCHPGMERR   CLP         Watch RPGLE RPG CLP CLLE PGM error                
@@ -19,6 +19,6 @@ Create message queue<br /><code>
 CRTMSGQ MSGQ(QGPL/JOBDUMP) MSGQFULL(*WRAP)
 Call WCHPGMERR
 </code>
-to Start Watch Program.
+to start watch program for program error event.
 </li>
 </ul>
