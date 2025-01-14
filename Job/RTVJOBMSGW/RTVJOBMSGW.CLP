@@ -12,6 +12,18 @@
 /*      QCPFMSG   CPA0701                                            */
 /*                CPA0702                                            */
 /*                                                                   */
+/*      QRPGMSGE  RPG0100                                            */
+/*                RPG0200                                            */
+/*                RPG0300                                            */
+/*                RPG0400                                            */
+/*                RPG0500                                            */
+/*                RPG0800                                            */
+/*                RPG0900                                            */
+/*                RPG1000                                            */
+/*                RPG1100                                            */
+/*                RPG1200                                            */
+/*                RPG1300                                            */
+/*                                                                   */
 /*      QRNXMSG   RNQ0100 RNQ0102                                    */
 /*                                                                   */
 /*                RNQ0200                                            */
@@ -164,6 +176,7 @@
     Monmsg     MCH3601
     ChgVar     &RtnMsgFLib   &MsgFLib
     Monmsg     MCH3601
+
     Select
     When     ( &MsgId *EQ 'CPA0701'   *OR                       +
                &MsgId *EQ 'CPA0702' )    Do
@@ -176,6 +189,66 @@
     Chgvar     &ErrPgmStmt   %sst(&MsgDta 28 10 )
     Monmsg     MCH3601
     EndDo
+    When     ( &MsgId *EQ 'RPG0120' )    Do
+    Chgvar     &ErrPgm       %sst(&MsgDta  1 10 )
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmLib    %sst(&MsgDta 21 10 )
+    Monmsg     MCH3601
+    Chgvar     &ErrMsgId     &MsgId
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmStmt   ' '
+    Monmsg     MCH3601
+    EndDo
+    When     ( %SST(&MsgId 1 5) *EQ 'RPG01'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG02'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG03'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG04'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG05'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG08'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG09'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG10'  )        Do
+    Chgvar     &ErrPgm       %sst(&MsgDta  1 10 )
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmLib    %sst(&MsgDta 21 10 )
+    Monmsg     MCH3601
+    Chgvar     &ErrMsgId     &MsgId
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmStmt   %sst(&MsgDta 11 10 )
+    Monmsg     MCH3601
+
+    If       ( &MsgId        *EQ  'RPG0120' )         Do
+    Chgvar     &ErrPgmStmt   ' '
+    Monmsg     MCH3601
+    EndDo
+
+    If       ( &MsgId        *EQ  'RPG0299' )         Do
+    Chgvar     &ErrPgm       ' '
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmLib    ' '
+    Monmsg     MCH3601
+    Chgvar     &ErrMsgId     &MsgId
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmStmt   ' '
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmStmt   ' '
+    Monmsg     MCH3601
+    EndDo
+    EndDo
+
+    When     ( %SST(&MsgId 1 5) *EQ 'RPG11'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG12'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG13'  *Or                +
+               %SST(&MsgId 1 5) *EQ 'RPG19'  )        Do
+    Chgvar     &ErrPgm       %sst(&MsgDta  1 10 )
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmLib    %sst(&MsgDta 11 10 )
+    Monmsg     MCH3601
+    Chgvar     &ErrMsgId     %sst(&MsgDta 21  7 )
+    Monmsg     MCH3601
+    Chgvar     &ErrPgmStmt   %sst(&MsgDta 28 10 )
+    Monmsg     MCH3601
+    EndDo
+
     When     ( %SST(&MsgId 1 3) *EQ 'RNQ')  Do
     Chgvar     &ErrPgm       %sst(&MsgDta 11 10 )
     Monmsg     MCH3601
@@ -188,7 +261,7 @@
     EndDo
     EndSelect  /* End &MsgId  */
 
-    DMPCLPGM
+ /* DMPCLPGM                  */
 
     EndDo    /* End &MsgRpy */
 
