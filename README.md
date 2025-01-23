@@ -1,4 +1,4 @@
-# AS400Tools
+# AS400Tools (IBM i Tools)
 
 ## Exit Program
 <ul>
@@ -86,10 +86,15 @@
   <ul>
     <li>SCNMSGF - Scan Message File</li>
   </ul>
+  <li>MQ</li>
+  <ul>
+  <li>CLRMQMSG - Clear MQ Expired Message</li>  
+  </ul>
+  
   <li>Program or Service Program</li>
   <ul>
     <li>RTVSRC - Retrieve ILE Source Code by Chris Stead</li>
-  </ul>
+  </ul>  
   <li>SSF - Search Spool File <a href="https://www.itjungle.com/2024/01/15/guru-using-mixed-lists-to-add-data-structures-to-cl-commands/">Guru: Using Mixed Lists To Add “Data Structures” To CL Commands</a></li>
   <li>Save Restore</li>
   <ul>    
