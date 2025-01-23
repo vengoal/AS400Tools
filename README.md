@@ -89,6 +89,7 @@
   <li>MQ</li>
   <ul>
   <li>CLRMQMSG - Clear MQ Expired Message</li>  
+  <li>JYMONMQ - Monitor queue manager, channels, and queue using PCF.</li>
   </ul>
   
   <li>Program or Service Program</li>
