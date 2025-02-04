@@ -30,6 +30,17 @@ AMQRCMLA	Channel MQSC and PCF command processor.
 <h4>MQ Job started sequence for every queue manager</h4>
 <ol>
 <li>AMQZXMA0</li>
-<li>AMQALMPX</li>
+<li>AMQZFUMA</li>
 <li>AMQZMUC0</li>
+<li>AMQALMPX</li>
+<li>AMQZMUR0</li>
+<li>AMQZMUF0</li>
+<li>AMQRRMFA</li>
+<li>AMQZMGR0</li>
+<li>AMQFQPUB</li>
+<li>RUNMQCHI</li>
+<li>AMQFCXBA</li>
+<li>AMQPCSEA</li>
+<li>RUNMQLSR</li>
+<li>AMQZLAA0</li>
 </ol>
