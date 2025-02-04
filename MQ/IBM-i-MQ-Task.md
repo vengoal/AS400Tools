@@ -1,5 +1,5 @@
 https://www.ibm.com/docs/en/ibm-mq/9.0?topic=i-mq-tasks
-<h4>Table 1. IBM MQ tasks</h4>
+<h4>Table 1. IBM i MQ tasks</h4>
 <pre>
 Job name        Function
 AMQALMPX	The checkpoint processor that periodically takes journal checkpoints.
