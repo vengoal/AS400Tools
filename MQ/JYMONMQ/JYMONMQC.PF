@@ -1,0 +1,9 @@
+                R MQCONST                   TEXT('MQ CONSTANTS')                                            
+                                                                                                            
+                  MQRC           9B 0       COLHDG('MQRC')                                                  
+                  MQID          10          COLHDG('MQID')                                                  
+                  MQDESC        30          COLHDG('MQDESC')                                                
+                  MQSHORT       10          COLHDG('MQSHORT')                                               
+                                                                                                            
+                K MQRC                                                                                      
+                K MQID                                                                                      
