@@ -4,6 +4,7 @@ https://www.mcpressonline.com/programming-other/development-tools/techtip-websph
 <li>JYMONMQ -  Monitor queue manager, channels, and queue using PCF</li>
 <li>MQPRTEV</li>
 <ul>
+  <li>MQ Event monitoring -- https://www.ibm.com/docs/en/ibm-mq/9.4?topic=network-event-monitoring</li>
   <li>CRTPF FILE( lib/JYMONMQC ) SrcFile(lib/QDDSSRC) SrcMbr( JYMONMQC )</li>
   <li>ftp upload JYMONMQC.dat to file lib/JYMONMQC</li>
   <li>ADDLIBLE QMQM</li>
