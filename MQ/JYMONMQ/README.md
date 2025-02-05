@@ -6,7 +6,7 @@ https://www.mcpressonline.com/programming-other/development-tools/techtip-websph
 <ul>
   <li>ADDLIBLE QMQM
   <li>CRTRPGMOD MODULE( lib/MQPRTEVR )</li>
-  <li>CRTPGM ( lib/MQPRTEVR ) BNDSRVPGM(QMQM/LIBMQM)</li>
+  <li>CRTPGM ( lib/MQPRTEVR ) BNDSRVPGM( QMQM/LIBMQM )</li>
   <li>CRTCMD CMD( lib/MQPRTEV ) PGM( lib/MQPRTEVR )</li>
 </ul>
 </ul>
