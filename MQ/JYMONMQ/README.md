@@ -38,7 +38,7 @@ https://www.mcpressonline.com/programming-other/development-tools/techtip-websph
 -----------------------------------------------------------------------------------------------------------------------------
 MQEVENT  05/02/2025 01:45:10 MQCMD_Q_MGR_EVENT              MQCC_WARNING                   MQRC_Q_MGR_ACTIVE                 
                              MQCA_Q_MGR_NAME                TEST1                                                            
-                             MQCACF_HOST_NAME               xxx.xxx.xxx.xxx                                                
+                             MQCACF_HOST_NAME               xxx.xxx.xxx.xxx                                                  
                              MQIACF_REASON_QUALIFIER        31                                                               
 </code>
 </ul>
