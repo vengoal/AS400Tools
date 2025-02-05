@@ -33,5 +33,13 @@ https://www.mcpressonline.com/programming-other/development-tools/techtip-websph
  F3=Exit   F4=Prompt   F5=Refresh   F12=Cancel   F13=How to use this display   
  F24=More keys                                                                 
   </code>
+<li>Sample Output</li>
+<code>
+-------------------------------------------------------------------------------------------------------------------------------
+MQEVENT  05/02/2025 01:45:10 MQCMD_Q_MGR_EVENT              MQCC_WARNING                   MQRC_Q_MGR_ACTIVE                   
+                             MQCA_Q_MGR_NAME                TEST1                                                              
+                             MQCACF_HOST_NAME               xxx.xxx.xxx.xxx                                                
+                             MQIACF_REASON_QUALIFIER        31                                                                 
+</code>
 </ul>
 </ul>
