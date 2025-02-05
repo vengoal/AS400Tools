@@ -4,7 +4,9 @@ https://www.mcpressonline.com/programming-other/development-tools/techtip-websph
 <li>JYMONMQ -  Monitor queue manager, channels, and queue using PCF</li>
 <li>MQPRTEV</li>
 <ul>
-  <li>ADDLIBLE QMQM
+  <li>CRTPF FILE( lib/JYMONMQC ) SrcFile(lib/QDDSSRC) SrcMbr( JYMONMQC )</li>
+  <li>ftp upload JYMONMQC.dat to file lib/JYMONMQC</li>
+  <li>ADDLIBLE QMQM</li>
   <li>CRTRPGMOD MODULE( lib/MQPRTEVR )</li>
   <li>CRTPGM ( lib/MQPRTEVR ) BNDSRVPGM( QMQM/LIBMQM )</li>
   <li>CRTCMD CMD( lib/MQPRTEV ) PGM( lib/MQPRTEVR )</li>
