@@ -1,5 +1,5 @@
 <h4>HTTPS function</h4>
-<h4>GRANTING USERS PERMISSION TO RUN TLS (SSL) APPLICATIONS</h4>
+<h4>Grant key store authority to user which running TLS (SSL) applications</h4>
 <ul>
 <li>When you got GSKit Error is 6003 - Access to the key database is not allowed, <br/ >please check under which user profile this job executes.<br/ >
 This user needs *RX access to all of these directories, as well as OBJEXIST authority:
