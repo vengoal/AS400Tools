@@ -1,6 +1,6 @@
 <h4>HTTPS function</h4>
 
-<h4>Grant key store authority to user which running TLS (SSL) applications</h4>
+<h4>Grant certificate store file authority to user which running TLS (SSL) applications</h4>
 <ul>
 <li>When you got GSKit Error is 6003 - Access to the key database is not allowed, <br />the user profile which make HTTP request must have READ access to the certificate store file.<br />
 The default system certificate store located on this path:<br />
