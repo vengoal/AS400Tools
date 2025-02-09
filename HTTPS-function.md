@@ -1,5 +1,6 @@
 <h4>HTTPS function</h4>
 <ul>
+ <li>New HTTP functions based in QSYS2 - https://www.ibm.com/support/pages/node/6486889</li>
  <li>HTTP functions overview - https://www.ibm.com/docs/en/i/7.5?topic=programming-http-functions-overview</li>
  <li>HTTP options - https://www.ibm.com/docs/en/i/7.5?topic=functions-http-get-http-get-blob#rbafzscahttpget__HTTP_options</li>
 </ul>
