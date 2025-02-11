@@ -11,7 +11,7 @@
 The default system certificate store located on this path:<br />
 /QIBM/USERDATA/ICSS/CERT/SERVER/DEFAULT.KDB<br /><br />
 This user needs *RX access to all of these directories:
-<pre>
+<code>
 /                                   (*PUBLIC default authority *RWX) 
 /QIBM                               (*PUBLIC default authority *RX)
 /QIBM/UserData                      (*PUBLIC default authority *RX)
@@ -23,7 +23,7 @@ And also need *R access as well as OBJEXIST authority to these files:
 
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB      (*PUBLIC default authority *EXCLUDE)
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)
-Or, the user must have *ALLOBJ authority</pre></li>
+Or, the user must have *ALLOBJ authority</code></li>
 <li>
 Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
  CHGAUT OBJ('/') +
