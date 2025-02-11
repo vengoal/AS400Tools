@@ -18,6 +18,7 @@ This user needs *RX access to all of these directories:
 /QIBM/UserData/ICSS                 (*PUBLIC default authority *RX)
 /QIBM/UserData/ICSS/Cert            (*PUBLIC default authority *RX)
 /QIBM/UserData/ICSS/Cert/Server     (*PUBLIC default authority *EXCLUDE)
+ 
 And also need *R access as well as OBJEXIST authority to these files:
 
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB      (*PUBLIC default authority *EXCLUDE)
