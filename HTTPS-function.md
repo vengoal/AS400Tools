@@ -22,12 +22,10 @@ This user needs *RX access to all of these directories:
 And also need *R access as well as OBJEXIST authority to these files:
 <pre>
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB      (*PUBLIC default authority *EXCLUDE)
-/QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)
-</pre>
+/QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)</pre>
 Or, the user must have *ALLOBJ authority
 <li>
-Grant authority as following commands...(Change 'youruser' to the https function running userid)
-<code>
+Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
  CHGAUT OBJ('/') +
         USER(youruser) DTAAUT(*RX)
  CHGAUT OBJ('/QIBM') +
@@ -43,7 +41,6 @@ Grant authority as following commands...(Change 'youruser' to the https function
  CHGAUT OBJ('/QIBM/UserData/ICSS/CERT/SERVER/DEFAULT.KDB')
         USER(youruser) DTAAUT(*R)
  CHGAUT OBJ('/QIBM/UserData/ICSS/CERT/SERVER/DEFAULT.RDB')
-        USER(youruser) DTAAUT(*R)
-  </code>
+        USER(youruser) DTAAUT(*R)  </code>
 </li>
 </ul>
