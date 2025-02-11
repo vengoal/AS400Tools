@@ -10,18 +10,18 @@
 <li>When you got GSKit Error is 6003 - Access to the key database is not allowed, <br />the user profile which make HTTP request must have READ access to the certificate store file.<br /><br />
 The default system certificate store located on this path:<br />
 /QIBM/USERDATA/ICSS/CERT/SERVER/DEFAULT.KDB<br /><br />
-This user needs *RX access to all of these directories, as well as OBJEXIST authority:
+This user needs *RX access to all of these directories:
 <pre>
-/QIBM
-/QIBM/UserData
-/QIBM/UserData/ICSS
-/QIBM/UserData/ICSS/Cert
-/QIBM/UserData/ICSS/Cert/Server</li>
+/QIBM                               (*PUBLIC default authority *RX)
+/QIBM/UserData                      (*PUBLIC default authority *RX)
+/QIBM/UserData/ICSS                 (*PUBLIC default authority *RX)
+/QIBM/UserData/ICSS/Cert            (*PUBLIC default authority *RX)
+/QIBM/UserData/ICSS/Cert/Server     (*PUBLIC default authority *EXCLUDE)</li>
 </pre>
 And also need *R access as well as OBJEXIST authority to these files:
 <pre>
-/QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB
-/QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB
+/QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB      (*PUBLIC default authority *EXCLUDE)
+/QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)
 </pre>
 Or, the user must have *ALLOBJ authority
 <li>
