@@ -27,7 +27,7 @@ And also need *R access as well as OBJEXIST authority to these files:
 Or, the user must have *ALLOBJ authority
 <li>
 Grant authority as following commands...(Change 'youruser' to the https function running userid)
-<pre>
+<code>
  CHGAUT OBJ('/') +
         USER(youruser) DTAAUT(*RX)
  CHGAUT OBJ('/QIBM') +
@@ -44,6 +44,6 @@ Grant authority as following commands...(Change 'youruser' to the https function
         USER(youruser) DTAAUT(*R)
  CHGAUT OBJ('/QIBM/UserData/ICSS/CERT/SERVER/DEFAULT.RDB')
         USER(youruser) DTAAUT(*R)
-  </pre>
+  </code>
 </li>
 </ul>
