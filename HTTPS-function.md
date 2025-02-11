@@ -17,13 +17,12 @@ This user needs *RX access to all of these directories:
 /QIBM/UserData                      (*PUBLIC default authority *RX)
 /QIBM/UserData/ICSS                 (*PUBLIC default authority *RX)
 /QIBM/UserData/ICSS/Cert            (*PUBLIC default authority *RX)
-/QIBM/UserData/ICSS/Cert/Server     (*PUBLIC default authority *EXCLUDE)</li>
-</pre>
+/QIBM/UserData/ICSS/Cert/Server     (*PUBLIC default authority *EXCLUDE)</li></pre>
 And also need *R access as well as OBJEXIST authority to these files:
 <pre>
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB      (*PUBLIC default authority *EXCLUDE)
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)</pre>
-Or, the user must have *ALLOBJ authority
+<p>Or, the user must have *ALLOBJ authority
 <li>
 Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
  CHGAUT OBJ('/') +
