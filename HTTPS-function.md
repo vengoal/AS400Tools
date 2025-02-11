@@ -22,8 +22,8 @@ This user needs *RX access to all of these directories:
 And also need *R access as well as OBJEXIST authority to these files:
 
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB      (*PUBLIC default authority *EXCLUDE)
-/QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)</pre>
-<p>Or, the user must have *ALLOBJ authority</li>
+/QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)
+Or, the user must have *ALLOBJ authority</pre></li>
 <li>
 Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
  CHGAUT OBJ('/') +
