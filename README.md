@@ -109,6 +109,10 @@
       <ul>
         <li>WRKLPR - WRKLPR - The Work with LPR Utility</li>
       </ul>
+  <li>TCP</li>
+  <ul>
+    <li>RTVTCPSTS - Retrieve TCP status</li>
+  </ul>
   <li>User space</li>
    <ul>
     <li>CRTUSRSPC - Create User Space</li>
