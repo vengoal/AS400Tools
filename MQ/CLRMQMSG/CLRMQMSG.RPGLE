@@ -6,10 +6,10 @@
      **  Date  . . . : January 23, 2025
      **
      **
-     **
      **  Programmer's notes:
-     **   Exceptions signaled:  none
-     **   Exceptions monitored: none
+     **   Update Date: February 13, 2025
+     **   Desc       : Add QUTCOFFET for MQ local time
+     **
      **
      **   CLRMQMSG has 3 parameters - (1) name of the target queue
      **                               (2) name of the queue manager
@@ -30,7 +30,7 @@
      **
      **
      **-- Header specifications:  --------------------------------------------**
-     H Option( *SrcStmt )
+     H Debug Option( *SrcStmt )
 
      FQSYSPRT   O    F  132        PRINTER
       *  Connection handle
@@ -66,6 +66,41 @@
      D MQGMO           DS
      I/COPY CMQGMOG
 
+      *----------------------------------------------------------------
+      * QWCRSVAL - retrieve system values
+      *----------------------------------------------------------------
+     D QWCRSVAL        PR                  extpgm('QWCRSVAL')
+     D  qsva_rcv                  32767a          Options( *VarSize )
+     D  qsva_rcvL                    10i 0 const
+     D  qsva_sysL                    10i 0 const
+     D  qsva_sysv                    20a   Const
+     D  apierrorDs                         likeDs(APIErrorDS)
+     D** system values
+     D qsva_rcvL       s             10i 0 inz(120)
+     D qsva_sysL       s             10i 0 inz(2)
+     D qsva_sysv       ds            40
+     D  TIMZON                       10    inz('QTIMZON')
+     D  UTCOFFSET                    10    inz('QUTCOFFSET')
+
+     D qsva_rcv        ds
+     D  rtnval                       10i 0
+     D  sysoff                       10i 0 dim(2)
+     D  systable                    256
+
+     D SysValInfo      DS                  Based( pSysVal )
+     D  RtnSysVal                    10
+     D  DataType                      1
+     D  InfStatus                     1
+     D  DataLen                      10I 0
+     D  SysvalueC                   256
+
+     D APIErrorDS      DS
+     D  BytesProvided                10I 0 Inz( %Size( APIErrorDS ) )
+     D  BytesAvail                   10I 0 Inz( *Zero )
+     D  MsgID                         7    Inz( *Blanks )
+     D  Reserved                      1    Inz( X'00' )
+     D  MsgDta                      256    Inz( *Blanks )
+
      D PUTDATE         S                   Like(MDPD)
      D PUTTIME         S                   Like(MDPT)
      D PUTDTC          S             26
@@ -73,6 +108,12 @@
      D DIFFSECS        S             10S 0
      D DLTMSGID        S                   Like(MDMID)
      D SECONDS         S              5
+     D QTIMZON         S             10
+     D QUTCOFFSET      DS             5
+     D  Sign                          1
+     D  Hours                         2S 0
+     D  Minutes                       2S 0
+     D Idx             S             10I 0
 
       ** note, sample uses defaults where it can
       *
@@ -87,6 +128,8 @@
      C                   PARM                    DLTEXPMSG         4
 
      C                   Move      SECONDSN      SECONDS
+
+     C                   Exsr      RTVUTCOFS
 
       ** indicate that sample program has started
      C                   MOVEL     'start'       STATUS            5
@@ -199,7 +242,14 @@
      C                                       %SUBST(PUTTIME:5:2) + '.' +
      C                                       %SUBST(PUTTIME:7:2) +
      C                                       '0000'
-     C                   eval      PUTDT   = %TimeStamp(PUTDTC) + %Hours(8)
+     C                   Select
+     C                   When      Sign = '+'
+     C                   eval      PUTDT   = %TimeStamp(PUTDTC) +
+     C                                       %Hours(Hours) + %Minutes(Minutes)
+     C                   When      Sign = '-'
+     C                   eval      PUTDT   = %TimeStamp(PUTDTC) -
+     C                                       %Hours(Hours) - %Minutes(Minutes)
+     C                   EndSl
      C                   eval      DIFFSECS= %DIFF(%TimeStamp() : PUTDT : *S)
      C                   If        DIFFSECS > SECONDSN
      C                   eval      DLTMSGID = MDMID
@@ -287,6 +337,25 @@
      C                   CALLP     MQGET(HCONN : HOBJ : MQMD : MQGMO :
      C                              BUFLEN : BUFPTR : MSGLEN : CCODE :
      C                              REASON)
+      *
+     C                   EndSr
+      ****************************************************************
+     C     RTVUTCOFS     BegSr
+      *
+     C                   callp     QWCRSVAL( qsva_rcv:
+     C                                       qsva_rcvL:
+     C                                       qsva_sysL:
+     C                                       qsva_sysv:
+     C                                       APIErrorDS)
+     C                   for       idx = 1 to rtnval
+     C                   eval      pSysVal = %Addr( qsva_rcv ) + sysoff(idx)
+     C                   Select
+     C                   when      RtnSysVal = 'QTIMZON'
+     C                   eval      QTIMZON   = %subst(SysvalueC:1:DataLen)
+     C                   when      RtnSysVal = 'QUTCOFFSET'
+     C                   eval      QUTCOFFSET= %subst(SysvalueC:1:DataLen)
+     C                   endsl
+     C                   endfor
       *
      C                   EndSr
       ****************************************************************
