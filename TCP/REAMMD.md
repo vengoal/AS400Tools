@@ -1,4 +1,5 @@
-<h4>RTVTCPSTS - Retrieve TCP Status</h4><code>
+<h4>RTVTCPSTS - Retrieve TCP Status</h4>
+<p><code>
                        Retrieve TCP/TP Status (RTVTCPSTS)                      
                                                                                
  Type choices, press Enter.                                                    
