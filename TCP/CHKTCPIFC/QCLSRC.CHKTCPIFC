@@ -1,0 +1,209 @@
+/*  ===============================================================  */
+/*  = Command ChkTcpIfc  CPP                                      =  */
+/*  =   ChkTcpIfc  CLLE                                           =  */
+/*  =   Paramater notes:                                          =  */
+/*  =     NetIfc   :Network interface address                     =  */
+/*  =                                                             =  */
+/*  = For V5R1 and later use                                      =  */
+/*  =                                                             =  */
+/*  = Usage in CLP:                                               =  */
+/*  =   ChkTcpIfc NETIFC( ip_address )                            =  */
+/*  =   MONMSG CPF9898 => Possible error as following:            =  */
+/*  =                     1. TCP/IP is not active.                =  */
+/*  =                     2. Interface address is not active.     =  */
+/*  =                     3. Interface address is not defined.    =  */
+/*  ===============================================================  */
+/*  = Date  : 2007/06/26                                          =  */
+/*  = Author: Vengoal Chang                                       =  */
+/*  ===============================================================  */
+
+PGM  (&NetIfc)
+
+             DCL        VAR(&NETIFC) TYPE(*CHAR) LEN(15)
+             DCL        VAR(&RCVVAR) TYPE(*CHAR) LEN(140)
+             DCL        VAR(&APIERR) TYPE(*CHAR) LEN(8) +
+                          VALUE(X'0000000000000000')
+             DCL        VAR(&TCPAFORMAT) TYPE(*CHAR) LEN(8) +
+                          VALUE('TCPA0100')
+             DCL        VAR(&NIFCFORMAT) TYPE(*CHAR) LEN(8) +
+                          VALUE('NIFC0100')
+             DCL        VAR(&RCVVARLEN) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&TCPSTKSTS) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&TCPSTKSTSN) TYPE(*DEC) LEN(10) VALUE(0)
+
+             DCL        VAR(&USP_NAME) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USP_LIB)    TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USP_QUAL)   TYPE(*CHAR) LEN(20)
+             DCL        VAR(&USP_TYPE)   TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USP_SIZE)   TYPE(*CHAR) LEN(4)
+             DCL        VAR(&USP_FILL)   TYPE(*CHAR) LEN(1)
+             DCL        VAR(&USP_AUT)    TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USP_TEXT)   TYPE(*CHAR) LEN(50)
+             DCL        VAR(&STARTPOS)   TYPE(*CHAR) LEN(4)
+             DCL        VAR(&DATALEN)    TYPE(*CHAR) LEN(4)
+             DCL        VAR(&HEADER)     TYPE(*CHAR) LEN(150)
+             DCL        VAR(&LST_OFFSET) TYPE(*DEC)  LEN(5 0)
+             DCL        VAR(&LST_SIZE)   TYPE(*DEC)  LEN(5 0)
+             DCL        VAR(&LST_DATA)   TYPE(*CHAR) LEN(4096)
+             DCL        VAR(&LST_NBR)    TYPE(*DEC)  LEN(5 0)
+             DCL        VAR(&LST_LEN)    TYPE(*DEC)  LEN(5 0)
+             DCL        VAR(&LST_LENBIN) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&LST_POSBIN) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&LST_COUNT)  TYPE(*DEC)  LEN(5) VALUE(0)
+             DCL        VAR(&EXC_COUNT)  TYPE(*DEC)  LEN(5) VALUE(0)
+
+             DCL        VAR(&INTNETADR)  TYPE(*CHAR) LEN(15)
+             DCL        VAR(&NETWORKADR) TYPE(*CHAR) LEN(15)
+             DCL        VAR(&HOSTADR)    TYPE(*CHAR) LEN(15)
+             DCL        VAR(&IFCSTSN)    TYPE(*DEC)  LEN(5) VALUE(0)
+             DCL        VAR(&IFCSTSC)    TYPE(*CHAR) LEN(5)
+             DCL        VAR(&NULL) TYPE(*CHAR) LEN(1) VALUE(X'00')
+             DCL        VAR(&idx ) TYPE(*dec ) LEN(5) VALUE(0)
+             DCL        VAR(&NETIFCDFN) TYPE(*CHAR) LEN(1)
+
+             DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+             DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(256)
+             DCL        VAR(&MSGF) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&MSGFLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&MSGTXT) TYPE(*CHAR) LEN(256)
+
+             MONMSG     MSGID(CPF0000 MCH0000) EXEC(GOTO CMDLBL(ERROR))
+
+             chgvar %Bin(&RcvVarLen) 140
+             callprc 'QtocRtvTCPA' ( +
+                                    &RcvVar    +
+                                    &RcvVarLen +
+                                    &TCPAFormat    +
+                                    &ApiErr)
+
+             ChgVar  &TcpStkSts     %SST(&RcvVar 9 4)
+             ChgVar  &TcpStkStsn    %bin(&TcpStkSts)
+
+             IF      (&TCPStkStsn *EQ 0) DO
+               SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('TCP/IP +
+                          status is not active.') MSGTYPE(*ESCAPE)
+             ENDDO
+
+             CHGVAR     VAR(&USP_NAME) VALUE('CHKTCPIFC' )
+             CHGVAR     VAR(&USP_LIB)  VALUE('QTEMP')
+             CHGVAR     VAR(&USP_QUAL) VALUE(&USP_NAME *CAT +
+                          &USP_LIB)
+             CHGVAR     VAR(&USP_TYPE) VALUE('MYTYPE')
+             CHGVAR     VAR(%BIN(&USP_SIZE)) VALUE(65535)
+             CHGVAR     VAR(&USP_FILL) VALUE(' ')
+             CHGVAR     VAR(&USP_AUT)  VALUE('*CHANGE')
+             CHGVAR     VAR(&USP_TEXT) VALUE('my user space')
+
+             DLTUSRSPC  USRSPC(&USP_LIB/&USP_NAME)
+             MONMSG CPF0000
+
+             CALL       PGM(QUSCRTUS) PARM(&USP_QUAL &USP_TYPE +
+                          &USP_SIZE &USP_FILL &USP_AUT &USP_TEXT)
+
+             ChgVar  &ApiErr X'0000000000000000'
+             callprc 'QtocLstNetIfc' ( +
+                                      &USP_QUAL  +
+                                      &NIFCFormat    +
+                                      &ApiErr)
+
+             CHGVAR     VAR(%BIN(&STARTPOS)) VALUE(1)
+             CHGVAR     VAR(%BIN(&DATALEN))  VALUE(140)
+
+             CALL       PGM(QUSRTVUS) PARM(&USP_QUAL &STARTPOS +
+                          &DATALEN &HEADER)
+
+             CHGVAR     VAR(&LST_OFFSET) VALUE(%BIN(&HEADER 125 4))
+             CHGVAR     VAR(&LST_SIZE)   VALUE(%BIN(&HEADER 129 4))
+             CHGVAR     VAR(&LST_NBR)    VALUE(%BIN(&HEADER 133 4))
+             CHGVAR     VAR(&LST_LEN)    VALUE(%BIN(&HEADER 137 4))
+
+             CHGVAR     VAR(%BIN(&LST_POSBIN)) VALUE(&LST_OFFSET + 1)
+             CHGVAR     VAR(&LST_LENBIN) VALUE(%SST(&HEADER 137 4))
+
+             CHGVAR     VAR(&LST_COUNT) VALUE(0)
+             CHGVAR     VAR(&EXC_COUNT) VALUE(0)
+
+
+ LST_LOOP:   IF         COND(&LST_COUNT *EQ &LST_NBR) THEN(GOTO +
+                          CMDLBL(LST_END))
+
+             CALL       PGM(QUSRTVUS) PARM(&USP_QUAL &LST_POSBIN +
+                          &LST_LENBIN &LST_DATA)
+
+             CHGVAR     VAR(&INTNETADR)  VALUE(%SST(&LST_DATA  1 15))
+   /*        CHGVAR     VAR(&NETWORKADR) VALUE(%SST(&LST_DATA 21 15))*/
+   /*        CHGVAR     VAR(&HOSTADR   ) VALUE(%SST(&LST_DATA 89 15))*/
+             CHGVAR     VAR(&IFCSTSN)    VALUE(%BIN(&LST_DATA 73 4))
+             CHGVAR     VAR(&IFCSTSC)    VALUE(&IFCSTSN)
+
+             ChgVar     &Idx 1
+ CVTNULLS:
+             If (&Idx > 15) goto CVTNULLE
+             If (%SST(&INTNETADR &Idx 1) *EQ &null) +
+                ChgVar %SST(&INTNETADR &Idx 1) ' '
+
+             ChgVar     &Idx (&Idx+1)
+             goto CVTNULLS
+ CVTNULLE:
+
+             If (&NETIFC *EQ &INTNETADR) DO
+               ChgVar &NETIFCDFN '1'
+               If  (&IFCSTSN *EQ 1) DO
+                  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+                             MSGDTA('Interface' *BCAT &NETIFC *BCAT +
+                                    'is active.') MSGTYPE(*INFO)
+                  CHGVAR     VAR(&EXC_COUNT) VALUE(&EXC_COUNT + 1)
+                  GOTO LST_END
+               ENDDO
+
+             ENDDO
+
+             CHGVAR     VAR(&LST_COUNT) VALUE(&LST_COUNT + 1)
+             CHGVAR     VAR(%BIN(&LST_POSBIN)) +
+                          VALUE(%BIN(&LST_POSBIN) + &LST_LEN)
+             GOTO       CMDLBL(LST_LOOP)
+
+ LST_END:
+             IF (&EXC_COUNT *EQ 0) DO
+             If (&NetIfcDfn *EQ '1') +
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                          MSGDTA('Interface' *BCAT +
+                                 &NETIFC *BCAT 'is not active') +
+                          MSGTYPE(*ESCAPE)
+             Else +
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                          MSGDTA('Interface' *BCAT +
+                                 &NETIFC *BCAT 'is not defined') +
+                          MSGTYPE(*ESCAPE)
+             ENDDO
+
+             DLTUSRSPC  USRSPC(&USP_LIB/&USP_NAME)
+
+   Return
+
+/*  ===============================================================  */
+/*  = Error routine                                               =  */
+/*  ===============================================================  */
+
+Error:
+
+  RcvMsg     MsgType( *Excp )                                         +
+             MsgDta( &MsgDta )                                        +
+             MsgID( &MsgID )                                          +
+             MsgF( &MsgF )                                            +
+             MsgFLib( &MsgFLib )
+  MonMsg     ( CPF0000 MCH0000 )
+
+SndMsg:
+
+  SndPgmMsg  MsgID( &MsgID )                                          +
+             MsgF( &MsgFLib/&MsgF )                                   +
+             MsgDta( &MsgDta )                                        +
+             MsgType( *Escape )
+  MonMsg     ( CPF0000 MCH0000 )
+
+/*  ===============================================================  */
+/*  = End of program                                              =  */
+/*  ===============================================================  */
+
+ENDPGM
