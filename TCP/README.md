@@ -1,5 +1,5 @@
 <h4>RTVTCPSTS - Retrieve TCP Status</h4>
-<code>
+<li><code>
                        Retrieve TCP/TP Status (RTVTCPSTS)                      
                                                                                
  Type choices, press Enter.                                                    
@@ -17,8 +17,8 @@
  Last ended job user  . . . . . .                 Character value              
  Last ended job number  . . . . .                 Character value              
                                                                                
-</code>
-<h4>CHKTCPIFC - Check TCP Interface</h4><code>
+</code></li>
+<h4>CHKTCPIFC - Check TCP Interface</h4><li><code>
                     Check TCP/IP Interface Status (CHKTCPIFC)                  
                                                                                
  Type choices, press Enter.                                                    
@@ -39,7 +39,7 @@ PGM
              SNDPGMMSG  MSG('Interface' *BCAT &NETIFC *BCAT 'is not +           
                           active or defined')                                   
              ENDDO                                                              
-                                                                                                                                                                
+
 ENDPGM                                                                          
-</code>
+</code></li>
 
