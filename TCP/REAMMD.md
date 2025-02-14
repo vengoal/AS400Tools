@@ -1,5 +1,5 @@
 <h4>RTVTCPSTS - Retrieve TCP Status</h4>
-<p><code>
+<code>
                        Retrieve TCP/TP Status (RTVTCPSTS)                      
                                                                                
  Type choices, press Enter.                                                    
@@ -22,3 +22,4 @@
                                                                                
                                                                          Bottom
 </code>
+<h4>CHKTCPIFC - Check TCP Interface</h4>
