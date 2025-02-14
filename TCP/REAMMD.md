@@ -29,7 +29,7 @@
 
 </code>
 <code>
-<p>CHKTCPIFC Usage:</p>
+CHKTCPIFC Usage:</p>
 <code>
 PGM                                                                             
                                                                                 
