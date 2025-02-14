@@ -111,6 +111,7 @@
       </ul>
   <li>TCP</li>
   <ul>
+    <li>CHKTCPIFC - Check TCP Interface (IP) active or not</li>
     <li>RTVTCPSTS - Retrieve TCP status</li>
   </ul>
   <li>User space</li>
