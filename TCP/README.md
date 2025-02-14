@@ -1,5 +1,6 @@
 <h4>RTVTCPSTS - Retrieve TCP Status</h4>
-<li><code>
+<ul><li>Retrieve TCP/IP Attributes (QtocRtvTCPA) API<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/qtocrtvtcpa.htm
+<code>
                        Retrieve TCP/TP Status (RTVTCPSTS)                      
                                                                                
  Type choices, press Enter.                                                    
@@ -17,8 +18,10 @@
  Last ended job user  . . . . . .                 Character value              
  Last ended job number  . . . . .                 Character value              
                                                                                
-</code></li>
-<h4>CHKTCPIFC - Check TCP Interface</h4><li><code>
+</code>
+</li></ul>
+<h4>CHKTCPIFC - Check TCP Interface</h4>
+<ul><li>List Network Interfaces (QtocLstNetIfc) API<br />https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/apis/qtoclstnetifc.htm<code>
                     Check TCP/IP Interface Status (CHKTCPIFC)                  
                                                                                
  Type choices, press Enter.                                                    
@@ -42,4 +45,5 @@ PGM
 
 ENDPGM                                                                          
 </code></li>
+</ul>
 
