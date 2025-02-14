@@ -18,8 +18,7 @@
  Last ended job number  . . . . .                 Character value              
                                                                                
 </code>
-<h4>CHKTCPIFC - Check TCP Interface</h4>
-<code>
+<h4>CHKTCPIFC - Check TCP Interface</h4><code>
                     Check TCP/IP Interface Status (CHKTCPIFC)                  
                                                                                
  Type choices, press Enter.                                                    
@@ -28,8 +27,7 @@
                                                                                
 
 </code>
-<code>
-CHKTCPIFC Usage:</p>
+CHKTCPIFC Usage:
 <code>
 PGM                                                                             
                                                                                 
@@ -44,4 +42,4 @@ PGM
                                                                                                                                                                 
 ENDPGM                                                                          
 </code>
-</code>
+
