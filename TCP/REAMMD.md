@@ -17,9 +17,14 @@
  Last ended job user  . . . . . .                 Character value              
  Last ended job number  . . . . .                 Character value              
                                                                                
-                                                                               
-                                                                               
-                                                                               
-                                                                         Bottom
 </code>
 <h4>CHKTCPIFC - Check TCP Interface</h4>
+<code>
+                    Check TCP/IP Interface Status (CHKTCPIFC)                  
+                                                                               
+ Type choices, press Enter.                                                    
+                                                                               
+ Network interface address  . . . NETIFC                                       
+                                                                               
+
+</code>
