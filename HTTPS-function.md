@@ -5,6 +5,7 @@
  <li>HTTP options - https://www.ibm.com/docs/en/i/7.5?topic=functions-http-get-http-get-blob#rbafzscahttpget__HTTP_options</li>
  <li>Configuring Your IBM i System Secure Sockets Layer (SSL)/Transport Layer Security (TLS) Protocols and Cipher Suites<br />https://www.ibm.com/support/pages/node/666411</li>
  <li>Digital Certificate Manager for i (DCM) - Frequently Asked Questions and Common Tasks( IBM i 7.3, 7.4, 7.5)<br />https://www.ibm.com/support/pages/node/6607872</li>
+ <li>Configuring IBM i DB2 SYSTOOLS HTTP User-Defined Functions for TLS/HTTPS Secure Communications<br />https://www.ibm.com/support/pages/configuring-ibm-i-db2-systools-http-user-defined-functions-tlshttps-secure-communications</li>
  <li>How to import a certificate for Java keystore using Java keytool <br />https://www.ibm.com/support/pages/how-import-certificate-java-keystore-using-java-keytool</li>
 </ul>
 
