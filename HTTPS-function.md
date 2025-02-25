@@ -3,6 +3,7 @@
  <li>New HTTP functions based in QSYS2 - https://www.ibm.com/support/pages/node/6486889</li>
  <li>HTTP functions overview - https://www.ibm.com/docs/en/i/7.5?topic=programming-http-functions-overview</li>
  <li>HTTP options - https://www.ibm.com/docs/en/i/7.5?topic=functions-http-get-http-get-blob#rbafzscahttpget__HTTP_options</li>
+ <li>Configuring Your IBM i System Secure Sockets Layer (SSL)/Transport Layer Security (TLS) Protocols and Cipher Suites<br />https://www.ibm.com/support/pages/node/666411</li>
 </ul>
 
 <h4>Grant certificate store file authority to user which running TLS (SSL) applications</h4>
