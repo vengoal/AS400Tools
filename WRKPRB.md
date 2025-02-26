@@ -7,4 +7,5 @@
 <h4>DSPPRB -- Display problem</h4>
 <ul>
   <li>Display problem to outfile<br /><code>DSPPRB OUTPUT(*OUTFILE) OUTFILE(QTEMP/PRB)</code><br />System reference code drivened from outfile field PBRCT(Translate Table) and PBRFCD(Reference Code) :<br /><code>Substring(PBRCT 1 4) concate PBRFCD</code></li>
+   <li>Display problem to print<br /><code>DSPPRB OUTPUT(*PRINT)</code></li>
 </ul>
