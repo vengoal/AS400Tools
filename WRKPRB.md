@@ -11,7 +11,7 @@
    <pre>
 *...+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+..
                                                  Problem Log Report                                                     Page   
-5770SS1 V7R1M0  100423                                                                     SYSTEMA   02/26/24  16:29:29 UTC+09:
+5770SS1 V7R1M0  100423                                                                     SYSTEMA   12/26/24  16:29:29 UTC+09:
                             System                           Resource    Service  Problem                                      
  Problem ID  Status         Ref Code     Date      Time      Name        Number   Description                                  
  2428255283  SENT           SRC11002610  10/08/24  16:06:08                       *Attention*  Contact your hardware service pr
