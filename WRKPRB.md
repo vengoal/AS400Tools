@@ -9,7 +9,7 @@
 <ul>
   <li>Display problem to outfile<br /><code>DSPPRB OUTPUT(*OUTFILE) OUTFILE(QTEMP/PRB)</code><br />System reference code drivened from outfile field PBRCT(Translate Table) and PBRFCD(Reference Code) :<br /><code>'SRC' concate Substring(PBRCT 1 4) concate PBRFCD</code></li>
    <li>Display problem to spooled file<br /><code>DSPPRB OUTPUT(*PRINT)</code>
-   <pre>
+  <pre>
 *...+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+..
                                                  Problem Log Report                                                     Page   
 5770SS1 V7R1M0  100423                                                                     SYSTEMA   12/26/24  16:29:29 UTC+09:
