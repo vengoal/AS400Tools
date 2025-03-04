@@ -32,8 +32,8 @@ This user needs *RX access to all of these directories:
 /QIBM/UserData/ICSS/Cert/Server/DEFAULT.RDB      (*PUBLIC default authority *EXCLUDE)
 </code>
 <p>Or, the user must have *ALLOBJ authority.</li>
- <li>Program adoption authority cannot apply to IFS authority.</li>
 <li>
+IFS does not support adopted authority.
 Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
  CHGAUT OBJ('/') 
         USER(youruser) DTAAUT(*RX)
