@@ -74,4 +74,15 @@ On IBM i, program adoption authority and Integrated File System (IFS) authority 
     <li>Use IFS authority templates (*RX, *RWX) or specific permissions to grant access, similar to UNIX systems.</li>
     <li>Be aware that tools like IBM Navigator for i or network shares (e.g., via NetServer) also enforce IFS authorities independently of adoption.</li>
   </ul>
+  <li>If you need a program to access the IFS with elevated privileges:</li>
+  <ol>
+    <li>Profile Switching: Use IBM i APIs to switch the job’s user profile to one with IFS authority during execution, then switch back.</li>
+    <ul>
+      <li>Example APIs: QSYGETPH (get profile handle), QWTSETP (set profile).</li>
+    </ul>
+    <li>Explicit Grants: Assign IFS authorities directly to users or groups, avoiding reliance on adoption.</li>
+  </ol>
 </ul>
+
+<h3>Conclusion</h3>
+<p>Program adoption authority is powerful for traditional IBM i applications but irrelevant in the IFS world. If your application spans both environments, you’ll need to manage two separate security strategies: adoption for QSYS.LIB and explicit permissions for the IFS.</p>
