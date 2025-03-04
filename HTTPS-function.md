@@ -33,7 +33,7 @@ This user needs *RX access to all of these directories:
 </code>
 <p>Or, the user must have *ALLOBJ authority.</li>
 <li>
-IFS does not support adopted authority.
+IFS does not support adopted authority.<br />
 Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
  CHGAUT OBJ('/') 
         USER(youruser) DTAAUT(*RX)
