@@ -34,15 +34,15 @@ This user needs *RX access to all of these directories:
 <p>Or, the user must have *ALLOBJ authority</li>
 <li>
 Grant authority as following commands...(Change 'youruser' to the https function running userid)<code>
- CHGAUT OBJ('/') +
+ CHGAUT OBJ('/') 
         USER(youruser) DTAAUT(*RX)
- CHGAUT OBJ('/QIBM') +
+ CHGAUT OBJ('/QIBM') 
         USER(youruser) DTAAUT(*RX)
- CHGAUT OBJ('/QIBM/UserData') +
+ CHGAUT OBJ('/QIBM/UserData') 
         USER(youruser) DTAAUT(*RX)
- CHGAUT OBJ('/QIBM/UserData/ICSS') +
+ CHGAUT OBJ('/QIBM/UserData/ICSS') 
         USER(youruser) DTAAUT(*RX)
- CHGAUT OBJ('/QIBM/UserData/ICSS/CERT') +
+ CHGAUT OBJ('/QIBM/UserData/ICSS/CERT') 
         USER(youruser) DTAAUT(*RX)
  CHGAUT OBJ('/QIBM/UserData/ICSS/CERT/SERVER')
         USER(youruser) DTAAUT(*RX)
