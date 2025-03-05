@@ -1,0 +1,10 @@
+             CMD        PROMPT('su')
+             PARM       KWD(USER) TYPE(*NAME) LEN(10) SPCVAL((*EXIT +
+                          *EXIT)) MIN(1) CASE(*MONO) PROMPT('User +
+                          name')
+             PARM       KWD(PASSWORD) TYPE(*CHAR) LEN(128) +
+                          DFT(*NOPWDCHK) SPCVAL((*NOPWD *NOPWD) +
+                          (*NOPWDCHK *NOPWDCHK) (*NOPWDSTS +
+                          *NOPWDSTS)) MIN(0) CASE(*MIXED) +
+                          DSPINPUT(*NO) INLPMTLEN(10) +
+                          PROMPT('Password')

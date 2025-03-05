@@ -1,0 +1,74 @@
+/********************************************************************/
+/* @file su.clle                                                    */
+/* CL version of the CPP of the SU command.                         */
+/********************************************************************/
+
+             PGM        PARM(&TGTUSR &PWD)
+
+             DCL        VAR(&TGTUSR) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&PWD) TYPE(*CHAR) LEN(128)
+             DCL        VAR(&ORG_PH) TYPE(*CHAR) LEN(12)
+             DCL        VAR(&TGT_PH) TYPE(*CHAR) LEN(12)
+             DCL        VAR(&QNAM) TYPE(*CHAR) LEN(10) VALUE(@SUDTAQ)
+             DCL        VAR(&QLIB) TYPE(*CHAR) LEN(10) VALUE(QTEMP)
+             DCL        VAR(&ENT_LEN) TYPE(*DEC) LEN(5 0) VALUE(12)
+             DCL        VAR(&TIMEOUT) TYPE(*DEC) LEN(5 0) VALUE(0)
+             DCL        VAR(&PWD_LEN) TYPE(*INT) LEN(4) VALUE(128)
+             DCL        VAR(&OFF1) TYPE(*INT) LEN(4)
+             DCL        VAR(&OFF2) TYPE(*INT) LEN(4)
+             DCL        VAR(&CCSID) TYPE(*INT) LEN(4) VALUE(0)
+             DCL        VAR(&WHERE) TYPE(*PTR)
+             DCL        VAR(&PWD_PTR) TYPE(*PTR)
+             DCL        VAR(&NULL) TYPE(*PTR)
+             DCL        VAR(&EC) TYPE(*CHAR) LEN(16) +
+                          VALUE(X'00000000000000000000000000000000')
+
+             IF         COND(&TGTUSR *NE '*EXIT') THEN(GOTO +
+                          CMDLBL(SWAP_TO))
+             ELSE       CMD(GOTO CMDLBL(SWAP_BACK))
+
+ SWAP_TO:    CHKOBJ     OBJ(&QLIB/&QNAM) OBJTYPE(*DTAQ)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             CRTDTAQ    DTAQ(QTEMP/@SUDTAQ) MAXLEN(12) SEQ(*LIFO) +
+                          AUT(*CHANGE)
+             ENDDO      /* Create the PH stack in case it isn't +
+                          already exists */
+
+             CALL       PGM(QSYGETPH) PARM('*CURRENT  ' ' ' &ORG_PH)
+             CALL       PGM(QSNDDTAQ) PARM(&QNAM &QLIB &ENT_LEN +
+                          &ORG_PH) /* Save current PH */
+
+             /* Get the PH of target user */
+             IF         COND(%SST(&PWD 1 6) *EQ '*NOPWD') THEN(CALL +
+                          PGM(QSYGETPH) PARM(&TGTUSR &PWD &TGT_PH))
+             ELSE       CMD(DO)
+             CALLPRC    PRC('_MEMCHR') PARM((&PWD *BYREF) (' ' +
+                          *BYVAL) (&PWD_LEN *BYVAL)) RTNVAL(&WHERE)
+             IF         COND(&WHERE *NE &NULL) THEN(DO)
+             CHGVAR     VAR(&PWD_PTR) VALUE(%ADDR(&PWD))
+             CHGVAR     VAR(&OFF2) VALUE(%OFS(&WHERE))
+             CHGVAR     VAR(&OFF1) VALUE(%OFS(&PWD_PTR))
+             CHGVAR     VAR(&PWD_LEN) VALUE(&OFF2 - &OFF1)
+             ENDDO      /* If &where == *NULL */
+             CALL       PGM(QSYGETPH) PARM(&TGTUSR &PWD &TGT_PH &EC +
+                          &PWD_LEN &CCSID)
+             ENDDO      /* Else block         */
+
+             CALL       PGM(QWTSETP) PARM(&TGT_PH) /* Switch to +
+                          target user */
+             CALL       PGM(QSYRLSPH) PARM(&TGT_PH) /* Release PH */
+             GOTO       CMDLBL(BYE)
+
+ SWAP_BACK:  CALL       PGM(QRCVDTAQ) PARM(&QNAM &QLIB &ENT_LEN +
+                          &ORG_PH &TIMEOUT) /* Pop previous PH out +
+                          of the PH stack */
+             IF         COND(&ENT_LEN *EQ 0) THEN(SNDPGMMSG +
+                          MSGID(CPF9898) MSGF(QSYS/QCPFMSG) +
+                          MSGDTA('Exit to where? :p') MSGTYPE(*ESCAPE))
+             ELSE       CMD(DO)
+             CALL       PGM(QWTSETP) PARM(&ORG_PH) /* Switch back to +
+                          original user */
+             CALL       PGM(QSYRLSPH) PARM(&ORG_PH) /* Release PH */
+             ENDDO
+
+ BYE:        ENDPGM
