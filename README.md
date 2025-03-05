@@ -103,7 +103,7 @@
   </ul>
   <li>Security</li>
   <ul>
-    <li>SU - Switch to and back from different user profiles within the same job with ease.</li>
+    <li>SU - <a href="https://www.mcpressonline.com/programming-other/cl/techtip-take-advantage-of-the-su-cl-command">Switch to and back from different user profiles within the same job with ease.</a></li>
   </ul>
       <li>Software Product License</li>
    <ul>
