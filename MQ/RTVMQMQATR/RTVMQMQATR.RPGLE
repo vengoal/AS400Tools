@@ -1,3 +1,21 @@
+     **
+     **  Program . . : RTVMQMQATR
+     **  Description : Retrieve MQ Queue Attributes  - CPP
+     **  Author  . . : Vengoal Chang
+     **  Published . : AS400 ePaper
+     **  Date  . . . : March   11, 2025
+     **
+     **
+     **  Compile options:
+     **    CrtRpgMod   Module( RTVMQMQATR )
+     **                DbgView( *LIST )
+     **
+     **    CrtPgm      Pgm( RTVMQMQATR )
+     **                Module( RTVMQMQATR )
+     **                ActGrp( *NEW )
+     **                BNDSRVPGM( QMQM/LIBMQM )
+     **
+     **-- Header specifications:  --------------------------------------------**
      H DEBUG  OPTION(*SRCSTMT:*NODEBUGIO)
       ****************************************************************
       *   RTVMQMQATR has 7 parameters - (1) name of the source queue *
@@ -57,9 +75,6 @@
       * Put message options
      D MQPMO           DS
      D/COPY CMQPMOG
-      * Trigger message (parameter)
-     D MQTMC           DS
-     D/COPY CMQTMCR
       ** note, sample uses defaults where it can
      D QNAME           S             48
      D QMNAME          S             48
