@@ -6,3 +6,4 @@
 <h4>IBM MQ Java Code Samples -- https://capitalware.com/mq_code_java.html</h4>
 <h4>mq-dev-samples -- https://github.com/ibm-messaging/mq-dev-samples</h4>
 <h4>MQ Technical Conference (2013 - 2018) -- https://www.mqtechconference.com/sessions.html</h4>
+<h4>IBM TechCon 2024 -- https://video.ibm.com/channel/nEYbw3GEdL2</h4>
