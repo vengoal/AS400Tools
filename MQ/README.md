@@ -11,3 +11,4 @@
 <h4>mq-event-display -- https://github.com/ibm-messaging/mq-event-display/tree/master</h4>
 <h4>MQ Technical Conference (2013 - 2018) -- https://www.mqtechconference.com/sessions.html</h4>
 <h4>IBM TechCon 2024 -- https://video.ibm.com/channel/nEYbw3GEdL2</h4>
+<h4>Mark Taylor's Blog -- https://marketaylor.synology.me/</h4>
