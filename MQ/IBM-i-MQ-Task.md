@@ -2,7 +2,7 @@ https://www.ibm.com/docs/en/ibm-mq/9.0?topic=i-mq-tasks
 <h4>Table 1. IBM i MQ tasks</h4>
 <pre>
 Job name        Function
-AMQALMPX	The checkpoint processor that periodically takes journal checkpoints.
+AMQALMPX	The checkpoint processor that periodically takes journal checkpoints. (==> Not exist from version MQ 9.1)
 AMQZMUC0	Utility manager. This job executes critical queue manager utilities, for example the journal chain manager.
 AMQZXMA0	The execution controller that is the first job started by the queue manager. It handles MQCONN requests, and starts agent processes to process IBM MQ API calls.
 AMQZFUMA	Object authority manager (OAM).
