@@ -13,4 +13,5 @@
 <h4>IBM TechCon 2024 -- https://video.ibm.com/channel/nEYbw3GEdL2</h4>
 <h4>Mark Taylor's Blog -- https://marketaylor.synology.me/</h4>
 <h4>MQ Fan -- https://x.com/IBMMQFan</h4>
+<h4>Morag Hughson -- https://x.com/MoragHughson</h4>
 <h4>MQGem Software -- https://mqgem.wordpress.com/all-posts/</h4>
