@@ -1,0 +1,13 @@
+Pgm
+
+    Dcl      &Qmgr      *Char    48
+    Dcl      &RC        *Char     4   /* MQ reason code           */
+
+    /* TEST QMGR ACTIVE => RC = '0000' */
+    ChgVar   &Qmgr      'TEST1'
+
+    MONMQMCNN  QMNAME(&QMGR) RC(&RC)
+
+    DmpClPgm
+
+EndPgm
