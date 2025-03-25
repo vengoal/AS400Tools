@@ -1,4 +1,4 @@
-<h4>MONMQMCNN -- Monitor MQ Queue Manager Connection</h4>
+<h4>MONMQMCNN -- Monitor MQ Queue Manager Connection output to file</h4>
 <code>
                      Monitor MQ Qmgr Conn Status (MONMQMCNN)                    
                                                                                 
