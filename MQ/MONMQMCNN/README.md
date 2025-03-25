@@ -39,7 +39,7 @@
 /*  UserId        141-204  64                                        */
 /*  ProcessId     205-213   9                                        */
 /*  ThreadId      214-217   4                                        */
-
+/*                                                                   */
 /*  Type HANDLE  as following:                                       */
 /*  Name          POS     LEN   NOTE                                 */
 /*  ===========   ======= ===   ================================     */
