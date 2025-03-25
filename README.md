@@ -86,10 +86,11 @@
   <ul>
     <li>SCNMSGF - Scan Message File</li>
   </ul>
-  <li>MQ</li>
+  <li>IBM i MQ</li>
   <ul>
   <li>CLRMQMSG - Clear MQ Expired Message</li>  
   <li>JYMONMQ - Monitor queue manager, channels, and queue using PCF.</li>
+  <li>MONMQMCNN -- Monitor MQ Queue Manager Connection output to file</li>
   <li>RTVMQMQATR - Retrieve MQ Queue Attributes with MQINQ</li>
   </ul>
   
