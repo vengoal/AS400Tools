@@ -1,6 +1,6 @@
 <h4>Prompt and Submit CL Commands with QCAPCMD API</h4>
 <li>https://www.itjungle.com/2010/05/19/fhg051910-story02/</li>
-<li>Using selective prompting for CL commands<br />https://www.ibm.com/docs/en/i/7.6.0?topic=time-using-selective-prompting-cl-commands</li> 
+<li>Using selective prompting for CL commands https://www.ibm.com/docs/en/i/7.6.0?topic=time-using-selective-prompting-cl-commands</li> 
 
 
 <code>
