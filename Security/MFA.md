@@ -1,4 +1,4 @@
-<h3>Manage MFA Time-Based One-Time Password (TOTP) on IBM i</h3>
+<h3>Manage MFA Time-Based One-Time Password (TOTP) on IBM i V7R6</h3>
 
 <h4>Enabling MFA on your system</h4>
 <ul>
