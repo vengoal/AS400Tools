@@ -27,7 +27,7 @@
 
 <h4>Reference</h4>
 <ul>
-  <li>Multi-factor authentication (MFA)<br />https://www.ibm.com/docs/en/i/7.6.0?topic=security-multi-factor-authentication-mfa</li>
+  <li>Multi-factor authentication (MFA) <a href="https://www.ibm.com/docs/en/ssw_ibm_i_76/pdf/mfapdf.pdf">PDF</a><br />https://www.ibm.com/docs/en/i/7.6.0?topic=security-multi-factor-authentication-mfa</li>
   <li>Using IBM Navigator for i to Manage MFA<br />https://www.ibm.com/support/pages/node/7180390</li>
 </ul>
 <h4>API</h4>
