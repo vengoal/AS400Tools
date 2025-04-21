@@ -10,6 +10,7 @@
     CHGNTPA RMTSYS(time server ip) AUTOSTART(*YES)
     STRTCPSVR SERVER(*NTP)
   </code></li>
+  <li>SignOn screen - <br />If you have a customized sign-on screen, you must create a new one based on QDSIGNON3 before you IPL.<br />SignOn display file member (QDSIGNON, QDSIGNON2, or QDSIGNON3) in the QSYS/QAWTSSRC physical file.</li>
 </ul>
 <h4>Enabling MFA for a user</h4>
 <ol>
