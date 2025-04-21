@@ -3,7 +3,7 @@
 <h4>Enabling MFA on your system</h4>
 <ul>
   <li>System value QSECURITY security level must be >= 40</li>
-  <li>System valueQPWDLVL password level must be >= 4</li>
+  <li>System value QPWDLVL password level must be >= 4</li>
   <li>DSPSECA - Display Security Attributes</li>
   <li>CHGSECA - Change  Security Attributes <br />Set Additional sign-on factor (ADLSGNFAC) parameter : <br /><code>CHGSECA   ADLSGNFAC(*ENABLED)</code><br />A change to this value takes effect at the next IPL.</li>
   <li>CHGNTPA - Change SNTP Attributes<code>
