@@ -5,7 +5,7 @@
   <li>QSECURITY security level must be >= 40</li>
   <li>QPWDLVL password level must be >= 4</li>
   <li>DSPSECA - Display Security Attributes</li>
-  <li>CHGSECA - Change  Security Attributes <br />Set Additional sign-on factor (ADLSGNFAC) parameter as following command:<br /><code>CHGSECA   ADLSGNFAC(*ENABLED)</code></li>
+  <li>CHGSECA - Change  Security Attributes <br />Set Additional sign-on factor (ADLSGNFAC) parameter as following command:<br /><code>CHGSECA   ADLSGNFAC(*ENABLED)</code><br />A change to this value takes effect at the next IPL</li>
 </ul>
 <ul>
   <li>Using IBM Navigator for i to Manage MFA<br />https://www.ibm.com/support/pages/node/7180390</li>
