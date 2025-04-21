@@ -6,6 +6,10 @@
   <li>QPWDLVL password level must be >= 4</li>
   <li>DSPSECA - Display Security Attributes</li>
   <li>CHGSECA - Change  Security Attributes <br />Set Additional sign-on factor (ADLSGNFAC) parameter : <br /><code>CHGSECA   ADLSGNFAC(*ENABLED)</code><br />A change to this value takes effect at the next IPL.</li>
+  <li>CHGNTPA - Change SNTP Attributes<code>
+    CHGNTPA RMTSYS(time server ip) AUTOSTART(*YES)
+    STRTCPSVR SERVER(*NTP)
+  </code></li>
 </ul>
 <h4>Enabling MFA for a user</h4>
 <ol>
