@@ -10,11 +10,10 @@
 <h4>Enabling MFA for a user</h4>
 <ol>
   <li>Administrator operation:<br />CHGUSRPRF  - Change User Profile Authentication Methods (AUTHMTH) parameter : <br /><code>CHGUSRPRF AUTHMTH(*TOTP)</code></li>
-  <li>User operation:<br />CHGTOTPKEY - Change TOTP Key<br />
-    <code>
+  <li>User operation:<br />CHGTOTPKEY - Change TOTP Key<br /><code>
       CHGTOTPKEY   TOTPKEY(*GEN)
-      CHGTOTPKEY   TOTPKEY(TOTP key value) ==> The value must be 32-characters that contain valid base 32 characters only (A - Z and 2 - 7).
-    </code><br />This command will generate a TOTP key for the currently running user and store the TOTP key in their profile. This TOTP key is usually entered into a client application which can then generate a TOTP value.</li>
+      CHGTOTPKEY   TOTPKEY(TOTP key value)
+    </code><br />The value must be 32-characters that contain valid base 32 characters only (A - Z and 2 - 7).<br />This command will generate a TOTP key for the currently running user and store the TOTP key in their profile. This TOTP key is usually entered into a client application which can then generate a TOTP value.</li>
 </ol>
 <ul>
   <li>Using IBM Navigator for i to Manage MFA<br />https://www.ibm.com/support/pages/node/7180390</li>
