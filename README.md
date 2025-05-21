@@ -92,6 +92,7 @@
   <li>JYMONMQ - Monitor queue manager, channels, and queue using PCF.</li>
   <li>MONMQMCNN -- Monitor MQ Queue Manager Connection output to file</li>
   <li>RTVMQMQATR - Retrieve MQ Queue Attributes with MQINQ</li>
+  <li>RTVMQMQH - Retrieve MQ Queue Handle (APPLTAG)</li>
   </ul>
   
   <li>Program or Service Program</li>
