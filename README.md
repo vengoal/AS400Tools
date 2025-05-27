@@ -2,7 +2,7 @@
 
 ## Exit Program
 <ul>
-  <li>IBM i Exit Point and Exit Program<br />https://vengoal.blogspot.com/p/ibm-i-exit-point-and-exit-program.html<li>
+  <li>IBM i Exit Point and Exit Program<br />https://vengoal.blogspot.com/p/ibm-i-exit-point-and-exit-program.html
   <li>Socket Exit Points<br />
       https://github.com/vengoal/AS400Tools/blob/main/ExitPgm/Socket/README.md</li>
 </ul>
