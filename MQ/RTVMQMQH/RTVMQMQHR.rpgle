@@ -22,10 +22,9 @@
 
      **-- Header specifications:  --------------------------------------------**
      H DEBUG  OPTION(*SRCSTMT:*NODEBUGIO)
-     H Copyright('vengoal@gmail.com - 2025')
 
       //---------------------------------------------------------------------
-      //‚I/O Parameters
+      //â€šI/O Parameters
       //---------------------------------------------------------------------
      D EntryParms      PR                  extpgm('RTVMQMQHR')
 VC   D  QNAME                        48A
@@ -81,13 +80,13 @@ VC   D  QNAME                        48A
      D/COPY QRPGLESRC,CMQBG
 
       //---------------------------------------------------------------------
-      //‚PCF structures
+      //â€šPCF structures
       //---------------------------------------------------------------------
       // PCF Constants
      D/COPY QMQM/QRPGLESRC,CMQCFG
 
       //---------------------------------------------------------------------
-      //‚MQ start/end procedures
+      //â€šMQ start/end procedures
       //---------------------------------------------------------------------
      D MQconnect       PR              N
      D MQdisconnect    PR
@@ -100,7 +99,7 @@ VC   D  QNAME                        48A
      D  RC                           10I 0 Value
 
       //---------------------------------------------------------------------
-      //‚ILECEE Procedures
+      //â€šILECEE Procedures
       //---------------------------------------------------------------------
       // Prototype for CEERTX (Cancel handler)
      D CEERTX          PR
@@ -327,7 +326,7 @@ VC   D  QNAME                        48A
 
       ****************************************************************
       //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      //‚CheckResult
+      //â€šCheckResult
       //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      P CheckResult     B
      D CheckResult     PI
@@ -351,7 +350,7 @@ VC   D  QNAME                        48A
      P CheckResult     E
 
       //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      //‚Connect to MQ
+      //â€šConnect to MQ
       //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      P MQconnect       B
      D MQconnect       PI              n
