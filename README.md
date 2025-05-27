@@ -20,6 +20,7 @@
     <li>https://www.mcpressonline.com/programming/rpg/journal-entries-exposed-joesd-made-readable</li>
     <li>http://www.tools400.de/English/Freeware/Utilities/utilities.html</li>
   </ul>
+  <li>RMVJRNRCV -- Remove Journal Receivers <a href="https://github.com/vengoal/CF_API_CBX/tree/main/CBX959">CBX959</a></li>
 </ul>
 
 ## Command
