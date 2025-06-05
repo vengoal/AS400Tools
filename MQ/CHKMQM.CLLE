@@ -1,0 +1,123 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : CHKMQM                                             */
+/*  Description : Check MQM Status                                   */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : November 21, 2017                                  */
+/*  Updated . . : June      5, 2025                                  */
+/*                                                                   */
+/*  Program function:  CHKMQM   command processing program           */
+/*                                                                   */
+/*                                                                   */
+/*  Programmer's notes:                                              */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtCLMod   Module( ChkMqm )                                    */
+/*    CrtPgm Pgm( ChkMqm )                                           */
+/*           BndSrvPgm((QMQM/LIBMQM))                                */
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Exceptions monitored :                                           */
+/*       MQCONN         MQRC_Q_MGR_QUIESCING        2161             */
+/*                      MQRC_Q_MGR_STOPPING         2162             */
+/*                      MQRC_Q_MGR_NAME_ERROR       2058             */
+/*                      MQRC_Q_MGR_NOT_AVAILABLE    2059             */
+/*                      MQRC_Q_MGR_NOT_ACTIVE       2223             */
+/*                      MQRC_STORAGE_NOT_AVAILABLE  2071             */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
+     Pgm      ( &MQMName &RCChar)
+
+     Dcl        &MQMName     *CHAR    48
+     Dcl        &RCChar      *Char    10
+
+     /* Define local variables                      */
+     Dcl        &HCONN       *Int
+     Dcl        &CCODE       *Int
+     Dcl        &REASON      *Int
+     Dcl        &NAMEERROR   *Int      value(2058)
+     Dcl        &NOTAVAIL    *Int      value(2059)
+     Dcl        &QUIESCING   *Int      value(2161)
+     Dcl        &STOPPING    *Int      value(2162)
+     Dcl        &NOSTORAGE   *Int      value(2071)
+
+     Dcl        &MsgDta      *Char   256
+
+/*-- Global error monitoring:  --------------------------------------*/
+     MonMsg    (CPF0000 MCH3601)     *N        GoTo Error
+
+     AddLibLe  QMQM
+     MonMsg    CPF0000
+
+     /******************************************************/
+     /* Connect to queue manager                           */
+     /******************************************************/
+     CallPrc 'MQCONN' (&MQMName &Hconn &Ccode &Reason)
+     If     (&Ccode *ne 0) Do
+          /*************************************************/
+          /* MQCONN failed                                 */
+          /*************************************************/
+          ChgVar   &RcChar &Reason
+          Select
+          When (&Reason = &STOPPING)  Do
+            ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                            'stopping, RC =' *bcat &RcChar)
+          EndDo
+
+          When (&Reason = &NOTAVAIL)  Do
+            ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                            'not available, RC =' *bcat &RcChar)
+          EndDo
+          When (&Reason = &QUIESCING) Do
+            ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                            'quiescing, RC =' *bcat &RcChar)
+          EndDo
+          When (&Reason = &NOSTORAGE) Do
+            ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                            'nostorage, RC =' *bcat &RcChar)
+          EndDo
+          When (&Reason = &NAMEERROR) Do
+            ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                            'name error, RC =' *bcat &RcChar)
+          EndDo
+          Otherwise  Do
+            ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                            'conn error, RC =' *bcat &RcChar)
+          EndDo
+          EndSelect
+
+          SndPgmMsg  MsgId(CPF9898) MsgF(QCPFMSG) +
+                     MsgDta(&MsgDta) ToPgmQ(*Ext) MsgType(*Info)
+          Goto         Return
+     ENDDO
+
+     ChgVar &MsgDta ('Qmgr' *bcat &MQMName *Bcat +
+                     'started')
+     SndPgmMsg  MsgId(CPF9898) MsgF(QCPFMSG) +
+                MsgDta(&MsgDta) ToPgmQ(*EXT) MsgType(*INFO)
+
+     /******************************************************/
+     /* MQCONN worked so disonnect                         */
+     /******************************************************/
+     CallPrc 'MQDISC' (&Hconn &Ccode &Reason)
+
+ Return:
+     Return
+
+/*-- Error handling:  -----------------------------------------------*/
+ Error:
+     Call      QMHMOVPM    ( '    '                                  +
+                             '*DIAG'                                 +
+                             x'00000001'                             +
+                             '*PGMBDY'                               +
+                             x'00000001'                             +
+                             x'0000000800000000'                     +
+                           )
+
+     Call      QMHRSNEM    ( '    '                                  +
+                             x'0000000800000000'                     +
+                           )
+
+ EndPgm:
+     EndPgm
