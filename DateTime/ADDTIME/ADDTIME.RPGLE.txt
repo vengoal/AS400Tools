@@ -1,0 +1,46 @@
+     H DEBUG  OPTION(*SRCSTMT:*NODEBUGIO)
+
+      * PGM SDS sample
+     D                SDS
+     D JobNam                244    253
+     D JobUsr                254    263
+     D JobNbr                264    269
+     D CurUsr                358    367
+
+     D TempTime        S               Z
+     D ResultTime      S               Z
+     D EndDateISO      S             20
+     D
+     D*NbrSecsC        DS
+     D* NbrSecs                1      9S 0
+
+     C     *entry        Plist
+     C                   Parm                    NbrSecs           9 0
+     C                   Parm                    InpDate           6
+     C                   Parm                    InpTime           6
+     C                   Parm                    EndDate           6
+     C                   Parm                    EndTime           6
+     C
+      /free
+
+         TempTime = %Date( InpDate : *YMD0 ) + %Time( InpTime : *HMS0 );
+      // If NbrSecs > 0;
+            ResultTime = TempTime + %Seconds( NbrSecs );
+      // else;
+      //    ResultTime = TempTime - %Seconds( NbrSecs );
+      // EndIf;
+
+         dsply TempTime;
+         dsply ResultTime;
+
+         EndDateISO = %Char( ResultTime : *ISO0 );
+         dsply EndDateISO ;
+
+         EndDate = %SubSt( EndDateISO : 3 : 6 );
+         EndTime = %SubSt( EndDateISO : 9 : 6 );
+         dsply EndDate ;
+         dsply EndTime ;
+
+         *InLr = *On;
+
+      /end-free

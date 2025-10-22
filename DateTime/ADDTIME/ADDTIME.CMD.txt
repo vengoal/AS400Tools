@@ -1,0 +1,55 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Command . . : ADDTIME                                            */
+/*  Description : Add TIME                                           */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : October  21, 2025                                  */
+/*                                                                   */
+/*                                                                   */
+/*  Command processing API:                                          */
+/*                                                                   */
+/*  Programmer's notes:                                              */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*                                                                   */
+/*    CrtCmd Cmd( ADDTIME )                                          */
+/*           Pgm( ADDTIME  )                                         */
+/*           SrcMbr( ADDTIME )                                       */
+/*           Allow( *IPGM *BPGM )                                    */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
+             Cmd        Prompt( 'Add Time' )
+
+             Parm       Kwd( NbrSecs )                               +
+                        Type( *DEC )                                 +
+                        Len(  9 0 )                                  +
+                        Min( 1 )                                     +
+                        Prompt( 'Number of seconds add or sub' )
+                                                                     +
+             Parm       Kwd( INPDATE )                               +
+                        Type( *CHAR )                                +
+                        Len( 6 )                                     +
+                        Min( 1 )                                     +
+                        Prompt('Input date')
+
+             Parm       Kwd( INPTime )                               +
+                        Type( *CHAR )                                +
+                        Len( 6 )                                     +
+                        Min( 1 )                                     +
+                        Prompt('Input time')
+
+             Parm       Kwd( RtnDate )                               +
+                        Type( *CHAR )                                +
+                        Len( 6 )                                     +
+                        Rtnval( *YES )                               +
+                        Min( 1 )                                     +
+                        Prompt('CL var for RtnDate')
+
+             Parm       Kwd( RtnTime )                               +
+                        Type( *CHAR )                                +
+                        Len( 6 )                                     +
+                        Rtnval( *YES )                               +
+                        Min( 1 )                                     +
+                        Prompt('CL var for RtnTime')
+
