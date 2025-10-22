@@ -11,8 +11,6 @@
      D ResultTime      S               Z
      D EndDateISO      S             20
      D
-     D*NbrSecsC        DS
-     D* NbrSecs                1      9S 0
 
      C     *entry        Plist
      C                   Parm                    NbrSecs           9 0
@@ -34,4 +32,5 @@
          *InLr = *On;
 
       /end-free
+
 
