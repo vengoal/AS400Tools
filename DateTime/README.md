@@ -9,6 +9,12 @@
     <li>ADDDATE.CMD   - ADDDATE command</li>
     <li>ADDDATET.CLP  - ADDDATE test program</li>
   </ul>
+  <li>ADDTIME - Add or Sub time</li>
+  <ul>
+    <li>ADDTIME.RPGLE  - ADDTIME Command Processing Prpgram</li>
+    <li>ADDTIME.CMD   - ADDTIME command</li>
+  </ul>
+
   <li>CVTDATE - Convert Date</li>
   <ul>
     <li>CVTDATE.CLLE  - CVTDATE Command Processing Prpgram</li>
