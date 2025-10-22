@@ -9,7 +9,7 @@
     <li>ADDDATE.CMD   - ADDDATE command</li>
     <li>ADDDATET.CLP  - ADDDATE test program</li>
   </ul>
-  <li>ADDTIME - Add or Sub time</li>
+  <li>ADDTIME - Add or Sub a time in number of seconds</li>
   <ul>
     <li>ADDTIME.RPGLE  - ADDTIME Command Processing Prpgram</li>
     <li>ADDTIME.CMD   - ADDTIME command</li>
