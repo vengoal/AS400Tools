@@ -43,6 +43,7 @@
   <li>DateTime</li>
   <ul>
      <li>ADDDATE  - Add or Sub date</li>
+     <li>ADDTIME  - Add or Sub time</li>
      <li>CVTDATE  - Convert date to other format</li>
     <li>CVTDTS  - Convert System DTS date to YYYYMMDD format</li>
   </ul>
