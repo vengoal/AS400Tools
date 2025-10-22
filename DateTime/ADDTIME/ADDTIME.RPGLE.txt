@@ -24,23 +24,14 @@
       /free
 
          TempTime = %Date( InpDate : *YMD0 ) + %Time( InpTime : *HMS0 );
-      // If NbrSecs > 0;
-            ResultTime = TempTime + %Seconds( NbrSecs );
-      // else;
-      //    ResultTime = TempTime - %Seconds( NbrSecs );
-      // EndIf;
-
-         dsply TempTime;
-         dsply ResultTime;
+      
+         ResultTime = TempTime + %Seconds( NbrSecs );
 
          EndDateISO = %Char( ResultTime : *ISO0 );
-         dsply EndDateISO ;
-
          EndDate = %SubSt( EndDateISO : 3 : 6 );
          EndTime = %SubSt( EndDateISO : 9 : 6 );
-         dsply EndDate ;
-         dsply EndTime ;
 
          *InLr = *On;
 
       /end-free
+
