@@ -14,3 +14,5 @@
   https://i5toolkit.sourceforge.net/rpg/page_compute.html
 + RTVLCLTIM\
   http://jd400.web.fc2.com/CalculateTimeDifferenceInCL.html
++ APIs by Example: Number Conversions with _CVTEFN and _LBCPYNV\
+  https://apimymymy.wordpress.com/2003/10/23/apis-by-example-number-conversions-with-_cvtefn-and-_lbcpynv/
