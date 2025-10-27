@@ -5,3 +5,4 @@
   https://www.mcpressonline.com/programming/apis/the-api-corner-detecting-decimal-data-errors
 + Moving Packed Data\
   https://archive.midrange.com/rpg400-l/200605/msg00738.html
+  https://archive.midrange.com/rpg400-l//200703/msg00634.html
