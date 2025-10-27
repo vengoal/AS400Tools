@@ -42,11 +42,3 @@ dmpclpgm
    return
 
 endpgm
-
-<pre>
-The program accepts a *DEC (15 0) value and converts it to an 8-byte signed integer form in &RtnVal. The conversion is controlled by the two structures I named &Dec_Dfn and &SBin_Dfn. The contents of those are defined in the Set Data Pointer Attributes (SETDPAT) documentation.
-
-For &Dec_Dfn, the first byte is x'03' for a packed decimal. Then 1-byte of x'00' for zero fractional positions and x'0F' for 15 total digits. For &SBin_Dfn, it's 1-byte of x'00' for signed binary and 2-bytes of x'0008' to indicate 8-bytes, or 64-bits. (I added an unused &Flt_Dfn to show how a FLOAT8 could be described. FLOAT8 values are used for various useful APIs.
-
-I also added a second call to '_LBCPYNV' for added illustration. The &RtnVal variable is converted back to a *DEC (15 0) form, but it's stored in a *CHAR (8) variable. That can be handy when packed values need to be handled for substrings. It also emphasizes that the handling of the values is based on the structure templates and not on the DCL definitions.
-</pre>
