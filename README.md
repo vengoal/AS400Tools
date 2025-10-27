@@ -120,6 +120,10 @@
       <ul>
         <li>WRKLPR - WRKLPR - The Work with LPR Utility</li>
       </ul>
+  <li>Subsystem</li>
+      <ul>
+        <li>RTVSBS - Retrieve subsystem information</li>
+      </ul>
   <li>TCP</li>
   <ul>
     <li>CHKTCPIFC - Check TCP Interface (IP) active or not</li>
