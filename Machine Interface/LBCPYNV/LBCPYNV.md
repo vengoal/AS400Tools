@@ -6,3 +6,7 @@
 + Moving Packed Data\
   https://archive.midrange.com/rpg400-l/200605/msg00738.html <br />
   https://archive.midrange.com/rpg400-l//200703/msg00634.html
++ The CL Corner: More on ILE CEE Time APIs\
+  https://www.mcpressonline.com/programming-other/cl/the-cl-corner-more-on-ile-cee-time-apis
++ The CL Corner: More Granular Date and Time Support\
+  https://www.mcpressonline.com/programming-other/cl/the-cl-corner-more-granular-date-and-time-support
