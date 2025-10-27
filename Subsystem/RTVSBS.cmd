@@ -1,4 +1,3 @@
-<code>
 /*�***************************************************************�*/
 /*� Title    :- QMNSBS                                            �*/
 /*� CPP      :- QMNSBS                                            �*/
@@ -28,4 +27,4 @@
                           RTNVAL(*YES) MIN(1) CHOICE('Character +
                           value') PROMPT('CL var for CTLSBSDLIB   +
                           (10)')
-</code>
+
