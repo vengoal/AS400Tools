@@ -16,3 +16,5 @@
   http://jd400.web.fc2.com/CalculateTimeDifferenceInCL.html
 + APIs by Example: Number Conversions with _CVTEFN and _LBCPYNV\
   https://apimymymy.wordpress.com/2003/10/23/apis-by-example-number-conversions-with-_cvtefn-and-_lbcpynv/
++ Extracting Zoned/Packed Fields using _LBCPYNV\
+  https://code400.com/forum/forum/iseries-programming-languages/rpg-rpgle/13970-extracting-zoned-packed-fields-using-_lbcpynv
