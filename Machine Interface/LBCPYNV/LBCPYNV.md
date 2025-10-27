@@ -10,3 +10,5 @@
   https://www.mcpressonline.com/programming-other/cl/the-cl-corner-more-on-ile-cee-time-apis
 + The CL Corner: More Granular Date and Time Support\
   https://www.mcpressonline.com/programming-other/cl/the-cl-corner-more-granular-date-and-time-support
++ Test of _LBCPYNV and _LBCPYNVR\
+  https://i5toolkit.sourceforge.net/rpg/page_compute.html
