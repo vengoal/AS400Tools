@@ -1,219 +1,183 @@
 <p>IBM's Barbara Morris (Toronto Labs) has kindly donated some code to the public domain that will extract a numeric value from a character string.
 </p>
-<pre>
-     H NOMAIN
-
-      * Copy prototype for procedure getNum
-     D/COPY GETNUM_PR
-
-      *-------------------------------------------------------
-      * getNum - see GETNUM_PR for details
-      *-------------------------------------------------------
-     p getNum          b                   export
-     D getNum          pi            30p 9
-     D  string                      100a   const varying
-     D  decCommaParm                  2a   const options(*nopass)
-     D  curSymParm                    1a   const options(*nopass)
-
-      * defaults for optional parameters
-     D decComma        s              2a   inz('.,')
-     D cursym          s              1a   inz(' ')
-
-     D result          s             30s 9 inz(0)
-
-     D sign            s              1a   inz('+')
-     D i               s             10i 0
-     D len             s             10i 0
-     D c               s              1a
-
-      * override defaults if optional parameters were passed
-     C                   if       &#160;%parms &gt; 1
-     C                   eval      decComma = decCommaParm
-     C                   endif
-
-     C                   if       &#160;%parms &gt; 2
-     C                   eval      cursym = cursymParm
-     C                   endif
-
-      * call getNumAny to do the work
-     C                   callp     getNumAny (string
-     C                                     &#160;:&#160;%addr(result)
-     C                                     &#160;:&#160;%len(result)
-     C                                     &#160;:&#160;%decpos(result)
-     C                                     &#160;: decComma
-     C                                     &#160;: curSym)
-
-     C                   return    result
-     p getNum          e
-
-      *-------------------------------------------------------
-      * getNumAny
-      *-------------------------------------------------------
-     p getNumAny       b                   export
-     D getNumAny       pi
-     D  string                      100a   const varying
-     D  result                         *   const
-     D  digits                       10i 0 const
-     D  decimals                     10i 0 const
-     D  decComma                      2a   const options(*nopass)
-     D  currency                      1a   const options(*nopass)
-
-      * defaults for optional parameters
-     D decPoint        s              1a   inz('.')
-     D comma           s              1a   inz(',')
-     D cursym          s              1a   inz(' ')
-      * structure for building result
-     D resChars        s             30a   based(result)
-      * variables for gathering digit information
-      * pNumPart points to the area currently being gathered
-      * (the integer part or the decimal part)
-     D pNumPart        s               *
-     D numPart         s             30a   varying based(pNumPart)
-     D intPart         s             30a   varying inz('')
-     D decPart         s             30a   varying inz('')
-      * other variables
-     D intStart        s             10i 0
-     D decStart        s             10i 0
-     D signByte        s              1a   based(pSignByte)
-     D sign            s              1a   inz('+')
-     D i               s             10i 0
-     D len             s             10i 0
-     D c               s              1a
-
-      * override defaults if optional parameters were passed
-     C                   if       &#160;%parms &gt; 4
-     C                   eval      decPoint =&#160;%subst(decComma&#160;: 1&#160;: 1)
-     C                   eval      comma    =&#160;%subst(decComma&#160;: 2&#160;:1)
-     C                   endif
-
-     C                   if       &#160;%parms &gt; 5
-     C                   eval      cursym = currency
-     C                   endif
-
-      * initialization
-     C                   eval      len =&#160;%len(string)
-      * begin reading the integer part
-     C                   eval      pNumPart =&#160;%addr(intPart)
-
-      * loop through characters
-     C                   do        len           i
-     C                   eval      c =&#160;%subst(string&#160;: i&#160;: 1)
-
-     C                   select
-      * ignore blanks, digit separator, currency symbol
-     C                   when      c = comma or c = *blank or c = cursym
-     C                   iter
-      * decimal point: switch to reading the decimal part
-     C                   when      c = decPoint
-     C                   eval      pNumPart =&#160;%addr(decPart)
-     C                   iter
-      * sign: remember the most recent sign
-     C                   when      c = '+' or c = '-'
-     C                   eval      sign = c
-     C                   iter
-      * more signs: cr, CR, () are all negative signs
-     C                   when      c = 'C' or c = 'R' or
-     C                             c = 'c' or c = 'r' or
-     C                             c = '(' or c = ')'
-     C                   eval      sign = '-'
-     C                   iter
-      * a digit: add it to the current build area
-     C                   other
-     C                   eval      numPart = numPart + c
-
-     C                   endsl
-     C                   enddo
-
-      * make sure that there is no overflow
-     C                   if       &#160;%len(decPart) &gt; decimals
-     C                             or&#160;%len(decPart) +&#160;%len(intPart) &gt; digits
-      * Force an overflow exception
-     C                   z-add     *hival        overflowSrc       5 0
-     C                   z-add     0             overflowTgt       4 0
-     C                   eval      overflowTgt = overflowSrc
-     C                   endif
-
-      * initialize the result to all zeros
-     C                   eval     &#160;%subst(resChars&#160;: 1&#160;: digits) = *zeros
-      * copy the digit strings into the correct positions in the
-      * zoned variable, using the character overlay
-     C                   eval      decStart = digits - decimals + 1
-     C                   eval      intStart = decStart -&#160;%len(intPart)
-     C                   eval     &#160;%subst(resChars
-     C                                 &#160;: intStart
-     C                                 &#160;:&#160;%len(intPart))
-     C                               = intPart
-     C                   eval     &#160;%subst(resChars
-     C                                 &#160;: decStart
-     C                                 &#160;:&#160;%len(decPart))
-     C                               = decPart
-
-      * if the sign is negative, make the result negative
-     C                   if        sign = '-'
-
-     C                   eval      pSignByte =&#160;%addr(resChars) + digits - 1
-      * Change the sign zone from x'f' to x'd' (b'1111' to b'1101')
-      * using a mask of x'2' (b'0010')
-     C                   bitoff    X'20'         signByte
-
-     C                   endif
-
-     p getNumAny       e
------------------------------------------------------------
-      * Prototype file
-     D getNum          pr            30p 9
-     D  string                      100a   const varying
-     D  decComma                      2a   const options(*nopass)
-     D  currency                      1a   const options(*nopass)
-
-     D getNumAny       pr
-     D  string                      100a   const varying
-     D  result                         *   const
-     D  digits                       10i 0 const
-     D  decimals                     10i 0 const
-     D  decComma                      2a   const options(*nopass)
-     D  currency                      1a   const options(*nopass)  
-
-
-      *---------------------------------------------------------    
-      * getNum - procedure to read a number from a string           
-      *          and return a 30p 9 value                           
-      * Parameters:                                                 
-      *   I:      string   - character value of number              
-      *   I:(opt) decComma - decimal point and digit separator      
-      *   I:(opt) currency - currency symbol for monetary amounts   
-      * Returns:  packed(30,9)                                      
-      *                                                             
-      * Parameter details:                                          
-      *   string:   the string may have                             
-      *             - blanks anywhere                               
-      *             - sign anywhere                                 
-      *               accepted signs are: + - cr CR ()              
-      *               (see examples below)                          
-      *             - digit separators anywhere                     
-      *             - currency symbol anywhere                      
-      *   decComma: if not passed, this defaults to                 
-      *                 decimal point   = '.'                       
-      *                 digit separator = ','                       
-      *   currency: if not passed, defaults to ' '                  
-      *                                                             
-      * Examples of input and output (x means parm not passed):     
-      *                                                            
-      *        string         | dec | sep | cursym |   result      
-      *        ---------------+-----+-----+--------+------------   
-      *          123          | x   | x   | x      |   123         
-      *          +123         | x   | x   | x      |   123         
-      *          123+         | x   | x   | x      |   123         
-      *          -123         | x   | x   | x      |   -123        
-      *          123-         | x   | x   | x      |   -123        
-      *          (123)        | x   | x   | x      |   -123        
-      *          12,3         | ,   | .   | x      |   12.3        
-      *          12.3         | x   | x   | x      |   12.3        
-      *          1,234,567.3  | x   | x   | x      |   1234567.3   
-      *          $1,234,567.3 | .   | ,   | $      |   1234567.3   
-      *          $1.234.567,3 | ,   | .   | $      |   1234567.3   
-      *          123.45CR     | x   | x   | x      |   -123.45     
-      *                                                            
-      * Author: Barbara Morris, IBM Toronto Lab                    
-      * Date:   March, 2000                                        
-</pre>
+&lt;-----* prototype for /COPY file start here -----&gt;
+     
+ *--------------------------------------------------------- 
+ * getNum - procedure to read a number from a string
+ *          and return a 30p 9 value
+ * Parameters:
+ *   I:      string   - character value of number
+ *   I:(opt) decComma - decimal point and digit separator
+ *   I:(opt) currency - currency symbol for monetary amounts 
+ * Returns:  packed(30,9)
+ *
+ * Parameter details:
+ *   string:   the string may have 
+ *             - blanks anywhere
+ *             - sign anywhere
+ *               accepted signs are: + - cr CR () 
+ *               (see examples below)
+ *             - digit separators anywhere 
+ *             - currency symbol anywhere
+ *   decComma: if not passed, this defaults to 
+ *                 decimal point   = '.'
+ *                 digit separator = ','
+ *   currency: if not passed, defaults to ' ' 
+ *
+ * Examples of input and output (x means parm not passed): 
+ *
+ *        string         | dec | sep | cursym |   result        
+ *        ---------------+-----+-----+--------+------------
+ *          123          | x   | x   | x      |   123 
+ *          +123         | x   | x   | x      |   123 
+ *          123+         | x   | x   | x      |   123 
+ *          -123         | x   | x   | x      |   -123 
+ *          123-         | x   | x   | x      |   -123 
+ *          (123)        | x   | x   | x      |   -123 
+ *          12,3         | ,   | .   | x      |   12.3 
+ *          12.3         | x   | x   | x      |   12.3
+ *          1,234,567.3  | x   | x   | x      |   1234567.3 
+ *          $1,234,567.3 | .   | ,   | $      |   1234567.3 
+ *          $1.234.567,3 | ,   | .   | $      |   1234567.3 
+ *          123.45CR     | x   | x   | x      |   -123.45
+ *
+ * Author: Barbara Morris, IBM Toronto Lab 
+ * Date:   March, 2000
+*--------------------------------------------------------- 
+D getNum          pr            30p 9
+D  string                      100a   const varying
+D  decComma                      2a   const options(*nopass) 
+D  currency        
+             1a   const options(*nopass)
+     
+&lt;-----* prototype for /COPY file end here -----&gt;
+     
+&lt;-----* test program start here-----&gt;
+     
+ * Copy prototype for procedure getNum
+D/COPY GETNUM_P
+     
+D res             s                   like(getNum) 
+D msg             s             52a
+     
+C     *entry        plist
+C                   parm                    p                32 
+C                   parm                    dc                2 
+C                   parm                    c                 1
+     
+C                   select
+C                   when      %parms = 1
+C                   eval      res = getNum(p) 
+C                   when      %parms = 2
+C                   eval      res = getNum(p : dc) 
+C                   when      %parms = 3
+C                   eval      res = getNum(p : dc : c) 
+C                   endsl
+C                   eval      msg = '&lt;' + %char(res) + '&gt;' 
+C     msg           dsply
+     
+C                   return
+     
+&lt;-----* test program end here-----&gt;
+     
+&lt;-----* module GETNUM start here -----&gt;
+     
+H NOMAIN
+     
+ * Copy prototype for procedure getNum
+D/COPY GETNUM_P     
+     
+p getNum          b
+D getNum          pi            30p 9
+D  string                      100a   const varying
+D  decComma                      2a   const options(*nopass) 
+D  currency                      1a   const options(*nopass)
+     
+ * defaults for optional parameters
+D decPoint        s              1a   inz('.') 
+D comma           s              1a   inz(',') 
+D cursym          s              1a   inz(' ')
+ * structure for building result
+D                 ds
+D result                        30s 9 inz(0)
+D resChars                      30a   overlay(result)
+ * variables for gathering digit information
+ * pNumPart points to the area currently being gathered 
+ * (the integer part or the decimal part)
+D pNumPart        s               *
+D numPart         s             30a   varying based(pNumPart) 
+D intPart         s             30a   varying inz('')
+D decPart         s             30a   varying inz('')
+ * other variables
+D intStart        s             10i 0 
+D decStart        s             10i 0
+D sign            s              1a   inz('+') 
+D i               s             10i 0
+D len             s             10i 0 
+D c               s              1a
+     
+ * override defaults if optional parameters were passed
+C                   if        %parms &gt; 1
+C                   eval      decPoint = %subst(decComma : 1 : 1) 
+C                   eval      comma    = %subst(decComma : 2 :1) 
+C                   endif
+     
+C                   if        %parms &gt; 2
+C                   eval      cursym = currency 
+C                   endif
+     
+ * initialization
+C                   eval      len = %len(string)
+ * begin reading the integer part
+C                   eval      pNumPart = %addr(intPart)
+     
+ * loop through characters
+C                   do        len           i
+C                   eval      c = %subst(string : i : 1)
+     
+C                   select
+ * ignore blanks, digit separator, currency symbol
+C                   when      c = comma or c = *blank or c = cursym 
+C                   iter
+ * decimal point: switch to reading the decimal part
+C                   when      c = decPoint
+C                   eval      pNumPart = %addr(decPart) 
+C                   iter
+ * sign: remember the most recent sign
+C                   when      c = '+' or c = '-' 
+C                   eval      sign = c
+C                   iter
+ * more signs: cr, CR, () are all negative signs
+C                   when      c = 'C' or c = 'R' or 
+C                             c = 'c' or c = 'r' or 
+C                             c = '(' or c = ')'
+C                   eval      sign = '-' 
+C                   iter
+ * a digit: add it to the current build area     
+C                   other
+C                   eval      numPart = numPart + c
+     
+C                   endsl
+C                   enddo
+     
+ * copy the digit strings into the correct positions in the 
+ * zoned variable, using the character overlay
+C                   eval      decStart = %len(result) - %decPos(result) 
+C                                      + 1
+C                   eval      intStart = decStart - %len(intPart) 
+C                   eval      %subst(resChars
+C                                  : intStart
+C                                  : %len(intPart)) 
+C                               = intPart
+C                   eval      %subst(resChars 
+C                                  : decStart
+C                                  : %len(decPart)) 
+C                               = decPart
+* if the sign is negative, return a negative value 
+C                   if        sign = '-' 
+C                   return    - result 
+* otherwise, return the positive value 
+C                   else
+C                   return    result 
+C                   endif
+p                 e 
