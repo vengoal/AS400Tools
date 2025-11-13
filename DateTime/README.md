@@ -15,6 +15,13 @@
     <li>ADDTIME.CMD   - ADDTIME command</li>
   </ul>
 
+  <li>CLCDLY - Calculate Delay</li>
+  <ul>
+    <li>CLCDLY.CLLE  - CLCDLY Command Processing Prpgram</li>
+    <li>CLCDLY.CMD   - CLCDLY command</li>
+    <li>CLCDLYT.CLP  - CLCDLY test program</li>
+  </ul>
+  
   <li>CVTDATE - Convert Date</li>
   <ul>
     <li>CVTDATE.CLLE  - CVTDATE Command Processing Prpgram</li>
