@@ -44,6 +44,7 @@
   <ul>
      <li>ADDDATE  - Add or Sub date</li>
      <li>ADDTIME  - Add or Sub time</li>
+     <li>CLCDLY   - Calculate Delay</li>
      <li>CVTDATE  - Convert date to other format</li>
     <li>CVTDTS  - Convert System DTS date to YYYYMMDD format</li>
   </ul>
