@@ -1,0 +1,312 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : ClcDly                                             */
+/*  Description : Calculate Delay                                    */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : November 12, 2025                                  */
+/*                                                                   */
+/*  Program function:  ClcDly     command processing program         */
+/*                     The Calculate Delay tool is used to determine */
+/*                     the number of seconds to delay a job to begin */
+/*                     the next iteration of a repeating activity.   */
+/*  Program summary                                                  */
+/*  ---------------                                                  */
+/*                                                                   */
+/*  Work management APIs:                                            */
+/*    CEESECS     Converts a string representing a timestamp into a  */
+/*                representing the number of seconds since 00:00:00  */
+/*                14 October 1582.                                   */
+/*                                                                   */
+/*    CEEDATM     Formats a number representing the number of        */
+/*                seconds since 00:00:00 14 October 1582.            */
+/*                                                                   */
+/*    _LBCPYNV    Copy Numeric Value (CPYNV)                         */
+/*                                                                   */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtBndCL   Pgm( ClcDly )                                       */
+/*               SrcFile( QCLSRC )                                   */
+/*               SrcMbr( *PGM )                                      */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
+     Pgm      ( &StrTime          +
+                &EndTime          +
+                &Itv              +
+                &Dly              +
+                &RsmTime          +
+              )
+
+/*-- Parameters:  ---------------------------------------------------*/
+     Dcl        &StrTime     *Char     6       /* 24 hour HHMMSS */
+     Dcl        &EndTime     *Char     6       /* 24 hour HHMMSS */
+     Dcl        &CurTime     *Char     6       /* 24 hour HHMMSS */
+     Dcl        &Itv         *Char     6       /* HHMMSS */
+     Dcl        &Dly         *Dec   (  5 0 )
+     Dcl        &RsmTime     *Char     6       /* 24 hour HHMMSS */
+
+     Dcl        &StrDatTim   *Char    12
+     Dcl        &EndDatTim   *Char    12
+     Dcl        &CurDatTim   *Char    12
+     Dcl        &TgtDatTim   *Char    12
+     Dcl        &PrvDatTim   *Char    12
+     Dcl        &TmpDatTim   *Char    12
+     Dcl        &PicStr      *Char    12         'YYMMDDHHMISS'
+     Dcl        &Cur_Float   *Char     8
+     Dcl        &Str_Float   *Char     8
+     Dcl        &End_Float   *Char     8
+     Dcl        &Tgt_Float   *Char     8
+     Dcl        &Tmp_Float   *Char     8
+     Dcl        &StrSec_Dec  *Dec   ( 15 0 )
+     Dcl        &EndSec_Dec  *Dec   ( 15 0 )
+     Dcl        &CurSec_Dec  *Dec   ( 15 0 )
+     Dcl        &TgtSec_Dec  *Dec   ( 15 0 )
+     Dcl        &DiffSec     *Dec   ( 15 0 )
+     Dcl        &TmpSec_Dec  *Dec   ( 15 0 )
+     Dcl        &TmpSecs     *Dec   ( 15 0 )
+     Dcl        &ItvSecs     *Dec   ( 15 0 )
+     Dcl        &DiffSecC    *Char    15
+     Dcl        &Float_Dfn   *Char     7         X'01000800000000'
+     Dcl        &Dec_Dfn     *Char     7         X'03000F00000000'
+     Dcl        &MsgText     *Char   256
+     Dcl        &HH          *Dec    ( 5 0 )
+     Dcl        &MM          *Dec    ( 5 0 )
+     Dcl        &SS          *Dec    ( 5 0 )
+     Dcl        &HHSecs      *Dec    ( 5 0 )
+     Dcl        &MMSecs      *Dec    ( 5 0 )
+     Dcl        &SS          *Dec    ( 5 0 )
+     Dcl        &DATETIME    *Char    20
+
+/*-- Global error monitoring:  --------------------------------------*/
+     MonMsg      CPF0000      *N        GoTo Error
+
+     /* YYYYMMDDHHMMSSssssss */
+     RtvSysVal  SYSVAL( QDATETIME ) RTNVAR( &DATETIME )
+     ChgVar     &CurDatTim    %sst( &DATETIME  3  12 )
+     ChgVar     &CurTime      %sst( &DATETIME  9   6 )
+     ChgVar     &StrDatTim    &CurDatTim
+
+     SndPgmMsg   Msg('StrTime:' *Bcat &StrTime *Bcat                 +
+                     'EndTime:' *Bcat &EndTime *Bcat                 +
+                     'ITV    :' *Bcat &ITV     *Bcat                 +
+                     'CurTime:' *Bcat &CurTime )                     +
+                 MsgType( *INFO )
+
+     If       ( &StrTime   *GT  &EndTime ) Do /* over night */
+
+     If       ( &CurTime   *GE  &StrTime ) Do /* Current date same as StrTime */
+     /*    StrTime  CurTime  235959   EndTime */
+     /*       1710    1720            0300    */
+     CallSubr   Subr( GetCurDate )
+     EndDo
+     Else Do
+     If       ( &CurTime   *GT  &EndTime ) Do /* Current date same as StrTime */
+     /*    CurTime  StrTime  235959   EndTime */
+     /*       1610    1710            0300    */
+     CallSubr   Subr( GetCurDate )
+     EndDo
+     Else                                  Do /* Prev    date same as StrTime */
+     /*    StrTime  235959   CurTime  EndTime */
+     /*       1710           0110     0300    */
+     CallSubr   Subr( GetPrvDate )           /* Prev date */
+     ChgVar     %sst( &StrDatTim 1 6 )  %sst( &PrvDatTim 1 6 )
+     ChgVar     %sst( &StrDatTim 7 6 )  &StrTime
+      /* caculate next date end time */
+     ChgVar     &TmpDatTim    &CurDatTim
+     ChgVar     %sst( &TmpDatTim 7 6 ) '000000'
+     CallPrc     CEESECS    ( &TmpDatTim                             +
+                              &PicStr                                +
+                              &Tmp_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &TmpSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &Tmp_Float                             +
+                              &Float_Dfn                             +
+                            )
+     Chgvar      &HH          %sst( &EndTime 1 2 )
+     Chgvar      &HHSecs    ( &HH * 3600 )
+     Chgvar      &MM          %sst( &EndTime 3 2 )
+     Chgvar      &MMSecs    ( &MM * 60   )
+     Chgvar      &SS          %sst( &EndTime 5 2 )
+     Chgvar      &TmpSecs   ( &HHSecs + &MMSecs + &SS )
+     Chgvar      &TmpSec_Dec ( &TmpSec_Dec + &TmpSecs )
+     CallPrc     '_LBCPYNV' ( &Tmp_Float                             +
+                              &Float_Dfn                             +
+                              &TmpSec_Dec                            +
+                              &Dec_Dfn                               +
+                            )
+     CallPrc    Prc('CEEDATM') Parm( (&Tmp_Float)           +
+                                     (&PicStr)              +
+                                     (&TmpDatTim) )
+     Chgvar     &EndDatTim    &TmpDatTim
+     ChgVar     %sst( &EndDatTim 7 6 ) &EndTime
+     EndDo
+     EndDo
+
+     EndDo
+     Else Do
+     ChgVar     &StrDatTim    &CurDatTim
+     ChgVar     &EndDatTim    &CurDatTim
+     ChgVar     %sst( &EndDatTim 7 6 ) &EndTime
+     If       ( &StrTime    *NE '000000' )  Do
+     ChgVar     %sst( &StrDatTim 7 6 ) &StrTime
+     EndDo
+     EndDo
+
+     Chgvar      &HH          %sst( &ITV 1 2 )
+     Chgvar      &HHSecs    ( &HH * 3600 )
+     Chgvar      &MM          %sst( &ITV 3 2 )
+     Chgvar      &MMSecs    ( &MM * 60   )
+     Chgvar      &SS          %sst( &ITV 5 2 )
+     Chgvar      &ItvSecs   ( &HHSecs + &MMSecs + &SS )
+
+     CallPrc     CEESECS    ( &CurDatTim                             +
+                              &PicStr                                +
+                              &Cur_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &CurSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &Cur_Float                             +
+                              &Float_Dfn                             +
+                            )
+
+     CallPrc     CEESECS    ( &StrDatTim                             +
+                              &PicStr                                +
+                              &Str_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &StrSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &Str_Float                             +
+                              &Float_Dfn                             +
+                            )
+
+     CallPrc     CEESECS    ( &EndDatTim                             +
+                              &PicStr                                +
+                              &End_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &EndSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &End_Float                             +
+                              &Float_Dfn                             +
+                            )
+
+     If        ( &StrTime    *NE '000000' )  Do
+       ChgVar      &TgtSec_Dec    &StrSec_Dec
+       If        ( &CurSec_Dec *GT &StrSec_Dec  ) Do
+        Dountil   ( &TgtSec_Dec *GT &CurSec_Dec )
+        ChgVar      &TgtSec_Dec  ( &TgtSec_Dec + &ItvSecs )
+        EndDo       /* end Dountil */
+       EndDo       /* end If &Curtime */
+     EndDo         /* end If &Strtime */
+     Else Do       /* else If &Strtime */
+     ChgVar      &TgtSec_Dec  ( &CurSec_Dec + &ItvSecs )
+     EndDo
+
+     CallPrc     '_LBCPYNV' ( &Tgt_Float                             +
+                              &Float_Dfn                             +
+                              &TgtSec_Dec                            +
+                              &Dec_Dfn                               +
+                            )
+     CallPrc    Prc('CEEDATM') Parm( (&Tgt_Float)           +
+                                     (&PicStr)              +
+                                     (&TgtDatTim) )
+
+     Chgvar      &RsmTime     %sst( &TgtDatTim 7 6 )
+     ChgVar      &Dly         ( &TgtSec_Dec - &CurSec_Dec )
+
+     If        ( &TgtSec_Dec *LE &EndSec_Dec )   Do
+     ChgVar      &DiffSecC      &Dly
+     SndPgmMsg   Msg('The Tgt      is' *Bcat                         +
+                     &TgtDatTim        *Bcat                         +
+                     &DiffSecC *Bcat 'seconds.')                     +
+                 MsgType( *INFO )
+     EndDo
+     Else Do
+     ChgVar      &Dly           -1
+     Chgvar      &RsmTime       ' '
+     SndPgmMsg   Msg('The Tgt      is' *Bcat                         +
+                     &TgtDatTim        *Bcat                         +
+                     'over'            *Bcat                         +
+                     &EndDatTim )                                    +
+                 MsgType( *INFO )
+     dmpclpgm
+     EndDo
+
+ Return:
+     Return
+
+/*-- Error handling:  -----------------------------------------------*/
+ Error:
+     Call      QMHMOVPM    ( '    '                                  +
+                             '*DIAG'                                 +
+                             x'00000001'                             +
+                             '*PGMBDY'                               +
+                             x'00000001'                             +
+                             x'0000000800000000'                     +
+                           )
+
+     Call      QMHRSNEM    ( '    '                                  +
+                             x'0000000800000000'                     +
+                           )
+
+    Subr       Subr( GetCurDate )
+     ChgVar     %sst( &StrDatTim 7 6 ) &StrTime
+      /* caculate next date end time */
+     ChgVar     &TmpDatTim    &CurDatTim
+     ChgVar     %sst( &TmpDatTim 7 6 ) '235959'
+     CallPrc     CEESECS    ( &TmpDatTim                             +
+                              &PicStr                                +
+                              &Tmp_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &TmpSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &Tmp_Float                             +
+                              &Float_Dfn                             +
+                            )
+     Chgvar      &HH          %sst( &EndTime 1 2 )
+     Chgvar      &HHSecs    ( &HH * 3600 )
+     Chgvar      &MM          %sst( &EndTime 3 2 )
+     Chgvar      &MMSecs    ( &MM * 60   )
+     Chgvar      &SS          %sst( &EndTime 5 2 )
+     Chgvar      &TmpSecs   ( &HHSecs + &MMSecs + &SS )
+     Chgvar      &TmpSec_Dec ( &TmpSec_Dec + &TmpSecs )
+     CallPrc     '_LBCPYNV' ( &Tmp_Float                             +
+                              &Float_Dfn                             +
+                              &TmpSec_Dec                            +
+                              &Dec_Dfn                               +
+                            )
+     CallPrc    Prc('CEEDATM') Parm( (&Tmp_Float)           +
+                                     (&PicStr)              +
+                                     (&TmpDatTim) )
+     Chgvar     &EndDatTim    &TmpDatTim
+     ChgVar     %sst( &EndDatTim 7 6 ) &EndTime
+
+    EndSubr
+
+    Subr       Subr( GetPrvDate )
+      /* caculate Prev date end time */
+     ChgVar     &TmpDatTim    &CurDatTim
+     CallPrc     CEESECS    ( &TmpDatTim                             +
+                              &PicStr                                +
+                              &Tmp_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &TmpSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &Tmp_Float                             +
+                              &Float_Dfn                             +
+                            )
+     Chgvar      &TmpSec_Dec  ( &TmpSec_Dec - 86400)
+
+     CallPrc     '_LBCPYNV' ( &Tmp_Float                             +
+                              &Float_Dfn                             +
+                              &TmpSec_Dec                            +
+                              &Dec_Dfn                               +
+                            )
+     CallPrc    Prc('CEEDATM') Parm( (&Tmp_Float)           +
+                                     (&PicStr)              +
+                                     (&PrvDatTim) )
+
+    EndSubr
+
+ EndPgm:
+     EndPgm
