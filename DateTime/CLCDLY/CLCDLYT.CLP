@@ -59,6 +59,9 @@ loop:
              /* run your code here */
              /* run your code here */
 
+             If       ( &Dly = 0 )                                      +
+               DlyJob     Dly( 1 )
+
              Goto       Loop
              EndDo
 
@@ -88,3 +91,4 @@ loop:
 
  EndPgm:
      EndPgm
+
