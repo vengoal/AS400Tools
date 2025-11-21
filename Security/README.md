@@ -6,7 +6,8 @@
     https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_76/apis/qsyrtvk.htm
   - Set TOTP Key (QSYSETK) API\
     https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_76/apis/qsysetk.htm
-  - TOTP Key RTV and SET TOTP KEY Example
-    - RTVSETTOTPKEY/RTVTOTPKEY.CLP
-    - RTVSETTOTPKEY/SETTOTPKEY.CLP
-    - RTVSETTOTPKEY/TOTPRTVSET.CLP
+  - TOTP Key RTV and SET TOTP KEY Example\
+    https://github.com/vengoal/AS400Tools/tree/main/Security/RTVSETTOTPKEY
+    - RTVTOTPKEY.CLP
+    - SETTOTPKEY.CLP
+    - TOTPRTVSET.CLP
