@@ -112,7 +112,7 @@
   <li>Security</li>
   <ul>
     <li>SU - <a href="https://www.mcpressonline.com/programming-other/cl/techtip-take-advantage-of-the-su-cl-command">Switch to and back from different user profiles within the same job with ease.</a></li>
-    <li>TOTP Key API Usage example for Sync TOTP key accross IBM i systems</li>
+    <li>TOTP Key API for Sync TOTP Key accross IBM i systems after user exectute command CHGTOTPKEY</li>
   </ul>
       <li>Software Product License</li>
    <ul>
