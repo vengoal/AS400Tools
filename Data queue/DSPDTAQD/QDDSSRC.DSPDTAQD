@@ -1,0 +1,59 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CHGINPDFT
+     A                                      MSGLOC(24)
+     A                                      PRINT
+     A                                      ERRSFL
+      *-------------------------------------------------------------------
+     A          R INFO
+     A                                      CLRL(*NO)
+     A                                      OVERLAY
+     A                                      CA03(03)
+     A                                      CA05(05)
+     A                                      CA12(12)
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 13TIME
+     A                                  1 29' Data Queue Information '
+     A                                      DSPATR(HI)
+     A                                  1 59SYSNAME
+     A                                  1 70USER
+     A                                  4  2'Data Queue . . . . . . . . . ..'
+     A            QNAME         10A  O  4 37
+     A                                  5  4'Library  . . . . . . . . . . .'
+     A            QLIBRARY      10A  O  5 39
+     A                                  6  2'Type . . . . . . . . . . . . ..'
+     A            QTYPE          4A  O  6 37
+     A                                  7  2'Maximum entry length . . . . ..'
+     A            QLENGTH        9Y 0O  7 37EDTCDE(1)
+     A                                  8  2'Force to auxiliary storage . ..'
+     A            FORCE          4A  O  8 37
+     A                                  9  2'Sequence . . . . . . . . . . ..'
+     A            SEQUENCE       6A  O  9 37
+     A                                 10  2'Key length . . . . . . . . . ..'
+     A  50                                  DSPATR(ND)
+     A            KLENGTH        9Y 0O 10 37EDTCDE(3)
+     A  50                                  DSPATR(ND)
+     A                                 11  2'Include Sender ID  . . . . . ..'
+     A            SENDER         4A  O 11 37
+     A                                 12  2'Queue size:'
+     A                                 13  4'Maximum number of entries  . .'
+     A            MAXENTRIES     8A  O 13 37
+     A                                 13 46'or'
+     A            MAXIMUM        9Y 0O 13 49EDTCDE(1)
+     A                                 13 61'entries'
+     A                                 14  4'Initial number of entries  . .'
+     A            MINIMUM        9Y 0O 14 37EDTCDE(1)
+     A                                 15  2'Automatic reclaim  . . . . . ..'
+     A            RECLAIM        4A  O 15 37
+     A                                 16  2'Text ''description'' . . . . .. .'
+     A            TEXT          50A  O 16 37
+     A                                 18  2'Current allocation . . . . . ..'
+     A            CURRENT        9Y 0O 18 37EDTCDE(1)
+     A                                 18 49'entries'
+     A                                 20  2'Current entry count  . . . . ..'
+     A            COUNT          9Y 0O 20 37EDTCDE(1)
+     A                                 20 49'entries'
+      *-------------------------------------------------------------------
+     A          R FOOT
+     A                                 22  3'F3=Exit   F5=Refresh F12=Cancel'
+     A                                      COLOR(BLU)
