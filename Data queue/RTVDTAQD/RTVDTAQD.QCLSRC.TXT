@@ -1,0 +1,297 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : RTVDTAQD CPP                                       */
+/*  Description : Retrieve data queue description                    */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : September 11,2013                                  */
+/*  Date Changed: September 16,2013 add parameter RclTime            */
+/*                                                                   */
+/*  Program function:  RTVDTAQD   command processing program         */
+/*                                                                   */
+/*                                                                   */
+/*  Program summary                                                  */
+/*  ---------------                                                  */
+/*                                                                   */
+/*  Work management APIs:                                            */
+/*    QMHQRDQD       Retrieve data queue description                 */
+/*                                                                   */
+/*    QWCCVTDT       Convert Date and Time Format                    */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtClPgm   Pgm( RTVDTAQD )                                     */
+/*               SrcFile( QCLSRC )                                   */
+/*               SrcMbr( *PGM )                                      */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
+    Pgm   ( &FullDtaQ             +
+            &RtnLib               +
+            &Type                 +
+            &MaxLen               +
+            &Force                +
+            &Seq                  +
+            &KeyLen               +
+            &SndrId               +
+            &MaxEntSpc            +
+            &MaxNbrEnt            +
+            &InlNbrEnt            +
+            &AutoRcl              +
+            &Text                 +
+            &CurNbrAlc            +
+            &NbrOfEnt             +
+            &EnFrcLock            +
+            &RclTime              +
+            &RmtDtaq              +
+            &RmtDtaqL             +
+            &RmtLocName           +
+            &Dev                  +
+            &LclLocName           +
+            &Mode                 +
+            &RmtNetId             +
+            &RmtDbName            +
+          )
+
+    Dcl   &FullDtaq   *Char    20
+    Dcl   &Dtaq       *Char    10
+    Dcl   &Lib        *Char    10
+    Dcl   &RtnLib     *Char    10
+    Dcl   &RtnLibp    *Char    10
+    Dcl   &Type       *Char     4
+    Dcl   &Typep      *Char     4
+    Dcl   &MaxLen     *Dec    ( 5 0 )
+    Dcl   &MaxLenp    *Dec    ( 5 0 )
+    Dcl   &Force      *Char     4
+    Dcl   &Forcep     *Char     4
+    Dcl   &Seq        *Char     6
+    Dcl   &Seqp       *Char     6
+    Dcl   &KeyLen     *Dec    ( 5 0 )
+    Dcl   &KeyLenp    *Dec    ( 5 0 )
+    Dcl   &SndrId     *Char     4
+    Dcl   &SndrIdp    *Char     4
+    Dcl   &NbrOfEnt   *Dec    ( 9 0 )
+    Dcl   &NbrOfEntp  *Dec    ( 9 0 )
+    Dcl   &CurNbrAlc  *Dec    ( 9 0 )
+    Dcl   &CurNbrAlcp *Dec    ( 9 0 )
+    Dcl   &MaxNbrEntp *Dec    ( 9 0 )
+    Dcl   &MaxNbrEnt  *Dec    ( 9 0 )
+    Dcl   &InlNbrEntp *Dec    ( 9 0 )
+    Dcl   &InlNbrEnt  *Dec    ( 9 0 )
+    Dcl   &MaxEntSpcp *Dec    ( 9 0 )
+    Dcl   &MaxEntSpc  *Char     9
+    Dcl   &AutoRcl    *Char     4
+    Dcl   &AutoRclp   *Char     4
+    Dcl   &EnFrcLock  *Char     4
+    Dcl   &EnFrcLockp *Char     4
+    Dcl   &Text       *Char    50
+    Dcl   &Textp      *Char    50
+    Dcl   &RclTime    *Char    20
+    Dcl   &RclTimep   *Char    20
+    Dcl   &Textp      *Char    50
+    Dcl   &DtsNULL    *Char     8     X'0000000000000000'
+    Dcl   &RclDts     *Char     8
+
+/* Format RDQD0200 fields */
+    Dcl   &RmtDtaq    *Char    10
+    Dcl   &RmtDtaqp   *Char    10
+    Dcl   &RmtDtaqL   *Char    10
+    Dcl   &RmtDtaqLp  *Char    10
+    Dcl   &RmtLocName *Char     8
+    Dcl   &RmtLocNamp *Char     8
+    Dcl   &Dev        *Char    10
+    Dcl   &Devp       *Char    10
+    Dcl   &LclLocName *Char     8
+    Dcl   &LclLocNamp *Char     8
+    Dcl   &Mode       *Char     8
+    Dcl   &Modep      *Char     8
+    Dcl   &RmtNetId   *Char     8
+    Dcl   &RmtNetIdp  *Char     8
+    Dcl   &RmtDbName  *Char    18
+    Dcl   &RmtDbNamep *Char    18
+
+    Dcl   &RcvR       *Char   120
+    Dcl   &RcvRLen    *Char     4
+
+    MonMsg     CPF0000       *N    GoTo Error
+
+    ChgVar     &Dtaq         %SST( &FullDtaq  1 10 )
+    ChgVar     &Lib          %SST( &FullDtaq 11 10 )
+    ChkObj     Obj(&Lib/&Dtaq) ObjType(*Dtaq)
+    IF  (( &Lib *EQ '*LIBL' )    *OR +
+         ( &Lib *EQ '*CURLIB' ))   Do
+    RtvObjD    Obj(&Lib/&Dtaq) ObjType(*DTAQ) RtnLib(&LIB)
+    EndDo
+
+    ChgVar     %BIN( &RcvrLen 1 4 )  120
+
+/* Get format RDQD0100 fields */
+    Call       QMHQRDQD    ( &RcvR                    +
+                             &RcvRLen                 +
+                             RDQD0100                 +
+                             &FullDtaq                +
+                           )
+
+    ChgVar     &MaxLenp      %BIN( &Rcvr 9 4 )
+
+    If  ( %SST(&RcvR 17 1) *EQ 'K' ) DO
+    ChgVar     &KeyLenp      %BIN( &RcvR 13 4 )
+    ChgVar     &Seqp         '*KEYED'
+    EndDo
+
+    Else Do
+    If  ( %SST(&RcvR 17 1) *EQ 'L' )   +
+    ChgVar     &Seqp         '*LIFO'
+    Else                               +
+    ChgVar     &Seqp         '*FIFO'
+    EndDo
+
+    If  ( %SST(&RcvR 18 1) *EQ 'N' )   +
+          ChgVar &SndrIdp '*NO'
+    Else Do
+    If  ( %SST(&RcvR 18 1) *EQ 'Y' )   +
+          ChgVar &SndrIdp '*YES'
+    EndDo
+
+    If  ( %SST(&RcvR 19 1) *EQ 'N' )   +
+          ChgVar &Forcep  '*NO'
+    Else Do
+    If  ( %SST(&RcvR 19 1) *EQ 'Y' )   +
+          ChgVar &Forcep  '*YES'
+    EndDo
+
+    If  ( %SST(&RcvR 70 1) *EQ '0' )   +
+          ChgVar &Typep   '*STD'
+    Else                               +
+          ChgVar &Typep   '*DDM'
+
+    If  ( %SST(&RcvR 71 1) *EQ '0' )   +
+          ChgVar &AutoRclp '*NO'
+    Else Do
+    If  ( %SST(&RcvR 71 1) *EQ '1' )   +
+          ChgVar &AutoRclp '*YES'
+    EndDo
+
+    If  ( %SST(&RcvR 72 1) *EQ '0' )   +
+          ChgVar &EnFrcLockp '*NO'
+    Else Do
+    If  ( %SST(&RcvR 72 1) *EQ '1' )   +
+          ChgVar &EnFrcLockp '*YES'
+    EndDo
+
+    ChgVar     &NbrOfEntp  %BIN( &RcvR  73  4 )
+    ChgVar     &CurNbrAlcp %BIN( &RcvR  77  4 )
+    ChgVar     &MaxNbrEntp %BIN( &RcvR 101  4 )
+    ChgVar     &InlNbrEntp %BIN( &RcvR 105  4 )
+    ChgVar     &Textp      %SST( &RCVR  20 50 )
+    ChgVar     &MaxEntSpcp %BIN( &RcvR 109  4 )
+
+    If       ( &MaxEntSpcp *EQ -1 ) Do
+    ChgVar     &MaxEntSpc  '*MAX16MB'
+    MonMsg     MsgId(MCH3601)
+    EndDo
+    Else Do
+    If       ( &MaxEntSpcp *EQ -2 ) Do
+    ChgVar     &MaxEntSpc  '*MAX2GB'
+    MonMsg     MsgId(MCH3601)
+    EndDo
+    EndDo
+    If       ( &MaxEntSpcp *EQ  0 ) Do
+    ChgVar     &MaxEntSpc  ' '
+    MonMsg     MsgId(MCH3601)
+    EndDo
+
+    ChgVar     &RclDts       %SST(&RCVR 113 8)
+    If (&RclDts *NE &DtsNull) Do
+    Call       QWCCVTDT    ( '*DTS'             +
+                              &RclDts            +
+                              '*YYMD'            +
+                              &RclTimep          +
+                              x'00000000'        +
+                           )
+    EndDo
+
+    ChgVar     &RtnLib       &Lib
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &Type         &Typep
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &MaxLen       &MaxLenp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &Force        &Forcep
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &Seq          &Seqp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &KeyLen       &KeyLenp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &SndrId       &SndrIdp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &MaxNbrEnt    &MaxNbrEntp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &InlNbrEnt    &InlNbrEntp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &AutoRCL      &AutoRCLp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &Text         &Textp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &NbrOfEnt     &NbrOfEntp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &CurNbrAlc    &CurNbrAlcp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &EnFrcLock    &EnFrcLockp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &RclTime      &RclTimep
+    MonMsg     MsgId(MCH3601)
+
+    If (&Type *EQ '*DDM') Do
+/* Get format RDQD0200 fields */
+    ChgVar     &RcvR         *BLANKS
+    ChgVar     %BIN( &RcvrLen 1 4 )  120
+    Call       QMHQRDQD    ( &RcvR                    +
+                             &RcvRLen                 +
+                             RDQD0200                 +
+                             &FullDtaq                +
+                           )
+
+    ChgVar     &RmtDtaqp   %SST( &RCVR  51 10 )
+    ChgVar     &RmtDtaqLp  %SST( &RCVR  61 10 )
+    ChgVar     &RmtLocNamp %SST( &RCVR  27  8 )
+    ChgVar     &Devp       %SST( &RCVR   9 10 )
+    ChgVar     &LclLocNamp %SST( &RCVR  35  8 )
+    ChgVar     &Modep      %SST( &RCVR  19  8 )
+    ChgVar     &RmtNetIdp  %SST( &RCVR  43  8 )
+    ChgVar     &RmtDbNamep %SST( &RCVR  91 18 )
+
+    ChgVar     &RmtDtaq    &RmtDtaqp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &RmtDtaqL   &RmtDtaqLp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &RmtLocName &RmtLocNamp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &Dev        &Devp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &LclLocName &LclLocNamp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &Mode       &Modep
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &RmtNetId   &RmtNetIdp
+    MonMsg     MsgId(MCH3601)
+    ChgVar     &RmtDbName  &RmtDbNamep
+    MonMsg     MsgId(MCH3601)
+
+    EndDo
+
+    Return
+
+Error:
+    Call       QMHMOVPM    ( '    '                   +
+                             '*DIAG'                  +
+                             x'00000001'              +
+                             '*PGMBDY'                +
+                             x'00000001'              +
+                             x'0000000800000000'      +
+                           )
+
+    Call       QMHRSNEM    ( '    '                   +
+                              x'0000000800000000'     +
+                           )
+
+EndPgm:
+    EndPgm
