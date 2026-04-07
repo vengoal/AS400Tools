@@ -1,0 +1,21 @@
+     A          R SKTEXITR
+     A            SRVTYPE       10
+     A*            LISTEN
+     A*            ACCEPT
+     A*            CONNECT
+     A            SERVICE       32
+     A            LCLBNDIP      32          TEXT('Local Listen IP')
+     A            LCLBNDPORT     5          TEXT('Local Listen Port')
+     A            LOCALIP       32          TEXT('Local IP')
+     A            LOCALPORT      5          TEXT('Local Port')
+     A            REMOTEIP      32          TEXT('Remote IP')
+     A            REMOTEPORT     5          TEXT('Remote Port')
+     A            JOBNAM        10
+     A            JOBUSR        10
+     A            JOBNBR         6
+     A            CURUSR        10
+     A            WRTTIME         Z
+     A          K LOCALIP
+     A          K LOCALPORT
+     A          K REMOTEIP
+     A          K REMOTEPORT
