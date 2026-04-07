@@ -1,0 +1,198 @@
+/*-------------------------------------------------------------------*/
+/*                                                                   */
+/*  Program . . : RTVIPLTIM                                          */
+/*  Description : Retrieve IPL Time                                  */
+/*  Author  . . : Vengoal Chang                                      */
+/*  Published . : AS400ePaper                                        */
+/*  Date  . . . : November 29, 2024                                  */
+/*                                                                   */
+/*  Program function:  RTVIPLTIM command  retrieves date/time        */
+/*                     the IPL started/ended, the number of seconds  */
+/*                     required to IPL, and the same information for */
+/*                     the last powerdown.                           */
+/*                                                                   */
+/*  Program summary                                                  */
+/*  ---------------                                                  */
+/*                                                                   */
+/*                                                                   */
+/*  Work management APIs:                                            */
+/*    QWCCRTEC    Prints Report on Time Spent in IPL Phases/Steps    */
+/*                                                                   */
+/*  ILE CEE Date and Time APIs:                                      */
+/*    CEESECS     Convert Timestamp to Number of Seconds             */
+/*                since 00:00:00 14 October 1582                     */
+/*                                                                   */
+/*  Machine Interface:                                               */
+/*    _LBCPYNV    Copy Numeric Value (CPYNV)                         */
+/*                                                                   */
+/*  Compile options:                                                 */
+/*    CrtBndCL   Pgm( RTVIPLTIM )                                    */
+/*               SrcFile( QCLSRC )                                   */
+/*               SrcMbr( *PGM )                                      */
+/*                                                                   */
+/*-------------------------------------------------------------------*/
+     Pgm      ( &STRIPLDAT             +
+                &STRIPLTIM             +
+                &ENDIPLDAT             +
+                &ENDIPLTIM             +
+                &IPLSEC                +
+                &STRPWRDWND            +
+                &STRPWRDWNT            +
+                &ENDPWRDWND            +
+                &ENDPWRDWNT            +
+                &PWRDWNSEC             +
+              )
+
+/*-- Parameters:  ---------------------------------------------------*/
+     Dcl        &STRIPLDAT   *Char     8
+     Dcl        &STRIPLTIM   *Char     8
+     Dcl        &ENDIPLDAT   *Char     8
+     Dcl        &ENDIPLTIM   *Char     8
+     Dcl        &IPLSEC      *Dec    ( 5 0 )
+     Dcl        &STRPWRDWND  *Char     8
+     Dcl        &STRPWRDWNT  *Char     8
+     Dcl        &ENDPWRDWND  *Char     8
+     Dcl        &ENDPWRDWNT  *Char     8
+     Dcl        &PWRDWNSEC   *Dec    ( 5 0 )
+
+     Dcl        &PWRDWNSD    *Char     8
+     Dcl        &PWRDWNED    *Char     8
+     Dcl        &PWRDWNST    *Char     8
+     Dcl        &PWRDWNET    *Char     8
+     Dcl        &IPLSTRD     *Char     8
+     Dcl        &IPLENDD     *Char     8
+     Dcl        &IPLSTRT     *Char     8
+     Dcl        &IPLENDT     *Char     8
+
+     Dcl        &IPLDatTimS  *Char    17
+     Dcl        &IPLDatTimE  *Char    17
+     Dcl        &PWRDatTimS  *Char    17
+     Dcl        &PWRDatTimE  *Char    17
+
+     Dcl        &PicString   *Char    17   'MM/DD/YY HH:MI:SS'
+     Dcl        &StrDatTim   *Char    17
+     Dcl        &EndDatTim   *Char    17
+     Dcl        &Str_Float   *Char     8
+     Dcl        &End_Float   *Char     8
+     Dcl        &StrSec_Dec  *Dec   ( 15 0 )
+     Dcl        &EndSec_Dec  *Dec   ( 15 0 )
+     Dcl        &DiffSec     *Int
+     Dcl        &Float_Dfn   *Char     7         X'01000800000000'
+     Dcl        &Dec_Dfn     *Char     7         X'03000F00000000'
+     Dcl        &Action      *Char    10
+
+     Dclf       QTEMP/QWCCRTEC
+
+/*-- Global error monitoring:  --------------------------------------*/
+     MonMsg     CPF0000      *N        GoTo Error
+
+     ChkObj     Obj( QTEMP/QWCCRTEC )            +
+                ObjType( *FILE )
+     Monmsg     CPF9801      *N        Do
+     CrtPF      File( QTEMP/QWCCRTEC )           +
+                RcdLen( 132 )                    +
+                IgcDta( *YES )
+     EndDo
+
+     ClrPFM      QTEMP/QWCCRTEC
+
+ /*  OvrPrtF    File( QPSRVDMP )                 +
+                IgcDta( *YES )                   +
+                OvrScope( *JOB )                     */
+
+     Call       QWCCRTEC
+
+     CpySplf    File( QPSRVDMP )                 +
+                ToFile( QTEMP/QWCCRTEC )         +
+                SplNbr( *LAST )                  +
+                MbrOpt( *REPLACE )
+
+     DltSplf    File( QPSRVDMP )                 +
+                SplNbr( *LAST )
+
+ ReadF:
+     Rcvf
+     MonMsg     CPF0864      *N        Goto Return
+
+     Select
+     When     ( %SST( &QWCCRTEC 89 10 )  *EQ  'XPF PWRDWN' ) Do
+       Chgvar   &STRPWRDWND  %SST( &QWCCRTEC 104  8 )  /* MM/DD/YY */
+       Chgvar   &STRPWRDWNT  %SST( &QWCCRTEC 113  8 )  /* HH:MM:SS */
+       Chgvar   &PWRDATTIMS  %SST( &QWCCRTEC 104 17 )
+       EndDo
+     When     ( %SST( &QWCCRTEC 89 10 )  *EQ  'End PWRDWN' ) Do
+       Chgvar   &ENDPWRDWND  %SST( &QWCCRTEC 104  8 )
+       Chgvar   &ENDPWRDWNT  %SST( &QWCCRTEC 113  8 )
+       Chgvar   &PWRDATTIME  %SST( &QWCCRTEC 104 17 )
+       EndDo
+
+     When     ( %SST( &QWCCRTEC 89 10 )  *EQ  'XPF IPL   ' ) Do
+       Chgvar   &STRIPLDAT   %SST( &QWCCRTEC 104  8 )
+       Chgvar   &STRIPLTIM   %SST( &QWCCRTEC 113  8 )
+       Chgvar   &IPLDATTIMS  %SST( &QWCCRTEC 104 17 )
+       EndDo
+     When     ( %SST( &QWCCRTEC 89 10 )  *EQ  'End of IPL' ) Do
+       Chgvar   &ENDIPLDAT   %SST( &QWCCRTEC 104  8 )
+       Chgvar   &ENDIPLTIM   %SST( &QWCCRTEC 113  8 )
+       Chgvar   &IPLDATTIME  %SST( &QWCCRTEC 104 17 )
+       Goto     ClcTimDiff
+       EndDo
+       EndSelect
+
+       GoTo     ReadF
+
+ ClcTimDiff:
+       Chgvar   &StrDatTim   &PWRDATTIMS
+       Chgvar   &EndDatTim   &PWRDATTIME
+       CallSubr TimeDiff     RtnVal( &DiffSec )
+       Chgvar   &PWRDWNSEC   &DiffSec
+
+       Chgvar   &StrDatTim   &IPLDATTIMS
+       Chgvar   &EndDatTim   &IPLDATTIME
+       CallSubr TimeDiff     RtnVal( &DiffSec )
+       Chgvar   &IPLSEC      &DiffSec
+
+ Return:
+     Return
+
+/*-- Error handling:  -----------------------------------------------*/
+ Error:
+     Call      QMHMOVPM    ( '    '                                  +
+                             '*DIAG'                                 +
+                             x'00000001'                             +
+                             '*PGMBDY'                               +
+                             x'00000001'                             +
+                             x'0000000800000000'                     +
+                           )
+
+     Call      QMHRSNEM    ( '    '                                  +
+                             x'0000000800000000'                     +
+                           )
+
+ EndPgm:
+
+ Subr subr( TimeDiff )
+     CallPrc     CEESECS    ( &StrDatTim                             +
+                              &PicString                             +
+                              &Str_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &StrSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &Str_Float                             +
+                              &Float_Dfn                             +
+                            )
+
+     CallPrc     CEESECS    ( &EndDatTim                             +
+                              &PicString                             +
+                              &End_Float                             +
+                            )
+     CallPrc     '_LBCPYNV' ( &EndSec_Dec                            +
+                              &Dec_Dfn                               +
+                              &End_Float                             +
+                              &Float_Dfn                             +
+                            )
+
+     ChgVar      &DiffSec   ( &EndSec_Dec - &StrSec_Dec )
+ Endsubr         RtnVal( &DiffSec )
+
+     EndPgm
