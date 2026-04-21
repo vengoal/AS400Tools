@@ -1,0 +1,78 @@
+pgm  (&inFile &inJob &inSplfNbr &inPos1 &inVal1 +
+                                &inPos2 &inVal2 +
+                                &inPos3 &inVal3 )
+
+   dclprcopt   dftactgrp(*no) actgrp(SSF)
+
+   dcl  &inFile      *char      10
+   dcl  &inJob       *char      26
+   dcl  &inSplfNbr   *char       5
+
+   dcl  &inPos1    *uint       4
+   dcl  &inVal1    *char      12
+
+   dcl  &inPos2    *uint       4
+   dcl  &inVal2    *char      12
+
+   dcl  &inPos3    *uint       4
+   dcl  &inVal3    *char      12
+
+   dcl  &SplfNbr     *char       5
+
+   dcl  &JobName     *char      10
+   dcl  &JobUser     *char      10
+   dcl  &JobNumber   *char       6
+
+   dcl  &TempFile1   *char      10    value(TempFile1)
+   dcl  &TempFile2   *char      10    value(TempFile2)
+   dcl  &TempFile3   *char      10    value(TempFile3)
+   dcl  &TempFile4   *char      10    value(TempFile4)
+   dcl  &TempLib     *char      10    value(QTEMP)
+   dcl  &FileToShow  *char      10
+
+   if (%sst(&inJob 1 1) *eq '*') do
+      RtvJobA   job(&JobName) user(&JobUser) nbr(&JobNumber)
+   enddo
+   else do
+      chgvar  &JobName    %sst(&inJob  1 10)
+      chgvar  &JobUser    %sst(&inJob 11 10)
+      chgvar  &JobNumber  %sst(&inJob 21  6)
+   enddo
+
+   clrpfm &Templib/&TempFile1
+   monmsg cpf3142 exec(do)
+      crtpf &Templib/&TempFile1  rcdlen(132)
+   enddo
+
+
+   CpySplF  file(&inFile) ToFile(&Templib/&TempFile1) +
+              job(&JobNumber/&JobUser/&JobName) +
+              SplNbr(&inSplfNbr) ctlchar(*none)
+   ChgVar   &FileToShow    &TempFile1
+
+   if (&inPos1 *gt 0 *and &inVal1 *gt ' ') do
+      CPYF  FROMFILE(&TEMPLIB/&TEMPFILE1) +
+              TOFILE(&TEMPLIB/&TEMPFILE2) +
+              MBROPT(*REPLACE) CRTFILE(*YES) +
+             INCCHAR(*RCD &inPos1 *eq &inVal1)
+      ChgVar   &FileToShow    &TempFile2
+
+       if (&inPos2 *gt 0 *and &inVal2 *gt ' ') do
+          CPYF  FROMFILE(&TEMPLIB/&TEMPFILE2) +
+                  TOFILE(&TEMPLIB/&TEMPFILE3) +
+                  MBROPT(*REPLACE) CRTFILE(*YES) +
+                 INCCHAR(*RCD &inPos2 *eq &inVal2)
+          ChgVar   &FileToShow    &TempFile3
+          if (&inPos3 *gt 0 *and &inVal3 *gt ' ') do
+             CPYF  FROMFILE(&TEMPLIB/&TEMPFILE3) +
+                     TOFILE(&TEMPLIB/&TEMPFILE4) +
+                     MBROPT(*REPLACE) CRTFILE(*YES) +
+                    INCCHAR(*RCD &inPos3 *eq &inVal3)
+             ChgVar   &FileToShow    &TempFile4
+          enddo
+       enddo
+    enddo
+
+    dsppfm &tempLib/&FileToShow
+
+ endpgm
