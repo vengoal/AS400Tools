@@ -1,0 +1,155 @@
+/*  ===============================================================  */
+/*  = Command RtvTcpSts CPP                                       =  */
+/*  =   RtvTcpSts CLLE                                            =  */
+/*  =   Paramater notes:                                          =  */
+/*  =     TCPSTS  : 1 --> TCP/IP is active                        =  */
+/*  =               0 --> TCP/IP is not active                    =  */
+/*  ===============================================================  */
+/*  = Date  : 2022/04/28                                          =  */
+/*  = Author: Vengoal Chang                                       =  */
+/*  ===============================================================  */
+     pgm ( &TcpSts  &LmtMode          +
+           &StrDate &StrTime          +
+           &EndDate &EndTime          +
+           &StrJobP &StrUsrP &StrNbrP +
+           &EndJobP &EndUsrP &EndNbrP +
+         )
+
+     dcl        &TcpSts      *Char    10
+     dcl        &StrDate     *Char     8
+     dcl        &StrTime     *Char     6
+     dcl        &EndDate     *Char     8
+     dcl        &EndTime     *Char     6
+     dcl        &StrJobP     *Char    10
+     dcl        &StrUsrP     *Char    10
+     dcl        &StrNbrP     *Char     6
+     dcl        &EndJobP     *Char    10
+     dcl        &EndUsrP     *Char    10
+     dcl        &EndNbrP     *Char     6
+
+     dcl        &RcvVar      *Char   140
+     dcl        &ApiErr      *Char     8 X'0000000000000000'
+     dcl        &Format      *Char     8 'TCPA0100'
+     dcl        &RcvVarLen   *Char     4
+     dcl        &TcpStkSts   *Char     4
+     dcl        &TcpStkStsn  *dec     10 0
+     Dcl        &StrDat      *Char    Stg(*DEFINED) LEN(8) +
+                                      DefVar( &RCVVAR 17 )
+     dcl        &StrTim      *Char    Stg(*DEFINED) LEN(6) +
+                                      DefVar( &RCVVAR 25 )
+     Dcl        &EndDat      *Char    Stg(*DEFINED) LEN(8) +
+                                      DefVar( &RCVVAR 31 )
+     dcl        &EndTim      *Char    Stg(*DEFINED) LEN(6) +
+                                      DefVar( &RCVVAR 39 )
+     dcl        &StrJob      *Char    Stg(*DEFINED) LEN(10) +
+                                      DefVar( &RCVVAR 45 )
+     dcl        &StrUsr      *Char    Stg(*DEFINED) LEN(10) +
+                                      DefVar( &RCVVAR 55 )
+     dcl        &StrNbr      *Char    Stg(*DEFINED) LEN( 6) +
+                                      DefVar( &RCVVAR 65 )
+     dcl        &EndJob      *Char    Stg(*DEFINED) LEN(10) +
+                                      DefVar( &RCVVAR 87 )
+     dcl        &EndUsr      *Char    Stg(*DEFINED) LEN(10) +
+                                      DefVar( &RCVVAR 97 )
+     dcl        &EndNbr      *Char    Stg(*DEFINED) LEN( 6) +
+                                      DefVar( &RCVVAR 107 )
+     dcl        &LmtMode     *Char     4
+     dcl        &LmtModc     *Char     4
+     dcl        &LmtModn     *dec     10 0
+
+     dcl        &MsgId       *Char     7
+     dcl        &MsgDta      *Char   256
+     dcl        &MsgF        *Char    10
+     dcl        &Msgflib     *Char    10
+     dcl        &Msgtxt      *Char   256
+
+/*-- Global error monitoring:  --------------------------------------*/
+     Monmsg     (Cpf0000 Mch0000) *n   Goto Error
+
+     Chgvar     %Bin(&RcvVarLen)     140
+     Callprc    'QtocRtvTCPA' (            +
+                                &RcvVar    +
+                                &RcvVarLen +
+                                &Format    +
+                                &ApiErr    +
+                              )
+
+     ChgVar     &StrDate     &StrDat
+     Monmsg     Mch3601
+     ChgVar     &StrTime     &StrTim
+     Monmsg     Mch3601
+     ChgVar     &EndDate     &EndDat
+     Monmsg     Mch3601
+     ChgVar     &EndTime     &EndTim
+     Monmsg     Mch3601
+     ChgVar     &StrJobP     &StrJob
+     Monmsg     Mch3601
+     ChgVar     &StrUsrP     &StrUsr
+     Monmsg     Mch3601
+     ChgVar     &StrNbrP     &StrNbr
+     Monmsg     Mch3601
+     ChgVar     &EndJobP     &EndJob
+     Monmsg     Mch3601
+     ChgVar     &EndUsrP     &EndUsr
+     Monmsg     Mch3601
+     ChgVar     &EndNbrP     &EndNbr
+     Monmsg     Mch3601
+     ChgVar     &TcpStkSts   %SST(&RcvVar 9 4)
+     ChgVar     &TcpStkStsn  %bin(&TcpStkSts)
+     ChgVar     &LmtModc     %SST(&RcvVar 137 4)
+     ChgVar     &LmtModn     %bin(&LmtModc)
+
+   If (&TcpStkStsn = 0) Do
+      Chgvar &TcpSts      'INACTIVE'
+      Monmsg     Mch3601
+   EndDo
+   If (&TcpStkStsn = 1) Do
+      Chgvar &TcpSts      'ACTIVE'
+      Monmsg     Mch3601
+   EndDo
+   If (&TcpStkStsn = 2) Do
+      Chgvar &TcpSts      'STARTING'
+      Monmsg     Mch3601
+   EndDo
+   If (&TcpStkStsn = 3 *OR &TCPSTKSTSN = 4 ) Do
+      Chgvar &TcpSts      'ENDING'
+      Monmsg     Mch3601
+   EndDo
+
+
+   If (&LMTMODN *NE 1) Do
+      ChgVar &LmtMode  '*NO'
+      Monmsg     Mch3601
+   EndDo
+   Else Do
+      ChgVar &LmtMode  '*YES'
+      Monmsg     Mch3601
+   EndDo
+
+   Return
+
+/*  ===============================================================  */
+/*  = Error routine                                               =  */
+/*  ===============================================================  */
+
+Error:
+
+  RcvMsg     MsgType( *Excp )                                         +
+             MsgDta( &MsgDta )                                        +
+             MsgID( &MsgID )                                          +
+             MsgF( &MsgF )                                            +
+             MsgFLib( &MsgFLib )
+  MonMsg     ( CPF0000 MCH0000 )
+
+SndMsg:
+
+  SndPgmMsg  MsgID( &MsgID )                                          +
+             MsgF( &MsgFLib/&MsgF )                                   +
+             MsgDta( &MsgDta )                                        +
+             MsgType( *Escape )
+  MonMsg     ( CPF0000 MCH0000 )
+
+/*  ===============================================================  */
+/*  = End of program                                              =  */
+/*  ===============================================================  */
+endpgm
