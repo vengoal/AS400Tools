@@ -1,0 +1,214 @@
+      *********************************************************************
+      * MODULE       RtvSrc1                                              *
+      * ~~~~~~                                                            *
+      * FUNCTION     Check eligibility for source code retrieval.         *
+      * ~~~~~~~~                                                          *
+      * APPLICATION  Retrieve ILE Source Code.                            *
+      * ~~~~~~~~~~~                                                       *
+      * SPECIAL ATTR *None                                                *
+      * ~~~~~~~~~~~~                                                      *
+      * AUTHOR       Chris Stead                    DATE :  30/1/97       *
+      * ~~~~~~                                      ~~~~                  *
+      * COPYRIGHT (c) 1997 Chris Stead, All rights reserved.              *
+      *********************************************************************
+      * Module Description
+      * ~~~~~~~~~~~~~~~~~~
+      * Determines whether a module bound into a *PGM or *SRVPGM contains
+      * debugging views which can be used to retrieve the original source
+      * code.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Parameters
+      * ~~~~~~~~~~
+      * paObject    - ILE Object name (*PGM or *SRVPGM).
+      * paLibrary   - ILE Object Library.
+      * paModule    - Module name.
+      * paType      - Module type.
+      * paSQL       - Embedded SQL.
+      * paErrMsId   - Error message ID.
+      * paErrData   - Error Message substitution data.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Programs Called
+      * ~~~~~~~~~~~~~~~
+      *  *None
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Modules Called
+      * ~~~~~~~~~~~~~~
+      *  QteRetrieveModuleViews - Retrieve debugging views.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Calling Programs
+      * ~~~~~~~~~~~~~~~~
+      *  *None
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Calling Modules
+      * ~~~~~~~~~~~~~~~
+      *  RtvSrcL - Retrieve ILE Source code control module.
+      *  RtvSrc3 - Display ILE modules from which source is retrievable.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Indicator Summary
+      * ~~~~~~~~~~~~~~~~~
+      *  90 - Debug listing view located.
+      *********************************************************************
+     H Debug(*YES)
+      *********************************************************************
+      * Parameters
+     D paObject        S             10
+     D paLibrary       S             10
+     D paModule        S             10
+     D paType          S             10
+     D paSQL           S              1
+     D paDescript      S                   Like(daDescript)
+     D paTimeStmp      S             13
+     D pbViewNo        S              8B 0
+     D paErrMsId       S                   Like(daErrMsId)
+     D paErrData       S                   Like(daErrData)
+
+      * Structure to combine object and library names.
+     D dsProgram       DS
+     D  daProgLib                    20
+     D  daProgram                    10    Overlay(daProgLib:1)
+     D  daLibrary                    10    Overlay(daProgLib:11)
+
+      * VEWL0100 fixed format data structure
+     D dsFixed         DS
+     D  dbBytesRet                    8B 0
+     D  dbBytesAv                     8B 0
+     D  dbNumElem                     8B 0
+     D  aaVEWL0100                  124    Dim(10)
+
+      * VEWL0100 repeating format data structure
+     D dsRepeat        DS                  Based(pdsRepeat)
+     D  daModule                     10
+     D  daViewType                   10
+     D  daCompId                     20
+     D  daMainFunc                   10
+     D  daTimeStmp                   13
+     D  daDescript                   50
+     D  daReserved                    3
+     D  dbViewNo                      8B 0
+     D  dbNoViews                     8B 0
+
+     D wnCnt           S              3  0
+     D wbBuffSize      S              8b 0 Inz(%Size(dsFixed))
+     D waFormat        S              8    Inz('VEWL0100')
+
+      * API Error Structure
+     D dsAPI_Err       DS
+     D  dbErrSize                     8b 0 Inz(256)
+     D  dbErrLen                      8b 0 Inz(0)
+     D  daErrMsId                     7
+     D  daErrNumb                     1
+     D  daErrData                   256
+
+      * Constants
+      * ~~~~~~~~~
+     D GET_VIEWS       C                   Const('QteRetrieveModuleViews')
+     D LOWER           C                   Const('abcdefghijklmnopqrstuvwxyz')
+     D UPPER           C                   Const('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+     D LIST_VIEW       C                   Const('LISTING VIEW')
+     D SQL_EMBED       C                   Const('SQL')
+      *****************************************************************
+     C     *Entry        PList
+     C     daProgram     Parm                    paObject
+     C     daLibrary     Parm                    paLibrary
+     C                   Parm                    paModule
+     C                   Parm                    paType
+     C                   Parm                    paSQL
+     C                   Parm                    paDescript
+     C                   Parm                    paTimeStmp
+     C                   Parm                    pbViewNo
+     C                   Parm      daErrMsId     paErrMsId
+     C                   Parm      daErrData     paErrData
+
+      * Process requests
+     C                   ExSr      ProcReq
+
+      * Quit
+     C                   ExSr      Exit
+
+      **********************************************************************
+      * Process requests Subroutine...ProcReq                              *
+      **********************************************************************
+     C     ProcReq       BegSr
+
+      * Retrieve debugging views.
+     C                   CallB     GET_VIEWS
+     C                   Parm                    dsFixed
+     C                   Parm                    wbBuffSize
+     C                   Parm                    waFormat
+     C                   Parm                    daProgLib
+     C                   Parm                    paType
+     C                   Parm                    paModule
+     C                   Parm                    paLibrary
+     C                   Parm                    dsApi_Err
+
+      * Set up error data and quit if the API call fails.
+     C                   If        daErrMsId <> *Blank
+
+      * If an error of CPF9541 (not in debug mode) occurs this is because
+      * the program named on the input parameters is an OPM program and
+      * not an ILE one.
+     C                   If        daErrMsId = 'CPF9541'
+     C                   Eval      daErrMsId = 'CPF5CF5'
+     C                   Eval      daErrData = daProgLib
+     C                   EndIf
+
+     C                   ExSr      Exit
+     C                   EndIf
+
+      * Process views. The only view from which source can reliably be
+      * retrieved is the Listing View. View test must be converted to
+      * upper case first since RPG and CL have a "Listing View", but C has
+      * a "listing view".
+     C                   Eval      paSQL = *Off
+     C                   Eval      *IN90 = *Off
+     C     1             Do        dbNumElem     wnCnt
+     C                   Eval      pdsRepeat =
+     C                             %Addr(aaVEWL0100(wnCnt))
+     C     LOWER:UPPER   XLate     daDescript    paDescript
+
+      * Check for embedded SQL.
+     C     SQL_EMBED     Scan      paDescript                             90
+     C                   If        *IN90 = *On
+     C                   Eval      paSQL = *On
+     C                   EndIf
+
+      * If a listing view has been found then set up global variables and
+      * stop searching through the list of available views.
+     C     LIST_VIEW     Scan      paDescript                             90
+     C                   If        *IN90 = *On
+     C                   Eval      paTimeStmp = daTimeStmp
+     C                   Eval      pbViewNo = dbViewNo
+     C                   Leave
+     C                   EndIf
+     C                   EndDo
+     À*
+      * Return an error if no views can be used to retrieve source.
+     C                   If        *IN90 = *Off
+     C                   Eval      daErrMsId = 'CPF9C15'
+     C                   Eval      daErrData = paObject
+     C                   EndIf
+     À*
+     C                   EndSr
+      **********************************************************************
+      * Quit             Subroutine...Exit                                 *
+      **********************************************************************
+     C     Exit          BegSr
+
+     C                   Eval      *INLR = *On
+     C                   Return
+
+     C                   EndSr
+      **********************************************************************
+      * Error handling   Subroutine...*PSSR                                *
+      **********************************************************************
+     C     *PSSR         BegSR
+
+     C                   Dump
+
+     C                   EndSr     '*CANCL'

@@ -1,0 +1,422 @@
+      *********************************************************************
+      * MODULE       RtvSrc2                                              *
+      * ~~~~~~                                                            *
+      * FUNCTION     Retrieve ILE Source Code.                            *
+      * ~~~~~~~~                                                          *
+      * APPLICATION  Retrieve ILE Source Code.                            *
+      * ~~~~~~~~~~~                                                       *
+      * SPECIAL ATTR *None                                                *
+      * ~~~~~~~~~~~~                                                      *
+      * AUTHOR       Chris Stead                    DATE :  30/1/97       *
+      * ~~~~~~                                      ~~~~                  *
+      * COPYRIGHT (c) 1997 Chris Stead, All rights reserved.              *
+      *********************************************************************
+      * Module Description
+      * ~~~~~~~~~~~~~~~~~~
+      * Retrieves source code from a Debug Listing View and writes this
+      * out to a source file.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Parameters
+      * ~~~~~~~~~~
+      * paObject    - ILE Object name (*PGM or *SRVPGM).
+      * paLibrary   - ILE Object Library.
+      * paModule    - Module name.
+      * paType      - Module type.
+      * paSQL       - SQL.
+      * paDescript  - Debug view description.
+      * paTimeStmp  - Debug view creation timestamp.
+      * pbViewNo    - Registered debug view number.
+      * paSrcType   - Source code language type.
+      * paErrMsId   - Error message ID.
+      * paErrData   - Error Message substitution data.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Programs Called
+      * ~~~~~~~~~~~~~~~
+      *  *None
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Modules Called
+      * ~~~~~~~~~~~~~~
+      *  QteRegisterDebugView - Register debugging view.
+      *  QteRetrieveViewText  - Retrieve debugging view text.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Calling Programs
+      * ~~~~~~~~~~~~~~~~
+      *  *None
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Calling Modules
+      * ~~~~~~~~~~~~~~~
+      *  RtvSrcL - Retrieve ILE Source code control module.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Indicator Summary
+      * ~~~~~~~~~~~~~~~~~
+      *  80 - Result of Scan operation.
+      *********************************************************************
+     H Debug(*YES)
+      *********************************************************************
+      * Source physical file to output source code to. (QSOURCE is
+      * over-ridden to the appropriate file and member by the controlling
+      * CL module).
+     FQSOURCE   O    E             Disk    InfSr(*PSSR)
+     F                                     Rename(QSOURCE:SOURCE)
+
+      *********************************************************************
+      * Parameters
+     D paObject        S             10
+     D paLibrary       S             10
+     D paModule        S             10
+     D paType          S             10
+     D paSQL           S              1
+     D paDescript      S             50
+     D paTimeStmp      S             13
+     D pbViewNo        S              8B 0
+     D paSrcType       S             10
+     D paErrMsId       S                   Like(daErrMsId)
+     D paErrData       S                   Like(daErrData)
+
+      * Structure to combine object and library names.
+     D dsProgram       DS
+     D  daProgLib                    20
+     D  daProgram                    10    Overlay(daProgLib:1)
+     D  daLibrary                    10    Overlay(daProgLib:11)
+
+      * Fixed format view buffer
+     D dsViewBuff      DS
+     D  dbByteRet                     8B 0
+     D  dbByteAv                      8B 0
+     D  dbNoLines                     8B 0
+     D  dbLineLen                     8B 0
+     D  aaLine                      240    Dim(130)
+
+      * Source code line structure
+     D                 DS
+     D daLine                       240
+     D  daRPGLine                   111    OverLay(daLine:6)
+     D   daLineNumb                   4    Overlay(daRPGLine:1)
+     D   daCopy                       1    Overlay(daRPGLine:5)
+     D   daLineType                   1    Overlay(daRPGLine:6)
+     D   daComment                    1    Overlay(daRPGLine:7)
+     D   daRPG_HI                     2    Overlay(daRPGLine:71)
+     D   daRPG_LO                     2    Overlay(daRPGLine:73)
+     D   daRPG_EQ                     2    Overlay(daRPGLine:75)
+     D  daCLine                     233    OverLay(daLine:8)
+     D  daClLine                     96    OverLay(daLine:10)
+     D  daCblLine                    80    OverLay(daLine:12)
+     D   daCblLinNo                   6    OverLay(daCblLine:1)
+     D  daCblCopy                     1    OverLay(daLine:11)
+
+     D wbViewId        S              8B 0
+     D wnCnt           S              3  0
+     D wbViewSize      S              8b 0 Inz(%Size(dsViewBuff))
+     D wbStartLn       S              8b 0
+     D wbNoLines       S              8b 0 Inz(0)
+     D wbLineLen       S              8b 0 Inz(240)
+     D waFrstTim       S              1    Inz(YES)
+     D waRPGLine       S                   Like(daRPGLine)
+     D waCblLine       S                   Like(daCblLine)
+
+     D waCL_Start      S              1    Inz(NO)
+     D waCL_End        S              1    Inz(NO)
+     D waWriteSrc      S              1    Inz(NO)
+     D waSQL_Comm      S              1    Inz(NO)
+     D waSQL_Excl      S              1    Inz(NO)
+
+      * API Error Structure
+     D dsAPI_Err       DS
+     D  dbErrSize                     8b 0 Inz(256)
+     D  dbErrLen                      8b 0 Inz(0)
+     D  daErrMsId                     7
+     D  daErrNumb                     1
+     D  daErrData                   256
+
+      * Constants
+      * ~~~~~~~~~
+     D YES             C                   Const('Y')
+     D NO              C                   Const('N')
+     D REG_VIEW        C                   Const('QteRegisterDebugView')
+     D RTV_SOURCE      C                   Const('QteRetrieveViewText')
+     D RPG             C                   Const('RPG')
+     D RPGLE           C                   Const('RPGLE')
+     D CL              C                   Const('CL')
+     D CLLE            C                   Const('CLLE')
+     D C400            C                   Const('C/400')
+     D CLE             C                   Const('CLE')
+     D CBLLE           C                   Const('CBLLE')
+     D DASHES          C                   Const('--')
+     D SLASH           C                   Const('/')
+     D PLUS            C                   Const('+')
+     D EXEC_SQL        C                   Const('EXEC SQL')
+     D END_EXEC        C                   Const('END-EXEC')
+     D SQL_AREA        C                   'SQL Communications area'
+     D ASTERISK        C                   '*'
+     D D_SPEC          C                   'D'
+     D CL_START        C                   Const('SEQNBR  *...+... 1 ...+... 2')
+     D CL_END          C                   Const('E N D   O F   S O U R C E')
+     D LOWER           C                   'abcdefghijklmnopqrstuvwxyz'
+     D UPPER           C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+     D DATE_COMPD      C                   '       DATE-COMPILED.'
+      *****************************************************************
+     C     *Entry        PList
+     C     daProgram     Parm                    paObject
+     C     daLibrary     Parm                    paLibrary
+     C                   Parm                    paModule
+     C                   Parm                    paType
+     C                   Parm                    paSQL
+     C                   Parm                    paDescript
+     C                   Parm                    paTimeStmp
+     C                   Parm                    pbViewNo
+     C                   Parm                    paSrcType
+     C                   Parm      daErrMsId     paErrMsId
+     C                   Parm      daErrData     paErrData
+
+      * Process requests.
+     C                   ExSr      ProcReq
+
+      * Quit.
+     C                   ExSr      Exit
+
+      **********************************************************************
+      * Process Requests Subroutine...ProcReq                              *
+      **********************************************************************
+     C     ProcReq       BegSr
+
+      * What type of source is this ?
+      * RPG
+     C     RPG           Scan      paDescript                             80
+     C                   If        *IN80 = *On
+     C                   Eval      paSrcType = RPGLE
+
+      * CL
+     C                   Else
+     C     CL            Scan      paDescript                             80
+     C                   If        *IN80 = *On
+     C                   Eval      paSrcType = CLLE
+
+      * C/400
+     C                   Else
+     C     C400          Scan      paDescript                             80
+     C                   If        *IN80 = *On
+     C                   Eval      paSrcType = CLE
+
+      * Cobol
+     C                   Else
+     C                   Eval      paSrcType = CBLLE
+     C                   EndIf
+     C                   EndIf
+     C                   EndIf
+
+      * Register the view.
+     C                   CallB     REG_VIEW
+     C                   Parm                    wbViewId
+     C                   Parm                    wbNoLines
+     C                   Parm                    paLibrary
+     C                   Parm                    paTimeStmp
+     C                   Parm                    daProgLib
+     C                   Parm                    paType
+     C                   Parm                    paModule
+     C                   Parm                    pbViewNo
+     C                   Parm                    dsApi_Err
+
+      * Quit if errors occurred.
+     C                   If        daErrMsId <> *Blank
+     C                   ExSr      Exit
+     C                   EndIf
+
+      * Initialise flags and variables.
+     C                   Eval      SrcSeq = *Zero
+     C                   Eval      SrcDat = *Zero
+     C                   Eval      dbByteRet = *Zero
+     C                   Eval      dbByteAv = *Zero
+     C                   Eval      wbStartLn = 1
+
+      * Retrieve Source 130 lines at a time.
+     C                   Dou       dbByteRet = dbByteAv
+     C                   CallB     RTV_SOURCE
+     C                   Parm                    dsViewBuff
+     C                   Parm                    wbViewSize
+     C                   Parm                    wbViewId
+     C                   Parm                    wbStartLn
+     C                   Parm                    wbNoLines
+     C                   Parm                    wbLineLen
+     C                   Parm                    dsApi_Err
+
+      * Quit if errors occurred.
+     C                   If        daErrMsId <> *Blank
+     C                   ExSr      Exit
+     C                   EndIf
+
+      * Write the retrieved lines out to the source file. Format the output
+      * according to the type of source.
+     C     1             Do        dbNoLines     wnCnt
+     C                   Eval      waWriteSrc = YES
+     C                   MoveL(P)  aaLine(wnCnt) daLine
+
+      * Process RPG source
+     C                   Select
+     C                   When      paSrcType = RPGLE
+
+      * Exclude input and output details pulled in by the compiler. Also
+      * exclude code pulled in as a result of /Copy statements.
+     C                   If            daCopy <> *Blank
+     C                             or  daLineNumb = *Blank
+     C                   Eval      waWriteSrc = NO
+     C                   EndIf
+
+      * Check whether SQL exclusion should be turned off.
+     C                   If        waSQL_Excl = YES
+     C                   If        daLineType <> D_SPEC
+     C                   Eval      waSQL_Excl = NO
+
+     C                   Else
+     C                   Eval      waWriteSrc = NO
+     C                   EndIf
+
+      * For SQL RPG exclude everything pulled in by the SQL pre-compiler.
+     C                   Else
+     C                   If        paSQL = *On
+     C     SQL_AREA      Scan      daLine                                 80
+     C                   If        *IN80 = *On
+     C                   Eval      waWriteSrc = NO
+     C                   Eval      waSQL_Excl = YES
+
+      * Un-comment SQL code.
+     C                   Else
+     C                   If        waSQL_Comm = YES
+     C                   If        daComment <> ASTERISK
+     C                   Eval      waSQL_Comm = NO
+     C                   Else
+     C                   Eval      daComment = PLUS
+     C                   EndIf
+     C                   EndIf
+
+     C     LOWER:UPPER   Xlate     daRPGLine     waRPGLine
+     C     EXEC_SQL      Scan      waRPGLine                              80
+     C                   If        *IN80 = *On
+     C                   Eval      daComment = SLASH
+     C                   Eval      waSQL_Comm = YES
+
+     C                   Else
+     C     END_EXEC      Scan      waRPGLine                              80
+     C                   If        *IN80 = *On
+     C                   Eval      daComment = SLASH
+     C                   Eval      waSQL_Comm = NO
+     C                   EndIf
+     C                   EndIf
+     C                   EndIf
+     C                   EndIf
+     C                   EndIf
+
+      * Remove line numbers.
+     C                   Move      *Blank        daLineNumb
+
+      * Remove dashes from unused indicator slots, but not in comment lines
+     C                   If        daComment <> ASTERISK
+     C                   If        daRPG_HI = DASHES
+     C                   Eval      daRPG_HI = *Blank
+     C                   EndIf
+     C                   If        daRPG_LO = DASHES
+     C                   Eval      daRPG_LO = *Blank
+     C                   EndIf
+     C                   If        daRPG_EQ = DASHES
+     C                   Eval      daRPG_EQ = *Blank
+     C                   EndIf
+     C                   EndIf
+
+     C                   MoveL(P)  daRPGLine     SrcDta
+
+      * Process CL source
+     C                   When      paSrcType = CLLE
+     C                   MoveL(P)  daClLine      SrcDta
+
+      * Only output those parts of the listing view which contain the
+      * original CL source. These lines are bounded by lines which include
+      * the text defined in the CL_START and CL_END constants.
+     C                   If        waCL_Start = YES
+     C                   Eval      waWriteSrc = YES
+      *  Did CL Source end?
+     C                   If        waCL_End = NO
+     C     CL_END        Scan      daLine                                 80
+     C                   If        *IN80 = *On
+     C                   Eval      waWriteSrc = NO
+     C                   Eval      waCL_End = YES
+     C                   EndIf
+     C                   Else
+     C                   Eval      waWriteSrc = NO
+     C                   EndIf
+
+     C                   Else
+     C                   Eval      waWriteSrc = NO
+      *  Check for the start of the source
+     C     CL_START      Scan      daLine                                 80
+     C                   If        *IN80 = *On
+     C                   Eval      waCL_Start = YES
+     C                   EndIf
+     C                   EndIf
+
+      * Process C source
+     C                   When      paSrcType = CLE
+     C                   MoveL(P)  daCLine       SrcDta
+
+      * Process Cobol source
+     C                   When      paSrcType = CBLLE
+
+      * Bypass first record
+     C                   If        waFrstTim = YES
+     C                   Eval      waFrstTim = NO
+     C                   Eval      waWriteSrc = NO
+     C                   EndIf
+
+      * Bypass copy records
+     C                   If        daCblCopy <> *Blank
+     C                   Eval      waWriteSrc = NO
+     C                   EndIf
+
+      * Remove line numbers.
+     C                   Move      *Blank        daCblLinNo
+
+      * If this is a Date-Compiled, remove date and time filled in by
+      * the compiler.
+     C                   Eval      waCblLine = daCblLine
+     C     LOWER:UPPER   Xlate     waCblLine     waCblLine
+
+     C                   If        %Subst( waCblLine: 1: 21 ) = DATE_COMPD
+     C                   Eval      %Subst(daCblLine: 22 ) = *Blank
+     C                   EndIf
+
+     C                   MoveL(P)  daCblLine     SrcDta
+     C                   EndSl
+
+     C                   If        waWriteSrc = YES
+     C                   Add       1             SrcSeq
+     C                   Write     SOURCE
+     C                   EndIf
+     C                   EndDo
+
+      * Add 130 to the start line number to force retrieval of the next 130
+      * lines of source on the next call to the QteRetrieveViewText API.
+     C                   Add       130           wbStartLn
+     C                   EndDo
+
+     C                   EndSr
+      **********************************************************************
+      * Quit             Subroutine...Exit                                 *
+      **********************************************************************
+     C     Exit          BegSr
+
+     C                   Eval      *INLR = *On
+     C                   Return
+
+     C                   EndSr
+      **********************************************************************
+      * Error handling   Subroutine...*PSSR                                *
+      **********************************************************************
+     C     *PSSR         BegSR
+
+     C                   Dump
+
+     C                   EndSr     '*CANCL'

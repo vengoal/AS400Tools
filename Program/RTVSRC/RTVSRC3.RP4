@@ -1,0 +1,457 @@
+      *********************************************************************
+      * MODULE       RtvSrc3                                              *
+      * ~~~~~~                                                            *
+      * FUNCTION     Display Modules with Retrievable Source Code         *
+      * ~~~~~~~~                                                          *
+      * APPLICATION  Retrieve ILE Source Code.                            *
+      * ~~~~~~~~~~~                                                       *
+      * SPECIAL ATTR *None                                                *
+      * ~~~~~~~~~~~~                                                      *
+      * AUTHOR       Chris Stead                    DATE :  30/1/97       *
+      * ~~~~~~                                      ~~~~                  *
+      * COPYRIGHT (c) 1997 Chris Stead, All rights reserved.              *
+      *********************************************************************
+      * Module Description
+      * ~~~~~~~~~~~~~~~~~~
+      * Displays a list of modules within a *PGM of *SRVPGM from which
+      * source code can be retrieved.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Parameters
+      * ~~~~~~~~~~
+      * paObject    - ILE Object name (*PGM or *SRVPGM).
+      * paLibrary   - ILE Object Library.
+      * paType      - Module type.
+      * paErrMsId   - Error message ID.
+      * paErrData   - Error Message substitution data.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Programs Called
+      * ~~~~~~~~~~~~~~~
+      * UIM Api's
+      *  QUIOPNDA - Open Display Application.
+      *  QUICLOA  - Close Application.
+      *  QUIDSPP  - Display Panel.
+      *  QUIPUTV  - Put Dialog Variable.
+      *  QUIADDLE - Add List entry.
+      *
+      * User Space Api's
+      *  QUSCRTUS - Create User Space
+      *  QUSRTVUS - Retrieve User Space
+      *  QUSDLTUS - Delete User Space
+
+      * List Api's
+      *  QBNLPGMI - List ILE Program Information.
+      *  QBNLSPGM - List Service Program Information.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Modules Called
+      * ~~~~~~~~~~~~~~
+      *  RtvSrc1 - Check eligibility for source code retrieval.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Calling Programs
+      * ~~~~~~~~~~~~~~~~
+      *  *None
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Calling Modules
+      * ~~~~~~~~~~~~~~~
+      *  RtvSrcL - Retrieve ILE Source code control module.
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Indicator Summary
+      * ~~~~~~~~~~~~~~~~~
+      *  KC - F3=Exit.
+      *  KL - F12=Cancel.
+      *  LR - Close down program.
+
+      *****************************************************************
+     H Debug DatEdit(*YMD)
+      *****************************************************************
+      * Parameters
+     D paObject        S             10
+     D paLibrary       S             10
+     D paType          S             10
+     D paErrMsId       S                   Like(daErrMsId)
+     D paErrData       S                   Like(daErrData)
+
+      * Structure to combine object and library names.
+     D dsProgram       DS
+     D  daProgLib                    20
+     D  daProgram                    10    Overlay(daProgLib:1)
+     D  daLibrary                    10    Overlay(daProgLib:11)
+
+      * User Space Data Structure
+     D dsUserSpc       DS                  Inz
+     D  daSpcName                    20    Inz('RTVSRC    QTEMP')
+     D  daSpcAttr                    10
+     D  dbSpcSize                     8B 0
+     D  daSpcValue                    1
+     D  daSpcAut                     10    Inz('*CHANGE')
+     D  daSpcText                    50    Inz('Retrieve ILE Source Code')
+     D  daSpcRepl                    10    Inz('*YES')
+     D  dbSpcPoint                    8B 0
+     D  dbSpcLen                      8B 0
+
+      * Module details structure
+     D dsPgmBuff       DS
+     D  daPgmBuff                   508
+     D   daModule                    10    Overlay(daPgmBuff:21)
+     D   daModLib                    10    Overlay(daPgmBuff:31)
+     D   daSrcFile                   10    Overlay(daPgmBuff:41)
+     D   daSrcLib                    10    Overlay(daPgmBuff:51)
+     D   daSrcMbr                    10    Overlay(daPgmBuff:61)
+     D   daAttr                      10    Overlay(daPgmBuff:71)
+     D   daYear                       2    Overlay(daPgmBuff:82)
+     D   daMonth                      2    Overlay(daPgmBuff:84)
+     D   daDay                        2    Overlay(daPgmBuff:86)
+     D   daHour                       2    Overlay(daPgmBuff:88)
+     D   daMinute                     2    Overlay(daPgmBuff:90)
+     D   daSecond                     2    Overlay(daPgmBuff:92)
+
+      * API Error Structure
+     D dsAPI_Err       DS                  Inz
+     D  dbErrSize                     8b 0 Inz(256)
+     D  dbErrLen                      8b 0 Inz(0)
+     D  daErrMsId                     7    Inz(*Blank)
+     D  daErrNumb                     1    Inz(*Blank)
+     D  daErrData                   256    Inz(*Blank)
+
+      * API Error Structure 2
+     D dsAPI_Err2      DS                  Inz
+     D  dbErrSize2                    8b 0 Inz(256)
+     D  dbErrLen2                     8b 0 Inz(0)
+     D  daErrMsId2                    7    Inz(*Blank)
+     D  daErrNumb2                    1    Inz(*Blank)
+     D  daErrData2                  256    Inz(*Blank)
+
+      * Work variables
+     D waPanel         S             10    Inz('PMAIN')
+     D waPanelGrp      S             20    Inz('RTVSRCP   *LIBL')
+     D waVarName       S             10
+     D waListVar       S             10
+     D waListName      S             10
+     D waObjDtls       S             30
+     D waVarDtls       S             76
+     D wbPutBufLn      S              8B 0 Inz(%Size(waObjDtls))
+     D wbLstBufLn      S              8B 0 Inz(%Size(waVarDtls))
+     D waSQL           S              1
+     D waDescript      S             50
+     D waTimeStmp      S             13
+     D wbViewNo        S              8B 0
+     D wnPgmSize       S              3  0 Inz(%Size(dsPgmBuff))
+     D waFormat        S              8
+
+     D waPnlHndle      S              8
+     D waListOpt       S              4    Inz('NEXT')
+     D waLstHndle      S              4
+     D waFullHelp      S              1    Inz('N')
+     D waCloseOpt      S              1    Inz('M')
+     D waReDisply      S              1    Inz('N')
+     D waNewOld        S              1    Inz('O')
+     D wbAppScope      S              8B 0 Inz(-1)
+     D wbParmInt       S              8B 0 Inz(0)
+     D wbFuncRtn       S              8B 0
+     D wbStackCnt      S              8B 0 Inz(0)
+     D wbWaitTime      S              8B 0 Inz(-1)
+     D waPgmMsgQ       S             10    Inz('*CALLER')
+     D waMsgRefK       S              4    Inz(*Blank)
+     D waCsrPosOp      S              1    Inz('D')
+     D waLastLstE      S              4    Inz('NONE')
+     D waErrLstE       S              4    Inz('NONE')
+      *****************************************************************
+      * Constants
+      * ~~~~~~~~~
+     D OPEN_PANEL      C                   CONST('QUIOPNDA')
+     D CLOSE_PNL       C                   CONST('QUICLOA')
+     D DSP_PANEL       C                   CONST('QUIDSPP')
+     D PUT_DATA        C                   CONST('QUIPUTV')
+     D ADD_LST_E       C                   CONST('QUIADDLE')
+
+     D CRT_USRSPC      C                   CONST('QUSCRTUS')
+     D RTV_USRSPC      C                   CONST('QUSRTVUS')
+     D DLT_USRSPC      C                   CONST('QUSDLTUS')
+     D LST_PGM         C                   CONST('QBNLPGMI')
+     D LST_SRVPGM      C                   CONST('QBNLSPGM')
+     D PGM_FMT         C                   CONST('PGML0100')
+     D SRVPGM_FMT      C                   CONST('SPGL0100')
+
+     D OBJ_DETAIL      C                   CONST('VROBJDTLS')
+     D MOD_DETAIL      C                   CONST('VRMODDTLS')
+     D LIST_NAME       C                   CONST('LMODLIST')
+
+     D PROGRAM         C                   CONST('*PGM')
+
+     D CHK_DBG_VW      C                   CONST('RTVSRC1')
+      *****************************************************************
+      * Mainline code.                                                *
+      *****************************************************************
+     C     *Entry        PList
+     C     daProgram     Parm                    paObject
+     C     daLibrary     Parm                    paLibrary
+     C                   Parm                    paType
+     C                   Parm      daErrMsId     paErrMsId
+     C                   Parm      daErrData     paErrData
+
+      * Set up module data.
+     C                   ExSr      SetUpData                                            >>>
+
+      * Display panel.
+     C                   ExSr      DspPanel                                             >>>
+
+     C                   ExSr      Exit                                                 >>>
+
+      *****************************************************************
+      * Set up data.       SUBROUTINE...SetUpData                     *
+      *****************************************************************
+     C     SetUpData     BegSr
+
+      * Set up data and load data buffer for header information.
+     C                   Eval      waObjDtls = paObject + paLibrary + paType
+     C                   Eval      waVarName = OBJ_DETAIL
+     C                   ExSr      WriteData                                            >>>
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Set up user space.
+     C                   Eval      dbSpcSize = 50000
+
+     C                   Reset                   dsAPI_Err
+
+     C                   Call      CRT_USRSPC
+     C                   Parm                    daSpcName
+     C                   Parm                    daSpcAttr
+     C                   Parm                    dbSpcSize
+     C                   Parm                    daSpcValue
+     C                   Parm                    daSpcAut
+     C                   Parm                    daSpcText
+     C                   Parm                    daSpcRepl
+     C                   Parm                    dsAPI_Err
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Retrive module details for programs.
+     C                   If        paType = PROGRAM
+     C                   Reset                   dsAPI_Err
+     C                   Call      LST_PGM
+     C                   Parm                    daSpcName
+     C                   Parm      PGM_FMT       waFormat
+     C                   Parm                    daProgLib
+     C                   Parm                    dsAPI_Err
+
+      * Retrive module details for service programs.
+     C                   Else
+     C                   Reset                   dsAPI_Err
+     C                   Call      LST_SRVPGM
+     C                   Parm                    daSpcName
+     C                   Parm      SRVPGM_FMT    waFormat
+     C                   Parm                    daProgLib
+     C                   Parm                    dsAPI_Err
+     C                   EndIf
+
+      * Quit if errors occurred.
+     C                   If        daErrMsId <> *Blank
+     C                   ExSr      Exit
+     C                   EndIf
+
+      * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+      * Loop through the list of modules.
+     C                   Eval      dbSpcPoint = 261
+     C                   Dou       daModule = *Blank
+
+      * Get module list from user space.
+     C                   Reset                   dsAPI_Err
+
+     C                   Call      RTV_USRSPC
+     C                   Parm                    daSpcName
+     C                   Parm                    dbSpcPoint
+     C                   Parm      wnPgmSize     dbSpcLen
+     C                   Parm                    dsPgmBuff
+     C                   Parm                    dsAPI_Err
+
+      * For each module determine whether there is a Debug Listing View
+      * available.
+     C                   If        daModule <> *Blank
+     C                   CallB     CHK_DBG_VW
+     C                   Parm                    paObject
+     C                   Parm                    paLibrary
+     C                   Parm                    daModule
+     C                   Parm                    paType
+     C                   Parm                    waSQL
+     C                   Parm                    waDescript
+     C                   Parm                    waTimeStmp
+     C                   Parm                    wbViewNo
+     C                   Parm                    daErrMsId
+     C                   Parm                    daErrData
+
+      * Add details of this module to list of displayed modules.
+     C                   If        daErrMsId = *Blank
+     C                   If        waSQL = *On
+     C                   Eval      daAttr = 'SQL' + daAttr
+     C                   EndIf
+
+     C                   Eval      waVarDtls
+     C                              = daModule + daModLib + daSrcFile
+     C                              + daSrcLib + daSrcMbr + daAttr
+     C                              + daDay + '/' + daMonth + '/'
+     C                              + daYear + daHour + ':' + daMinute
+     C                              + ':' + daSecond
+     C                   Eval      waListVar = MOD_DETAIL
+     C                   Eval      waListName = LIST_NAME
+     C                   ExSr      AddListE                                             >>>
+     C                   EndIf
+
+      * Move the space pointer on to point at the next block of module
+      * details in the user space.
+     C                   Eval      dbSpcPoint = dbSpcPoint + wnPgmSize
+     C                   EndIf
+     C                   EndDo
+
+     C                   EndSr
+      *****************************************************************
+      * Quit               SUBROUTINE...Exit                          *
+      *****************************************************************
+     C     Exit          BegSr
+
+      * Close down the panel group.
+     C                   ExSr      ClosePnl                                             >>>
+
+      * Delete the user space.
+     C                   Call      DLT_USRSPC
+     C                   Parm                    daSpcName
+     C                   Parm                    dsAPI_Err2
+
+      * Quit the program.
+     C                   Eval      *INLR = *On
+     C                   Return
+
+     C                   EndSr
+      *****************************************************************
+      * Open UIM display   SUBROUTINE...OpenPanel                     *
+      *****************************************************************
+      * Open up the required panel group & get an application handle
+      * for use when referring to the panel group elsewhere.
+     C     OpenPanel     BegSr
+
+     C                   Call      OPEN_PANEL
+     C                   Parm                    waPnlHndle
+     C                   Parm                    waPanelGrp
+     C                   Parm                    wbAppScope
+     C                   Parm                    wbParmInt
+     C                   Parm                    waFullHelp
+     C                   Parm                    dsAPI_Err
+
+      * Send an error message if the operation failed
+     C                   If        daErrMsId <> *Blank                          �<-S01->
+     C                   ExSr      *PSSR                                                >>>
+     C                   EndIf                                                  �<-E01->
+
+     C                   EndSr
+      *****************************************************************
+      * Close UIM applic.  SUBROUTINE...ClosePnl                      *
+      *****************************************************************
+      * Close the required panel group.
+     C     ClosePnl      BegSr
+
+     C                   Reset                   dsAPI_Err2
+
+     C                   Call      CLOSE_PNL
+     C                   Parm                    waPnlHndle
+     C                   Parm                    waCloseOpt
+     C                   Parm                    dsAPI_Err2
+
+     C                   EndSr
+      *****************************************************************
+      * Display UIM Panel  SUBROUTINE...DspPanel                      *
+      *****************************************************************
+      * Display the required panel group.
+     C     DspPanel      BegSr
+
+     C                   Reset                   dsAPI_Err
+
+     C                   Call      DSP_PANEL
+     C                   Parm                    waPnlHndle
+     C                   Parm                    wbFuncRtn
+     C                   Parm                    waPanel
+     C                   Parm                    waReDisply
+     C                   Parm                    dsAPI_Err
+     C                   Parm                    waNewOld
+     C                   Parm                    wbStackCnt
+     C                   Parm                    waPgmMsgQ
+     C                   Parm                    waMsgRefK
+     C                   Parm                    waCsrPosOp
+     C                   Parm                    waLastLstE
+     C                   Parm                    waErrLstE
+     C                   Parm                    wbWaitTime
+
+      * Send an error message if the operation failed
+     C                   If        daErrMsId <> *Blank                          �<-S01->
+     C                   ExSr      *PSSR                                                >>>
+     C                   EndIf                                                  �<-E01->
+
+     C                   EndSr
+      *****************************************************************
+      * Load data buffer   SUBROUTINE...WriteData                     *
+      *****************************************************************
+      * Load panel data buffer.
+     C     WriteData     BegSr
+
+     C                   Reset                   dsAPI_Err
+
+     C                   Call      PUT_DATA
+     C                   Parm                    waPnlHndle
+     C                   Parm                    waObjDtls
+     C                   Parm                    wbPutBufLn
+     C                   Parm                    waVarName
+     C                   Parm                    dsAPI_Err
+
+      * Send an error message if the operation failed
+     C                   If        daErrMsId <> *Blank                          �<-S01->
+     C                   ExSr      *PSSR                                                >>>
+     C                   EndIf                                                  �<-E01->
+
+     C                   EndSr
+      *****************************************************************
+      * Add list entry     SUBROUTINE...AddListE                      *
+      *****************************************************************
+     C     AddListE      BegSr
+
+     C                   Reset                   dsAPI_Err
+
+     C                   Call      ADD_LST_E
+     C                   Parm                    waPnlHndle
+     C                   Parm                    waVarDtls
+     C                   Parm                    wbLstBufLn
+     C                   Parm                    waListVar
+     C                   Parm                    waListName
+     C                   Parm                    waListOpt
+     C                   Parm                    waLstHndle
+     C                   Parm                    dsAPI_Err
+
+      * Send an error message if the operation failed
+     C                   If        daErrMsId <> *Blank                          �<-S01->
+     C                   ExSr      *PSSR                                                >>>
+     C                   EndIf                                                  �<-E01->
+
+     C                   EndSr
+      *****************************************************************
+      * Initialisation     SUBROUTINE...*InzSr                        *
+      *****************************************************************
+     C     *InzSr        BegSr
+
+      * Open the panel group.
+     C                   ExSr      OpenPanel                                            >>>
+
+     C                   EndSr
+      *****************************************************************
+      * Error Handling     SUBROUTINE...*PSSR                         *
+      *****************************************************************
+
+     C     *PSSR         BegSr
+
+      * Close down the panel group.
+     C                   ExSr      ClosePnl
+
+     C                   Dump
+
+      * End in error
+     C                   EndSr     '*CANCL'
+      *****************************************************************

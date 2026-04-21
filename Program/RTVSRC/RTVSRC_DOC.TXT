@@ -1,0 +1,16 @@
+Installing RtvSrc:
+
+1. Copy the members to the corresponding QCLSRC, QRPGLESRC,
+QCMDSRC, and QPNLSRC source physical files.
+
+2. Create CL program RtvCrt:
+
+   CRTBNDCL PGM(objlib/RTVCRT) SRCFILE(srclib/QCLSRC)
+
+3. Add the RtvSrc utility's library to your library list:
+
+   ADDLIBLE objlib
+
+4. Call CL program RtvCrt to create the utility:
+
+CALL RTVCRT PARM('objlib' 'srclib')
