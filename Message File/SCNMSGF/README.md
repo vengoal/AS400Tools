@@ -44,7 +44,7 @@ Opt Message  Sev Text
 
 <br />Search "damage" String result
 <pre>
- 10/28/24            Scan Message File *LIBL/QCPFMSG                  DDSC914  
+ 10/28/24            Scan Message File *LIBL/QCPFMSG                  XXXXXXX  
  14:56:18       Search String damage                                  VENGOAL  
                                                                                
  Type options, press Enter.                                                    
