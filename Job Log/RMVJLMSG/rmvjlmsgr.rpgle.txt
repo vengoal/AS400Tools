@@ -1,0 +1,352 @@
+     H DEBUG(*YES)
+      *T: Remove joblog messages
+      *O: CRTBNDRPG DBGVIEW(*SOURCE) CVTOPT(*DATETIME) OPTION(*NODEBUGIO)
+      *O: DFTACTGRP(*NO) ACTGRP(*CALLER) BNDDIR(QC2LE)
+      * SYNOPSIS: This program is the CPP for the RMVJLMSG command. It
+      *           allows the user to remove specified messages from the
+      *           joblog, depending on a combination of the following
+      *           criteria:
+      *
+      *           1. The (generic) name of the message sending program.
+      *           2. The (generic) name of the message receiving program.
+      *           3. The message identifier.
+      *           3. The message type.
+      *
+      *           The user can select whether to AND or OR the criteria.
+      *
+      *=====================================================================
+     D ThisProgram     C                   'RMVJLMSR'
+      *---------------------------------------------------------------------
+      *
+      *‚QUSCRTUS - Create User Space API
+      *
+     D quscrtus        PR                  ExtPgm('QUSCRTUS')
+     D   qUsrSpc                     20A   Const
+     D   ExtendedAtr                 10A   Const
+     D   InitialSize                 10I 0 Const
+     D   InitialValue                 1A   Const
+     D   PublicAuth                  10A   Const
+     D   Text                        50A   Const
+     D   Replace                     10A   Const Options(*Nopass)
+     D   ApiError                                Like(QUSEC)
+     D                                           Options(*Nopass)
+      *
+      *‚QUSPTRUS - Retrieve Pointer to User Space API
+      *
+     D qusptrus        PR                  ExtPgm('QUSPTRUS')
+     D   qUsrSpc                     20A   Const
+     D   UsrSpc@                       *
+     D   ApiError                                Like(QUSEC)
+     D                                           Options(*Nopass)
+      *
+      *‚QMHLJOBL - List Job Log Messages API
+      *
+     D qmhljobl        PR                  Extpgm('QMHLJOBL')
+     D   qUsrSpc                     20A   Const
+     D   Format                       8A   Const
+     D   MsgSelInf                32767A   Const
+     D   MsgSelInfLen                10I 0 Const
+     D   MsgSelInfFmt                 8A   Const
+     D   ApiError                                Like(QUSEC)
+      *
+      *‚QMHRMVPM - Remove Program Messages API
+      *
+     D qmhrmvpm        PR                  Extpgm('QMHRMVPM')
+     D   CSE                       4096A   Const
+     D   CSC                         10I 0 Const
+     D   MsgKey                       4A   Const
+     D   MsgsToRemove                10A   Const
+     D   ApiError                                Like(QUSEC)
+     D   CSELen                      10I 0 Const Options(*Nopass)
+     D   qCSE                        20A   Const Options(*Nopass)
+     D   RmvUnhdlExcp                10A   Const Options(*Nopass)
+     D   CSEDtaTyp                   10A   Const Options(*Nopass)
+      *
+      *‚QUSEC - Generic API Error Structure
+      *
+     D QUSEC           DS
+     D  ErrBytesProv                 10I 0 Inz(%size(QUSEC))
+     D  ErrBytesAvail                10I 0 Inz
+     D  ErrMsgID                      7A
+     D                                1
+     D  ErrMsgDta                   512A
+      *
+      *‚QUSH0100 - User Space List API Header Structure
+      *
+     D QUSH0100        DS                  Based(QUSH0100@) Qualified
+     D   UserArea                    64A
+     D   GenHdrSize                  10I 0
+     D   StructRlsLvl                 4A
+     D   FormatName                   8A
+     D   ApiUsed                     10A
+     D   DatTimCrt                   13A
+     D   InfStatus                    1A
+     D   UsrSpcSize                  10I 0
+     D   InpParmOS                   10I 0
+     D   InpParmSize                 10I 0
+     D   HeaderOS                    10I 0
+     D   HeaderSize                  10I 0
+     D   ListDataOS                  10I 0
+     D   ListDataSize                10I 0
+     D   ListEntNbr                  10I 0
+     D   ListEntSize                 10I 0
+     D   ListEntCCSID                10I 0
+     D   CountryID                    2A
+     D   LanguageID                   3A
+     D   SSListInd                    1A
+     D                               42A
+     D   APIEntPnt                  256A
+     D                              128A
+      *
+      *‚LJOB0100 - Output Structure for QMHLJOBL API
+      *
+     D LJOB0100        DS                  Qualified Based(LJOB0100@)
+     D   NxtEntryOS                  10I 0
+     D   RtnFldOS                    10I 0
+     D   NbrFldRtn                   10I 0
+     D   MsgSev                      10I 0
+     D   MsgID                        7A
+     D   MsgType                      2A
+     D   MsgKey                       4A
+     D   Msgf                        10A
+     D   MsgfLib                     10A
+     D   DateSent                     7A
+     D   TimeSent                     6A
+     D   MsecSent                     6A
+      *
+      *‚LJOB0100Fld - Field-Specific Output Structure for QMHLJOBL API
+      *
+     D LJOB0100Fld     DS                  Qualified Based(LJOB0100Fld@)
+     D   NxtFldOS                    10I 0
+     D   FldInfLen                   10I 0
+     D   FldID                       10I 0
+     D   DtaTyp                       1A
+     D   DtaSts                       1A
+     D                               14A
+     D   DtaLen                      10I 0
+      *
+      *‚JSLT0100 - Message Selection information for QMHLJOBL API
+      *
+     D JSLT0100        DS                  Qualified
+     D   MaxMsgRqs                   10I 0
+     D   LstDir                      10A
+     D   QualJob                     26A   Inz('*')
+     D     JobName                   10A   Overlay(QualJob)
+     D     JobUser                   10A   Overlay(QualJob:*Next)
+     D     JobNbr                     6A   Overlay(QualJob:*Next)
+     D   IntJobID                    16A   Inz
+     D   StartMsgKey                  4A   Inz(*allx'00')
+     D   MaxMsgLen                   10I 0
+     D   MaxMsgHlpLen                10I 0
+     D   FldIDOS                     10I 0 Inz(84)
+     D   NbrFldRtn                   10I 0
+     D   MsgqNameOS                  10I 0 Inz(164)
+     D   MsgqNameLen                 10I 0 Inz(1)
+     D   FldIDArr                    10I 0 Dim(20) Inz
+     D   CallMsgqName                10A   Inz('*')
+      *
+      *---------------------------------------------------------------------
+      *
+     D qUsrSpc         DS                  Qualified
+     D   UsrSpc                      10A   Inz('QMHLJOBL')
+     D   UsrSpcLib                   10A   Inz('QTEMP')
+     D X               S             10I 0
+     D Y               S             10I 0
+     D Remove          S               N
+     D WrkRemove       S               N
+     D FromPgm         S             10A   Inz
+     D FromLen         S             10I 0 Inz
+     D ToPgm           S             10A   Inz
+     D ToLen           S             10I 0 Inz
+      *
+     D MsgIDDS         DS                  Qualified
+     D   Nbr                          5I 0
+     D   Arr                          7A   Inz Dim(10)
+      *
+     D MsgTypeDS       DS                  Qualified
+     D   Nbr                          5I 0
+     D   Arr                          7A   Inz Dim(8)
+      *
+     D PgmName         S             10A   Based(PgmName@)
+     D SendPgm         S             10A
+     D RcvPgm          S             10A
+     D MsgType         S              7A   Inz
+     D MTArrString     S            144A   Inz('01*COMP  02*DIAG  +
+     D                                          04*INFO  05*INQ   +
+     D                                          06*COPY  08*RQS   +
+     D                                          10*RQS   14*NOTIFY+
+     D                                          15*ESCAPE16*NOTIFY+
+     D                                          17*ESCAPE21*REPLY +
+     D                                          22*REPLY 23*REPLY +
+     D                                          24*REPLY 25*REPLY ')
+     D MTArr@          S               *   Inz(%addr(MTArrString))
+     D MTArr           DS                  Based(MTArr@)
+     D MTElm                               Dim(16)
+     D   MTFrom                       2A   Overlay(MTElm)
+     D   MTTo                         7A   Overlay(MTElm:*Next)
+      *
+      *---------------------------------------------------------------------
+      *‚Program interface
+      *---------------------------------------------------------------------
+      *
+     D main            PR                  Extpgm(ThisProgram)
+     D   P_FromPgm                   10A   Const
+     D   P_ToPgm                     10A   Const
+     D   P_MsgIDDS                         Const Like(MsgIDDS)
+     D   P_MsgTypeDS                       Const Like(MsgTypeDS)
+     D   P_NbrTrue                    4A   Const
+      *
+     D main            PI
+     D   P_FromPgm                   10A   Const
+     D   P_ToPgm                     10A   Const
+     D   P_MsgIDDS                         Const Like(MsgIDDS)
+     D   P_MsgTypeDS                       Const Like(MsgTypeDS)
+     D   P_NbrTrue                    4A   Const
+      *
+      *=====================================================================
+      *‚MAINLINE
+      *=====================================================================
+      /free
+
+        //‚Get generic name of sending ('from') program
+
+        FromPgm = P_FromPgm;
+        if FromPgm <> '*ANY';
+          FromLen = %scan( '*' : FromPgm );
+          if FromLen > 0;
+            FromLen = FromLen - 1;
+            FromPgm = %subst( FromPgm : 1 : FromLen );
+          else;
+            FromLen = 10;
+          endif;
+        endif;
+
+        //‚Get generic name of receiving ('to') program
+
+        ToPgm = P_ToPgm;
+        if ToPgm <> '*ANY';
+          ToLen = %scan( '*' : ToPgm );
+          if ToLen > 0;
+            ToLen = ToLen - 1;
+            ToPgm = %subst( ToPgm : 1 : ToLen );
+          else;
+            ToLen = 10;
+          endif;
+        endif;
+
+        MsgIDDS = P_MsgIDDS;
+        MsgTypeDS = P_MsgTypeDS;
+
+        //‚Create the user space in QTEMP and retrieve a pointer to it.
+
+        reset QUSEC;
+        quscrtus( qUsrSpc : *blanks : 1000000 : x'00' :
+                  '*ALL' : *blanks : '*NO' : QUSEC );
+        if ErrMsgID <> *blanks and ErrMsgID <> 'CPF9870';
+          exsr *pssr;
+        endif;
+
+        reset QUSEC;
+        qusptrus( qUsrSpc : QUSH0100@ : QUSEC );
+        if ErrMsgID <> *blanks;
+          exsr *pssr;
+        endif;
+
+        //‚Select all the messages in the joblog, retrieving only the bare
+        //‚details as well as the sending and receiving program names.
+
+        reset JSLT0100;
+        JSLT0100.MaxMsgRqs   = -1;
+        JSLT0100.LstDir      = '*NEXT';
+        JSLT0100.NbrFldRtn   = 2;
+        JSLT0100.FldIDArr(1) = 0603; //‚Sending program name
+        JSLT0100.FldIDArr(2) = 0703; //‚Receiving program name
+        reset QUSEC;
+        qmhljobl( qUsrSpc : 'LJOB0100' : JSLT0100 : %size( JSLT0100 ) :
+                  'JSLT0100' : QUSEC );
+        if ErrMsgID <> *blanks;
+          exsr *pssr;
+        endif;
+
+        //‚For each message in the job log, retrieve the sending and
+        //‚receiving program name and then look for criteria matches.
+
+        LJOB0100@ = QUSH0100@ + QUSH0100.ListDataOS;
+        for X = 1 to QUSH0100.ListEntNbr;
+          Remove = *on; //‚Assume all removal criteria have been met
+          MsgType = MTTo( %lookup( LJOB0100.MsgType : MTFrom ) );
+          LJOB0100Fld@ = QUSH0100@ + LJOB0100.RtnFldOS;
+          for Y = 1 to LJOB0100.NbrFldRtn;
+            PgmName@ = LJOB0100Fld@ + %len( LJOB0100Fld );
+            if LJOB0100Fld.FldID = 0603; //‚Get sending program name
+              SendPgm = PgmName;
+            endif;
+            if LJOB0100Fld.FldID = 0703; //‚Get receiving program name
+              RcvPgm = PgmName;
+            endif;
+            LJOB0100Fld@ = QUSH0100@ + LJOB0100Fld.NxtFldOS;
+          endfor;
+
+          //‚1. Generic match with sending program name
+
+          WrkRemove = ( FromPgm = *blanks or
+                        ( %subst( SendPgm : 1 : FromLen ) =
+                          %subst( FromPgm : 1 : FromLen ) ) );
+          exsr UpdateRemove;
+
+          //‚2. Generic match with receiving program name
+
+          WrkRemove = ( ToPgm = *blanks or
+                        ( %subst( RcvPgm  : 1 : FromLen ) =
+                          %subst( ToPgm   : 1 : ToLen   ) ) );
+          exsr UpdateRemove;
+
+          //‚3. Match with specified message identifier
+
+          WrkRemove = ( MsgIDDS.Arr( 1 ) = '*ANY' or
+	                ( MsgIDDS.Arr( 1 ) = '*NONE' and
+	                  LJOB0100.MsgID = *blanks ) or
+	                %lookup( LJOB0100.MsgID : MsgIDDS.Arr :
+                                 1 : MsgIDDS.Nbr ) > 0 );
+          exsr UpdateRemove;
+
+          //‚4. Match with specified message type
+
+          WrkRemove = ( MsgTypeDS.Arr( 1 ) = '*ANY' or
+                        %lookup( MsgType : MsgTypeDS.Arr :
+                                 1  : MsgTypeDS.Nbr ) > 0 );
+          exsr UpdateRemove;
+
+          //‚Remove the message if required
+
+          if Remove = *on;
+            reset QUSEC;
+            qmhrmvpm( *blanks : 0 : LJOB0100.MsgKey : '*BYKEY' : QUSEC );
+            if ErrMsgID <> *blanks;
+              exsr *pssr;
+            endif;
+          endif;
+
+          LJOB0100@ = QUSH0100@ + LJOB0100.NxtEntryOS;
+        endfor;
+
+        return;
+
+        //‚UpdateRemove: Update the Remove flag by AND-ing or OR-ing it
+        //‚              with the new WrkValue value.
+
+        begsr UpdateRemove;
+          if P_NbrTrue = '*ALL';
+            Remove = ( Remove and WrkRemove );
+          else;
+            Remove = ( Remove or  WrkRemove );
+          endif;
+        endsr;
+
+        //‚*PSSR: Error-handling subroutine
+
+        begsr *pssr;
+          return;
+        endsr;
+
+      /end-free
