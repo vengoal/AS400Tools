@@ -1,0 +1,294 @@
+      ****************************************************************
+      * To Compile:                                                  *
+      *                                                              *
+      *     CRTBNDRPG PGM(XXX/MSGF001RG) SRCFILEL(XXX/QRPGLESRC)     *
+      *                                                              *
+      * Special Instructions:                                        *
+      *     None.                                                    *
+      *                                                              *
+      ****************************************************************
+     FMSGF001DF CF   E             WORKSTN
+     F                                     SFILE(SFL01:RRN)
+     F                                     INFDS(WDSUBF)
+      ****************************************************************
+     D TextPtr         S               *
+      *
+     D WDSUBF          DS
+     D  W$KEY                369    369
+     D  SFLPG#               378    379B 0
+      *
+     D @rolup          C                   CONST(X'F5')
+     D @f3             C                   CONST(X'33')
+     D @f5             C                   CONST(X'35')
+      *
+     D WPMsgInfo       DS
+     D  Data                          1    DIM(32767)
+     D  BytesRet               1      4B 0
+     D  BytesAvail             5      8B 0
+     D  MsgSevL                9     12B 0
+     D  AlertIndex            13     16B 0
+     D  AlertOpt              17     25
+     D  LogInd                26     26
+     D  MsgID                 27     33
+     D  Reserved1             34     36
+     D  #SVarFmt              37     40B 0
+     D  CCSIDText             41     44B 0
+     D  CCSIDData             45     48B 0
+     D  CCSIRText             49     52B 0
+     D  OSDftRep              53     56B 0
+     D  LDftRepR              57     60B 0
+     D  LDftRepA              61     64B 0
+     D  OSMsg                 65     68B 0
+     D  LMsgR                 69     72B 0
+     D  LMsgA                 73     76B 0
+     D  OSMsgH                77     80B 0
+     D  LMsgHR                81     84B 0
+     D  LMsgHA                85     88B 0
+     D  OSSVFmt               89     92B 0
+     D  LSVFmtR               93     96B 0
+     D  LSVFmtA               97    100B 0
+     D  LSVFmtE              101    104B 0
+      *
+     D WPMsgText       DS                  BASED(TextPtr)
+     D  MsgText                     132
+      *
+     D WPError         DS
+     D  EBytesP                1      4B 0 INZ(40)
+     D  EBytesA                5      8B 0
+     D  EMsgID                 9     15
+     D  EReserverd            16     16
+     D  EData                 17     56
+      *
+     D #2Load          C                   12
+     D Up              C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+     D Low             C                   'abcdefghijklmnopqrstuvwxyz'
+      *
+     D WPInfoLen       S              9B 0 INZ(400)
+     D WPFmtName       S              8    INZ('RTVM0300')
+     D WPMsgID         S              8
+     D WPQMsgF         S             20
+     D WPRepData       S              1    INZ(' ')
+     D WPRepLen        S              9B 0 INZ(1)
+     D WPRecLen        S              9B 0 INZ(440)
+     D WPRSubst        S             10    INZ('*NO')
+     D WPRetFmtC       S             10    INZ('*NO')
+     D WPRtvOpt        S             10
+     D WPCCSIDC        S              9B 0 INZ(0)
+     D WPCCSIDR        S              9B 0 INZ(0)
+      *
+     D CmdCmd          S            256
+     D CmdLen          S             15  5 INZ(256)
+     D PriorText       S            132
+     D String1         S            132
+     D String2         S            132
+     D LoopCount       S              8  0
+     D PriorCPF        S              7
+     D Count           S              4  0
+     D RRN             S              4  0
+     D SaveRRN         S              4  0
+     D a               S              4  0
+     D b               S              4  0
+     D x               S              4  0
+     D y               S              4  0 INZ(6)
+      ****************************************************************
+     C                   dow       (W$KEY <> @f3)
+     C                   EXSR      $DISPLAY
+      *
+     C                   if        (W$KEY = @f5) or
+     C                             (PriorText <> WSTEXT) or (PriorCPF <> WSCPF)
+     C                   EXSR      $INIT
+     C                   EXSR      $LOAD
+     C                   eval      PriorText = WSTEXT
+     C                   eval      PriorCPF = WSCPF
+     C                   endif
+      *
+     C                   if        (W$KEY = @rolup)
+     C                   EXSR      $LOAD
+     C                   endif
+      *
+     C                   if        (RRN > 0)
+     C                   EXSR      $PROCESS
+     C                   endif
+      *
+     C                   enddo
+      *
+     C                   SETON                                        LR
+      ****************************************************************
+      * Display the Subfile                                          *
+      ****************************************************************
+     C     $DISPLAY      BEGSR
+      *
+     C                   WRITE     OVR01
+     C                   EXFMT     CTL01
+     C                   eval      RECNBR = SFLPG#
+      *
+     C                   ENDSR
+      ****************************************************************
+      * Initialize The Subfile                                       *
+      ****************************************************************
+     C     $INIT         BEGSR
+      *
+     C                   eval      LoopCount = 0
+     C                   eval      RRN = 0
+     C                   SETON                                        3335
+     C                   WRITE     CTL01
+     C                   SETOFF                                       303334
+      *
+     C                   if        (WSTEXT <> ' ')
+     C     Low:Up        XLATE     WSTEXT        String1
+     C     ' '           CHECKR    String1       a                        99
+      *
+     C                   if        (not *IN99)
+     C                   eval      a = %size(String1)
+     C                   endif
+      *
+     C                   endif
+      *
+     C                   if        (WSCPF <> ' ')
+     C     ' '           CHECKR    WSCPF         b                        99
+      *
+     C                   if        (not *IN99)
+     C                   eval      b = %size(WSCPF)
+     C                   endif
+      *
+     C                   endif
+      *
+     C                   ENDSR
+      ****************************************************************
+      * Load the Subfile                                             *
+      ****************************************************************
+     C     $LOAD         BEGSR
+      *
+     C                   eval      Count = 0
+      *
+     C                   dow       (Count < #2Load) and (not *IN34)
+      *
+     C                   if        (LoopCount <= 0)
+     C                   eval      WPRtvOpt = '*FIRST'
+     C                   else
+     C                   eval      WPRtvOpt = '*NEXT'
+     C                   endif
+      *
+     C                   EXSR      $RTVMSG
+      *
+     C                   if        (BytesRet > BytesAvail)
+     C                   eval      *IN34 = *ON
+     C                   else
+     C* V4R2 and down
+     C*                  eval      TextPtr = %addr(Data(OSMsg))
+     C* V4R3 and up
+     C                   eval      TextPtr = %addr(Data(OSMsg + 1))
+      *
+     C                   if        (WSTEXT <> ' ')
+     C                   eval      String2 = %subst(MsgText:1:LMsgR)
+     C     Low:Up        XLATE     String2       String2
+     C     String1:a     SCAN      String2                                99
+     C                   endif
+      *
+     C                   if        (WSCPF <> ' ')
+     C     WSCPF:b       SCAN      MsgID                                  98
+     C                   endif
+      *
+     C                   if        ((*IN99) or (WSTEXT = ' ')) and
+     C                             ((*IN98) or (WSCPF = ' '))
+     C                   eval      WFMSGID = MsgID
+     C                   eval      WFSEVL = MsgSevL
+     C                   eval      WFTEXT = %subst(MsgText:1:LMsgR)
+      *
+     C                   if        (LMsgR > %size(WFTEXT))
+     C                   eval      x = (%size(WFTEXT) - (y - 1))
+     C                   eval      %subst(WFTEXT:x:y) = ' . . .'
+     C                   endif
+      *
+     C                   eval      WFOPT = ' '
+     C                   eval      Count = (Count + 1)
+     C                   eval      RRN = (RRN + 1)
+     C                   WRITE     SFL01
+     C                   endif
+      *
+     C                   endif
+      *
+     C                   enddo
+      *
+     C                   eval      *IN30 = (RRN > 0)
+     C                   eval      RECNBR = RRN
+      *
+     C                   ENDSR
+      **************************************************************
+      * Process The Subfile                                        *
+      **************************************************************
+     C     $PROCESS      BEGSR
+      *
+     C                   eval      SaveRRN = RRN
+     C                   READC     SFL01                                  69
+      *
+     C                   dow       (not *IN69)
+      *
+     C                   if        (WFOPT = '5')
+     C                   EXSR      $OPT5
+     C                   endif
+      *
+     C                   eval      WFOPT = ' '
+     C                   UPDATE    SFL01
+     C                   WRITE     CTL01
+      *
+     C                   READC     SFL01                                  69
+     C                   enddo
+      *
+     C                   eval      RRN = SaveRRN
+      *
+     C                   ENDSR
+      **************************************************************
+      * Option 5 - Display                                         *
+      **************************************************************
+     C     $OPT5         BEGSR
+      *
+     C                   eval      CmdCmd = 'DSPMSGD ' + WFMsgID +
+     C                             ' ' + %trim(WSLIB) + '/' + %trim(WSFILE)
+      *
+     C                   CALL      'QCMDEXC'
+     C                   PARM                    CmdCmd
+     C                   PARM                    CmdLen
+      *
+     C                   ENDSR
+      **************************************************************
+      * Retrive Message API                                        *
+      **************************************************************
+     C     $RTVMSG       BEGSR
+      *
+     C                   eval      WPQMsgF = (WSFILE + WSLIB)
+      *
+     C                   CALL      'QMHRTVM'
+     C                   PARM                    WPMsgInfo
+     C                   PARM                    WPInfoLen
+     C                   PARM                    WPFmtName
+     C                   PARM                    WPMsgID
+     C                   PARM                    WPQMsgF
+     C                   PARM                    WPRepData
+     C                   PARM                    WPRepLen
+     C                   PARM                    WPRSubst
+     C                   PARM                    WPRetFmtC
+     C                   PARM                    WPError
+     C                   PARM                    WPRtvOpt
+     C                   PARM                    WPCCSIDC
+     C                   PARM                    WPCCSIDR
+      *
+     C                   eval      LoopCount = (LoopCount + 1)
+     C                   eval      WPMsgID = MsgID
+      *
+     C                   ENDSR
+      ***************************************************************
+      * INITIALIZATION SUBROUTINE                                   *
+      ***************************************************************
+     C     *INZSR        BEGSR
+      *
+     C     *ENTRY        PLIST
+     C                   PARM                    WSFILE
+     C                   PARM                    WSLIB
+      *
+     C                   eval      WSTEXT = ' '
+     C                   EXSR      $INIT
+     C                   EXSR      $LOAD
+      *
+     C                   ENDSR
+      *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0

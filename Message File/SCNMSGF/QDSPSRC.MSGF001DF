@@ -1,0 +1,61 @@
+     A*%%TS  SD  19970902  130618  BVSTONE     REL-V3R2M0  5763-PW1
+     A****************************************************************
+     A* To Compile:                                                  *
+     A*                                                              *
+     A*     CRTDSPF FILE(XXX/MSGF001DF) SRCFILE(XXX/QDDSSRC)         *
+     A*                                                              *
+     A****************************************************************
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      HLPTITLE('Scan Message File v3.03')
+     A                                      HLPPNLGRP(MAIN MSGF001HP)
+     A                                      ALTHELP(CA01)
+     A                                      HELP
+     A          R SFL01                     SFL
+     A*%%TS  SD  19970730  103012  BVSTONE     REL-V3R2M0  5763-PW1
+     A            WFMSGID       10A  O 10  6
+     A            WFTEXT        59A  O 10 21
+     A            WFSEVL         3Y 0O 10 17EDTCDE(3)
+     A            WFOPT          1   B 10  3
+     A          R CTL01                     SFLCTL(SFL01)
+     A*%%TS  SD  19970902  130618  BVSTONE     REL-V3R2M0  5763-PW1
+     A                                      SFLSIZ(0013)
+     A                                      SFLPAG(0012)
+     A                                      ROLLUP
+     A                                      CF03
+     A                                      CF05
+     A                                      OVERLAY
+     A                                      ERASE(SFL01)
+     A  30                                  SFLDSP
+     A  35                                  SFLDSPCTL
+     A  33                                  SFLCLR
+     A  34                                  SFLEND(*MORE)
+     A            RECNBR         4S 0H      SFLRCDNBR
+     A            WSTEXT        30A  B  3 50DSPATR(UL)
+     A                                      CHECK(LC)
+     A                                  1 71SYSNAME
+     A                                  9  1' Opt Message    Sev Text          -
+     A                                                                         -
+     A                                                 '
+     A N30                                  DSPATR(ND)
+     A                                      DSPATR(HI)
+     A            WSFILE        10A  O  3 18
+     A            WSLIB         10A  O  4 20
+     A                                  3 32'Text Search . . .'
+     A                                  3  2'File  . . . . .'
+     A                                  4  4'Library . . .'
+     A                                  1 27'Scan Message File (SCNMSGF)'
+     A                                      DSPATR(HI)
+     A                                  6  2'Type options, press Enter.'
+     A                                      COLOR(BLU)
+     A                                  7  4'5=Display'
+     A                                      COLOR(BLU)
+     A                                  4 32'Msg ID Search . .'
+     A            WSCPF          7A  B  4 50
+     A          R OVR01
+     A                                      CLRL(*NO)
+     A                                      OVERLAY
+     A                                 23  3'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 13'F5=Refresh'
+     A                                      COLOR(BLU)
