@@ -1,0 +1,100 @@
+.*===================================================================*
+.* To compile:                                                       *
+.*                                                                   *
+.*           CRTPNLGRP  PNLGRP(XXX/SAV001PG) SRCFILE(XXX/QPNLSRC)    *
+.*                                                                   *
+.*===================================================================*
+:PNLGRP.
+.*====================================================================
+.* Class Definitions
+.*====================================================================
+:CLASS    NAME=optcls   BASETYPE=action.
+:ECLASS.
+:CLASS    NAME=objcls   BASETYPE='OBJNAME 10'.
+:ECLASS.
+:CLASS    NAME=typcls   BASETYPE='CHAR 7'.
+:ECLASS.
+:CLASS    NAME=txtcls   BASETYPE='CHAR 40'.
+:ECLASS.
+:CLASS    NAME=prmcls   BASETYPE='CHAR 255'.
+:ECLASS.
+.*====================================================================
+.* Variable Definitions
+.*====================================================================
+:VAR      NAME=sfn      CLASS=objcls.
+:VAR      NAME=sfl      CLASS=objcls.
+:VAR      NAME=cmd      CLASS=objcls.
+:VAR      NAME=ofl      CLASS=objcls.
+:VAR      NAME=lib      CLASS=objcls.
+:VAR      NAME=tfl      CLASS=objcls.
+:VAR      NAME=opt      CLASS=optcls.
+:VAR      NAME=obj      CLASS=objcls.
+:VAR      NAME=typ      CLASS=typcls.
+:VAR      NAME=atr      CLASS=objcls.
+:VAR      NAME=txt      CLASS=txtcls.
+:VAR      NAME=prm      CLASS=prmcls.
+.*====================================================================
+.* Variable Record and List Definitions
+.*====================================================================
+:VARRCD  NAME=header    VARS='sfn sfl cmd ofl lib tfl'
+         NOGET='sfn sfl cmd ofl lib tfl'.
+:VARRCD  NAME=detail    VARS='opt obj typ atr txt'
+         NOGET='obj typ atr txt'.
+:LISTDEF NAME=detlst    VARS='opt obj typ atr txt'
+         MSGID=EDT0417  MSGF='QPDA/QEDTMSG'.
+.*====================================================================
+.* Key Definitions
+.*====================================================================
+:KEYL  NAME=fkeys.
+:KEYI  KEY=enter    HELP=hlp  ACTION=enter.
+:KEYI  KEY=help     HELP=hlp  ACTION=help.
+:KEYI  KEY=f1       HELP=hlp  ACTION=help.
+:KEYI  KEY=f3       HELP=hlp  ACTION=exit     VARUPD=no  .F3=Exit
+:KEYI  KEY=f4       HELP=hlp  ACTION=prompt              .F4=Prompt
+:KEYI  KEY=f9       HELP=hlp  ACTION=retrieve            .F9=Retrieve
+:KEYI  KEY=f12      HELP=hlp  ACTION=cancel   VARUPD=no  .F12=Cancel
+:KEYI  KEY=pagedown HELP=hlp  ACTION=pagedown.
+:KEYI  KEY=pageup   HELP=hlp  ACTION=pageup.
+:KEYI  KEY=print    HELP=hlp  ACTION=print.
+:EKEYL.
+.*====================================================================
+.* Panel Definition
+.*====================================================================
+:PANEL NAME=SAV001PG KEYL=fkeys HELP=hlp
+       TOPSEP=space .Work with Save File Objects
+:DATA     DEPTH=4         LAYOUT=2    compact.
+:DATACOL  WIDTH=19.
+:DATACOL  WIDTH='*'.
+:DATAGRP  GRPSEP=qindent  compact.
+:DATAI    VAR=sfn         HELP=hlp    USAGE=out  .Save file
+:DATAI    VAR=sfl         HELP=hlp    USAGE=out  .Library
+:EDATAGRP.
+:DATAI    VAR=cmd         HELP=hlp    USAGE=out  .Save command
+:DATAGRP  GRPSEP=qindent  compact.
+:DATAI    VAR=ofl         HELP=hlp    USAGE=out  .Object
+:DATAI    VAR=lib         HELP=hlp    USAGE=out  .Library
+:EDATAGRP.
+:DATAI    VAR=tfl         HELP=hlp    USAGE=out  .Object type
+:EDATA.
+:LIST     DEPTH=14  LISTDEF=detlst  MAXHEAD=1  ACTOR=uim  PARMS=prm.
+:TOPINST .Type options, press Enter.
+:LISTACT  ENTER='CMD RSTOBJ OBJ(&obj.) SAVLIB(&lib.) DEV(*SAVF)'
+          ENTER='OBJTYPE(&typ.) SAVF(&sfl./&sfn.) &prm.'
+          PROMPT='CMD ?RSTOBJ ?*OBJ(&obj.) ?*SAVLIB(&lib.)'
+          PROMPT='?*DEV(*SAVF) ?*OBJTYPE(&typ.) ?*SAVF(&sfl./&sfn.)'
+          PROMPT='&prm.' HELP=hlp OPTION=1  .1=Restore object
+:LISTCOL  VAR=opt   USAGE=inout   MAXWIDTH=3   HELP=hlp  .Opt
+:LISTCOL  VAR=obj   USAGE=out     MAXWIDTH=10  HELP=hlp  .Object
+:LISTCOL  VAR=typ   USAGE=out     MAXWIDTH=7   HELP=hlp  .Type
+:LISTCOL  VAR=atr   USAGE=out     MAXWIDTH=10  HELP=hlp  .Attribute
+:LISTCOL  VAR=txt   USAGE=out     MAXWIDTH=40  HELP=hlp  .Text
+:LISTVIEW COLS='opt obj typ atr txt'.
+:ELIST.
+:CMDLINE  SIZE=short  .Parameters or command
+:EPANEL.
+.*====================================================================
+.* Help Module
+.*====================================================================
+:HELP     NAME=hlp.
+:EHELP.
+:EPNLGRP.
