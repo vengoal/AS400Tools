@@ -1,0 +1,21 @@
+/**************************************************************/                                            
+/* MQ - Print Event list                                      */                                            
+/*------------------------------------------------------------*/                                            
+/* ©BeppeCostagliola - beppecosta@yahoo.it - 2007             */                                            
+/**************************************************************/                                            
+                                                                                                            
+PGM (&MQMNAME &QNAME &CLEARQ)                                                                               
+                                                                                                            
+  Dcl &MQMNAME   *Char 26                                                                                   
+  Dcl &QNAME     *Char 26                                                                                   
+  Dcl &CLEARQ    *Char 4                                                                                    
+                                                                                                            
+  Dcl &QINFO     *Char 132                                                                                  
+                                                                                                            
+  Call MQPRTEVR (&MQMNAME &QNAME &CLEARQ &QINFO)                                                            
+                                                                                                            
+  if (&QINFO *NE ' ') +                                                                                     
+    SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&QINFO) +                                                
+               MSGTYPE(*DIAG)                                                                               
+                                                                                                            
+ENDPGM                                                                                                      
