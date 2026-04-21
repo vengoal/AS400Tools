@@ -1,0 +1,65 @@
+             PGM                                                                
+                                                                                
+             /* These Parms are needed for Retrieving Local Time */             
+             DCL        VAR(&S_time) TYPE(*DEC) LEN(15 0)                       
+             DCL        VAR(&E_time) TYPE(*DEC) LEN(15 0)                       
+             DCL        VAR(&D_time) TYPE(*DEC) LEN(15 0)                       
+             DCL        VAR(&DEC) TYPE(*DEC) LEN(15 0)                          
+             DCL        VAR(&INATR) TYPE(*CHAR) LEN(7)                          
+             DCL        VAR(&OUTATR) TYPE(*CHAR) LEN(7)                         
+             DCL        VAR(&LILIAN) TYPE(*CHAR) LEN(4)                         
+             DCL        VAR(&FLOAT) TYPE(*CHAR) LEN(8)                          
+             DCL        VAR(&GREGOR) TYPE(*CHAR) LEN(23)                        
+                                                                                
+             DCL        VAR(&SEC_CHAR) TYPE(*CHAR) LEN(15)                      
+             /* These Parms are needed for Removing Trading Zeros */            
+             DCL        VAR(&COUNTC) TYPE(*CHAR) LEN(15)                        
+             DCL        VAR(&I) TYPE(*INT)                                      
+             DCL        VAR(&T) TYPE(*INT)                                      
+             DCL        VAR(&LEN) TYPE(*INT)                                    
+                                                                                
+             CALLSUBR   SUBR(RTVLCLTIM)                                         
+             CHGVAR     VAR(&S_TIME) VALUE(&DEC)                                
+                                                                                
+             /* Do Something ... */                                             
+             /* For instance,    */                                             
+             DLYJOB     DLY(5)                                                  
+                                                                                
+             CALLSUBR   SUBR(RTVLCLTIM)                                         
+             CHGVAR     VAR(&E_TIME) VALUE(&DEC)                                
+                                                                                
+             CHGVAR     VAR(&D_TIME) VALUE(&E_TIME - &S_TIME)                   
+             CHGVAR     VAR(&COUNTC) VALUE(&D_TIME)                             
+             CALLSUBR   SUBR(RMVZERO)                                           
+             CHGVAR     VAR(&SEC_CHAR) VALUE(&COUNTC)                           
+             SNDPGMMSG  MSG('実行時間は' |< &SEC_CHAR |< +                      
+                          '秒でした。')                                         
+                                                                                
+     /* Sub Routine Section */                                                  
+             SUBR       SUBR(RTVLCLTIM)                                         
+             CHGVAR     VAR(%SST(&INATR 1 1)) VALUE(X'01')                      
+             CHGVAR     VAR(%BIN(&INATR 2 2)) VALUE(8)                          
+             CHGVAR     VAR(%BIN(&INATR 4 4)) VALUE(0)                          
+             CHGVAR     VAR(%SST(&OUTATR 1 1)) VALUE(X'03')                     
+             CHGVAR     VAR(%SST(&OUTATR 2 1)) VALUE(X'00')                     
+             CHGVAR     VAR(%SST(&OUTATR 3 1)) VALUE(X'0F')                     
+             CHGVAR     VAR(%BIN(&OUTATR 4 4)) VALUE(0)                         
+             CALLPRC    PRC(CEELOCT) PARM((&LILIAN) (&FLOAT) (&GREGOR))         
+             CALLPRC    PRC('_LBCPYNV') PARM((&DEC) (&OUTATR) +                 
+                          (&FLOAT) (&INATR))                                    
+             ENDSUBR                                                            
+                                                                                
+             SUBR       SUBR(RMVZERO)                                           
+             /*  TO(14)は15-1で0秒だった場合を考慮 */                           
+             DOFOR      VAR(&I) FROM(1) TO(14) BY(1)                            
+             IF         COND(%SST(&COUNTC &I 1) = '0') THEN(CHGVAR +            
+                          VAR(%SST(&COUNTC &I 1)) VALUE(' '))                   
+             ELSE       CMD(LEAVE)                                              
+             ENDDO                                                              
+             /*  16は15+1*/                                                     
+             CHGVAR     VAR(&LEN) VALUE(16 - &I)                                
+             CHGVAR     VAR(&COUNTC) VALUE(%SST(&COUNTC &I &LEN))               
+             ENDSUBR                                                            
+     /* Sub Routine Section ends */                                             
+                                                                                
+             ENDPGM                                                             

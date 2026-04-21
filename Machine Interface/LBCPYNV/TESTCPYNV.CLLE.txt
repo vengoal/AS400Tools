@@ -1,0 +1,44 @@
+pgm    ( +
+         &PckDec15_0  +
+       )
+
+   dcl   &PckDec15_0  *dec   ( 15 0 )
+
+
+   dcl   &PckDecNew   *char     8     value( x'000000000000000F' )
+
+   dcl   &RtnVal      *char     8     value( ' ' )
+
+/* Value definitions:                                            */
+/*    Reserved hex zeros:                            ********    */
+/* Total digits or bytes:                          **            */
+/* Fractional digits:                            **              */
+/* Data type:                                  **                */
+   dcl   &Dec_Dfn     *char     7     value( x'03000F00000000' )
+   dcl   &SBin_Dfn    *char     7     value( x'00000800000000' )
+   dcl   &Flt_Dfn     *char     7     value( x'01000800000000' )
+
+/* Get *DEC (15 0) into 8-byte Signed Binary form in &RtnVal... */
+   callprc      '_LBCPYNV'   ( +
+                               &RtnVal        +
+                               &SBin_Dfn      +
+                               &PckDec15_0    +
+                               &Dec_Dfn       +
+                             )
+
+
+/* dmpclpgm */
+
+/* ...and turn 8-byte Signed Binary into new *DEC (15 0) form... */
+   callprc      '_LBCPYNV'   ( +
+                               &PckDecNew     +
+                               &Dec_Dfn       +
+                               &RtnVal        +
+                               &SBin_Dfn      +
+                             )
+
+dmpclpgm
+
+   return
+
+endpgm
