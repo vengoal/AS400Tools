@@ -1,1 +1,13 @@
-
+### IBM i Security
++ IBM i - Security Enhancements\
+  https://www.ibm.com/support/pages/node/6150021
++ TOTP Key API for Sync TOTP Key accross IBM i systems after user exectute command CHGTOTPKEY
+  - Retrieve TOTP Key (QSYRTVK) API\
+    https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_76/apis/qsyrtvk.htm
+  - Set TOTP Key (QSYSETK) API\
+    https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_76/apis/qsysetk.htm
+  - TOTP Key RTV and SET TOTP KEY Example\
+    https://github.com/vengoal/AS400Tools/tree/main/Security/RTVSETTOTPKEY
+    - RTVTOTPKEY.CLP
+    - SETTOTPKEY.CLP
+    - TOTPRTVSET.CLP
